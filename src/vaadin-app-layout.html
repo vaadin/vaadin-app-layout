@@ -26,7 +26,7 @@ This program is available under Apache License Version 2.0, available at https:/
     </style>
     
     <div id="container" part="container">
-      <div part="navbar" hidden$="[[navHidden]]">
+      <div part="navbar" hidden$="[[_navHidden]]">
         <div part="branding">
           <slot name="branding"></slot>
         </div>
@@ -72,6 +72,10 @@ This program is available under Apache License Version 2.0, available at https:/
               type: Boolean,
               value: false,
               reflectToAttribute: true
+            },
+
+            _navHidden: {
+              type: Boolean
             }
           };
         }
@@ -102,10 +106,10 @@ This program is available under Apache License Version 2.0, available at https:/
               if (!this.hideMenuOnKeyboardOpen) {
                 return;
               }
-              this.navHidden = window.innerHeight <= 600;
+              this._navHidden = window.innerHeight <= 600;
             });
             this.addEventListener('focusin', hideNav);
-            this.addEventListener('focusout', () => this.navHidden = false);
+            this.addEventListener('focusout', () => this._navHidden = false);
           } catch (e) {
             // NOOP
           }
