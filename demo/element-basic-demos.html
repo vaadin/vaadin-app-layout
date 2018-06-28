@@ -33,11 +33,10 @@
       </template>
       <script>
         window.addDemoReadyListener('#element-basic-demos-sample-example', function(document) {
-          var renderer = document.querySelector('vaadin-demo-iframe-renderer');          
+          var renderer = document.querySelector('vaadin-demo-iframe-renderer');
           var frame = renderer.$.demo;
           frame.style.height = '400px';
 
-          console.log(Polymer.dom(renderer.root).querySelector('div'));
           Polymer.dom(renderer.root).querySelector('div').style.display = 'none';
         });
       </script>
@@ -73,12 +72,11 @@
       </template>
       <script>
         window.addDemoReadyListener('#element-basic-demos-mobile-example', function(document) {
-          var renderer = document.querySelector('vaadin-demo-iframe-renderer');          
+          var renderer = document.querySelector('vaadin-demo-iframe-renderer');
           var frame = renderer.$.demo;
           frame.style.height = '600px';
           frame.style.width = '375px';
 
-          console.log(Polymer.dom(renderer.root).querySelector('div'));
           Polymer.dom(renderer.root).querySelector('div').style.display = 'none';
         });
       </script>

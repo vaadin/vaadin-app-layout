@@ -65,7 +65,7 @@ This program is available under Apache License Version 2.0, available at https:/
         static get properties() {
           return {
             /**
-             * Set true if you would like to hide the menu when 
+             * Set true if you would like to hide the menu when
              * virtual keyboard is displayed.
              */
             hideMenuOnKeyboardOpen: {
@@ -106,8 +106,8 @@ This program is available under Apache License Version 2.0, available at https:/
             });
             this.addEventListener('focusin', hideNav);
             this.addEventListener('focusout', () => this.navHidden = false);
-          } catch(e) {
-
+          } catch (e) {
+            // NOOP
           }
         }
 
