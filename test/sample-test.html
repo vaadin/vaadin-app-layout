@@ -7,33 +7,56 @@
   <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
   <link rel="import" href="../../test-fixture/test-fixture.html">
   <link rel="import" href="../vaadin-app-layout.html">
+  <link rel="import" href="../../vaadin-tabs/vaadin-tabs.html">
 </head>
 
 <body>
   <test-fixture id="default">
     <template>
-      <vaadin-app-layout></vaadin-app-layout>
+      <vaadin-app-layout>
+        <div slot="branding">Branding</div>
+
+        <vaadin-tabs slot="menu">
+          <vaadin-tab>Page 1</vaadin-tab>
+          <vaadin-tab>Page 2</vaadin-tab>
+          <vaadin-tab>Page 3</vaadin-tab>
+          <vaadin-tab>Page 4</vaadin-tab>
+        </vaadin-tabs>
+    
+        <h3>Title</h3>
+        <p>
+          Content
+        </p>
+      </vaadin-app-layout>
     </template>
   </test-fixture>
 
   <script>
-    describe('sample test', function() {
-      var element;
+    describe('basic test', function() {
+      var layout;
 
       beforeEach(function() {
-        element = fixture('default');
+        layout = fixture('default');
       });
 
-      it('should pass', function() {
-        expect(element.localName).to.be.equal('vaadin-app-layout');
+      it('should inject branding', function() {
+        var children = Polymer.dom(layout.root.querySelector('div[part="branding"]')).getEffectiveChildNodes();
+        var brandingNode = Array.from(children).filter(n => n.innerText && n.innerText.indexOf('Branding') !== -1);
+        expect(brandingNode.length).to.be.equal(1);
       });
 
-      it('should not expose class name globally', function() {
-        expect(window.AppLayoutElement).not.to.be.ok;
+      it('should inject menu', function() {
+        var children = Polymer.dom(layout.root.querySelector('div[part="menu"]')).getEffectiveChildNodes();
+        var tabsNode = Array.from(children).filter(n => n.tagName && n.tagName.toUpperCase() === 'VAADIN-TABS');
+        expect(tabsNode.length).to.be.equal(1);
+        expect(tabsNode[0].childElementCount).to.be.equal(4);
       });
 
-      it('should have a valid version number', function() {
-        expect(customElements.get('vaadin-app-layout').version).to.match(/^(\d+\.)?(\d+\.)?(\*|\d+)$/);
+      it('should inject content', function() {
+        var children = Polymer.dom(layout.root.querySelector('div[part="content"]')).getEffectiveChildNodes();
+        var contentNode = Array.from(children).filter(n => n.tagName && n.tagName.toUpperCase() === 'H3');
+        expect(contentNode.length).to.be.equal(1);
+        expect(contentNode[0].innerText).to.be.equal('Title');
       });
 
     });
