@@ -79,7 +79,7 @@
             const sandbox = sinon.sandbox.create();
             sandbox.stub(window, 'innerHeight', 200);
             layout._detectIosNavbar();
-            expect(getComputedStyle(layout).getPropertyValue('--vaadin-app-layout-viewport-bottom')).to.be.true;
+            expect(getComputedStyle(layout).getPropertyValue('--vaadin-app-layout-viewport-bottom')).to.be.ok;
             sandbox.restore();
             window.top.document.querySelector('#subsuites').style.removeProperty('height');
           });
