@@ -75,7 +75,7 @@
           var renderer = document.querySelector('vaadin-demo-iframe-renderer');
           var frame = renderer.$.demo;
           frame.style.height = '600px';
-          frame.style.width = '375px';
+          frame.style.maxWidth = '340px';
 
           Polymer.dom(renderer.root).querySelector('div').style.display = 'none';
         });
