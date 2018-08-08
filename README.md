@@ -14,7 +14,7 @@
 [API documentation ↗](https://vaadin.com/components/vaadin-app-layout/html-api)
 
 
-[&lt;vaadin-app-layout&gt;](https://vaadin.com/components/vaadin-app-layout) is a Web Component providing &lt;element-functionality&gt;, part of the [Vaadin components](https://vaadin.com/components).
+[&lt;vaadin-app-layout&gt;](https://vaadin.com/components/vaadin-app-layout) is a Web Component providing a quick and easy way to get a common application layout structure done, part of the [Vaadin components](https://vaadin.com/components).
 
 <!--
 ```
@@ -79,17 +79,17 @@ Vaadin components use the Lumo theme by default.
 
 ## The file structure for Vaadin components
 
-- `src/component-name.html`
+- `src/vaadin-app-layout.html`
 
   Unstyled component.
 
-- `theme/lumo/component-name.html`
+- `theme/lumo/vaadin-app-layout.html`
 
   Component with Lumo theme.
 
-- `component-name.html`
+- `vaadin-app-layout.html`
 
-  Alias for theme/lumo/component-name.html
+  Alias for theme/lumo/vaadin-app-layout.html
 
 
 ## Running demos and tests in browser
@@ -130,6 +130,6 @@ We are using [ESLint](http://eslint.org/) for linting JavaScript code. You can c
 
 ## License
 
-Apache License 2.0
+Commercial Vaadin Add-on License version 3 (CVALv3). For license terms, see LICENSE.
 
 Vaadin collects development time usage statistics to improve this product. For details and to opt-out, see https://github.com/vaadin/vaadin-usage-statistics.
