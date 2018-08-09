@@ -60,6 +60,9 @@ module.exports = {
       context.options.plugins.sauce.browsers = saucelabsPlatforms;
     } else if (env === 'saucelabs-cron') {
       context.options.plugins.sauce.browsers = cronPlatforms;
+      // MAGI REMOVE START
+      context.options.plugins.istanbul.thresholds.global.statements = 0;
+      // MAGI REMOVE END
     } else {
       // MAGI REMOVE START
       context.options.plugins.istanbul.thresholds.global.statements = 0;
