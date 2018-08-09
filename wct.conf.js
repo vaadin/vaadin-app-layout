@@ -61,7 +61,9 @@ module.exports = {
     } else if (env === 'saucelabs-cron') {
       context.options.plugins.sauce.browsers = cronPlatforms;
     } else {
+      // MAGI REMOVE START
       context.options.plugins.istanbul.thresholds.global.statements = 0;
+      // MAGI REMOVE END
     }
   }
 };
