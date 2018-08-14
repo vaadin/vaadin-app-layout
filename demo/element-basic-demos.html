@@ -7,7 +7,7 @@
     </style>
 
 
-    <h3>Basic example</h3>
+    <h3>Basic Usage</h3>
     <vaadin-demo-snippet id="element-basic-demos-sample-example" iframe-src="iframe-lumo-styled.html">
       <template preserve-content>
         <style>
@@ -46,8 +46,8 @@
       </script>
     </vaadin-demo-snippet>
 
-    <h3>Material example</h3>
-    <vaadin-demo-snippet id="element-basic-demos-mobile-example" iframe-src="iframe-material-styled.html">
+    <h3>Material Theme</h3>
+    <vaadin-demo-snippet id="element-basic-demos-material-example" iframe-src="iframe-material-styled.html">
       <template preserve-content>
         <style>
           .content {
@@ -74,7 +74,7 @@
         </vaadin-app-layout>
       </template>
       <script>
-        window.addDemoReadyListener('#element-basic-demos-mobile-example', function(document) {
+        window.addDemoReadyListener('#element-basic-demos-material-example', function(document) {
           var renderer = document.querySelector('vaadin-demo-iframe-renderer');
           var frame = renderer.$.demo;
           frame.style.height = '600px';
