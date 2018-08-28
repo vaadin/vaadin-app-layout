@@ -6,6 +6,15 @@ module.exports = {
   verbose: false,
   // MAGI REMOVE START
   plugins: {
+    local: {
+      browserOptions: {
+        chrome: [
+          'headless',
+          'disable-gpu',
+          'no-sandbox'
+        ]
+      }
+    },
     istanbul: {
       dir: './coverage',
       reporters: ['text-summary', 'lcov'],
