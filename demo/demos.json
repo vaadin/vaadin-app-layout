@@ -11,5 +11,16 @@
       "image": ""
      }
   }
+  ,
+  {
+    "name": "Router",
+    "url": "app-layout-router-demos",
+    "src": "app-layout-router-demos.html",
+    "meta": {
+      "title": "vaadin-app-layout and Vaain Router Integration",
+      "description": "",
+      "image": ""
+     }
+  }
   ]
 }

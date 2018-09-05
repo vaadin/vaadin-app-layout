@@ -1,0 +1,65 @@
+<dom-module id="app-layout-router-demos">
+  <template>
+    <style include="vaadin-component-demo-shared-styles">
+      :host {
+        display: block;
+      }
+    </style>
+
+    <h3>Simple App Layout with brand logo </h3>
+    <vaadin-demo-snippet id="app-layout-router-example" iframe-src="iframe-lumo-styled.html">
+      <template preserve-content>
+        <style>
+          h3 {
+            text-align: center;
+          }
+
+          a,
+          a:visited {
+            color: inherit;
+            text-decoration: inherit;
+          }
+        </style>
+        <vaadin-app-layout>
+          <h4 slot="branding">Router Example</h4>
+
+          <vaadin-tabs slot="menu" theme="minimal">
+            <vaadin-tab>
+              <a href="/">
+                <iron-icon icon="vaadin:home"></iron-icon>
+                Home
+              </a>
+            </vaadin-tab>
+            <vaadin-tab>
+              <a href="/users">
+                <iron-icon icon="vaadin:users"></iron-icon>
+                Users
+              </a>
+            </vaadin-tab>
+          </vaadin-tabs>
+
+          <div id="outlet">
+          </div>
+        </vaadin-app-layout>
+        <script>
+          const outlet = document.getElementById('outlet');
+          const router = new Router(outlet);
+          router.setRoutes([
+            {path: '/', component: 'x-home-view'},
+            {path: '/users', component: 'x-users-view'}
+          ]);
+        </script>
+
+      </template>
+    </vaadin-demo-snippet>
+
+  </template>
+  <script>
+    class AppLayoutRouterDemos extends DemoReadyEventEmitter(ElementDemo(Polymer.Element)) {
+      static get is() {
+        return 'app-layout-router-demos';
+      }
+    }
+    customElements.define(AppLayoutRouterDemos.is, AppLayoutRouterDemos);
+  </script>
+</dom-module>

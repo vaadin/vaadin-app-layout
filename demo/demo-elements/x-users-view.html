@@ -1,0 +1,30 @@
+<link rel="import" href="../../../polymer/polymer-element.html">
+
+<dom-module id="x-users-view">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      h1 {
+        text-align: center;
+      }
+    </style>
+
+    <h1>Users</h1>
+  </template>
+  <script>
+    (() => {
+      class XUsersView extends Polymer.Element {
+        static get is() {
+          return 'x-users-view';
+        }
+        static get properties() {
+          return {};
+        }
+      }
+      customElements.define(XUsersView.is, XUsersView);
+    })();
+  </script>
+</dom-module>
