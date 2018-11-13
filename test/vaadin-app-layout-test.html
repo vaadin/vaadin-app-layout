@@ -62,6 +62,7 @@
       });
 
       it('should hide branding on a small screens', function() {
+        this.retries(3);
         var branding = layout.root.querySelector('div[part="branding"]');
         var isWideScreen = window.innerWidth >= 700;
         var brandingDisplay = window.getComputedStyle(branding).display;
