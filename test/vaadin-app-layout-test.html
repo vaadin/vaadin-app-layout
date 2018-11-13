@@ -65,7 +65,7 @@
 
       it('should hide branding on a small screens', function() {
         // Skip flaky test on iOS 10
-        if (/iPhone OS 10_0\s+/.test(navigator.userAgent)) {
+        if (/iPhone OS 10_3\s+/.test(navigator.userAgent)) {
           this.skip();
         }
         var branding = layout.root.querySelector('div[part="branding"]');
