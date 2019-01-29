@@ -1,7 +1,7 @@
 <!--
 @license
-Vaadin App Layout
-Copyright (C) 2018 Vaadin Ltd
+Vaadin Navbar Layout
+Copyright (C) 2019 Vaadin Ltd
 This program is available under Apache License Version 2.0, available at https://vaadin.com/license/
 -->
 
@@ -9,44 +9,59 @@ This program is available under Apache License Version 2.0, available at https:/
 <link rel="import" href="../../vaadin-themable-mixin/vaadin-themable-mixin.html">
 <link rel="import" href="../../vaadin-element-mixin/vaadin-element-mixin.html">
 
-<dom-module id="vaadin-app-layout">
+<dom-module id="vaadin-navbar-layout">
   <template>
     <style>
       :host {
         display: flex !important;
-        flex-direction: column-reverse;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
-        bottom: var(--vaadin-app-layout-viewport-bottom);
+        bottom: var(--vaadin-navbar-layout-viewport-bottom);
         /* CSS API for host */
-        --vaadin-app-layout-viewport-bottom: 0;
+        --vaadin-navbar-layout-viewport-bottom: 0;
+      }
+
+      :host([navbar-position="start"]) {
+        flex-direction: column;
+      }
+
+      :host([navbar-position="end"]) {
+        flex-direction: column-reverse;
       }
 
       :host([hidden]) {
         display: none !important;
       }
 
-      [part="branding"],
+      /* [part="branding"],
       [part="navbar"]::after {
         display: none;
-      }
+      } */
 
       [part="navbar"] {
         flex: none;
         display: flex;
         align-items: center;
-        height: var(--vaadin-app-layout-navbar-height, auto);
-        background: var(--vaadin-app-layout-navbar-background, #eee);
+        height: var(--vaadin-navbar-layout-navbar-height, auto);
+        background: var(--vaadin-navbar-layout-navbar-background, #eee);
       }
 
-      [part="navbar"]::after {
+      [part="start"] {
+        display: flex;
+        align-items: center;
+      }
+
+      /* [part="navbar"]::after {
         content: '';
-      }
+      } */
 
-      [part="branding"],
-      [part="navbar"]::after {
+      /* [part="branding"],
+      [part="navbar"]::after { */
         /*
           Makes the menu part horizontally centered on wide viewports,
           regardless of the size of contents inside the branding
@@ -56,16 +71,16 @@ This program is available under Apache License Version 2.0, available at https:/
 
           NOTE: `0px` might confuse linters and minifiers.
         */
-        flex: 1 0 0.001px;
-      }
+        /* flex: 1 0 0.001px; */
+      /* } */
 
-      [part=navbar] > ::slotted([slot="menu"]) {
+      /* [part=navbar] > ::slotted([slot="menu"]) {
         display: flex;
         align-items: center;
         overflow: hidden;
         max-width: 100%;
         margin: auto;
-      }
+      } */
 
       [part="content"] {
         flex: auto;
@@ -74,28 +89,33 @@ This program is available under Apache License Version 2.0, available at https:/
         -webkit-overflow-scrolling: touch;
       }
 
-      @media (min-width: 700px) {
-        :host {
-          flex-direction: column;
+      @media (max-width: 600px) {
+        :host:not([navbar-position]) {
+          flex-direction: column-reverse;
         }
 
-        [part=navbar] > ::slotted([slot="menu"]) {
+        /* [part=navbar] > ::slotted([slot="menu"]) {
           flex: initial;
-        }
+        } */
 
-        [part="branding"],
+        /* [part="branding"],
         [part="navbar"]::after {
           display: flex;
-        }
+        } */
       }
     </style>
 
     <nav part="navbar">
-      <div part="branding" role="banner">
-        <slot name="branding"></slot>
-      </div>
-      <slot name="menu"></slot>
-      </nav>
+      <slot name="navbar">
+        <div part="start">
+          <slot name="start"></slot>
+        </div>
+        <slot name="center"></slot>
+        <div part="end">
+          <slot name="end"></slot>
+        </div>
+      </slot>
+    </nav>
     <div part="content" role="main" aria-live="polite">
       <slot></slot>
     </div>
@@ -106,10 +126,10 @@ This program is available under Apache License Version 2.0, available at https:/
     (function() {
 
       /**
-       * `<vaadin-app-layout>` is a Web Component providing a quick and easy way to get a common application layout structure done.
+       * `<vaadin-navbar-layout>` is a Web Component providing a quick and easy way to get a common application layout structure done.
        *
        * ```
-       * <vaadin-app-layout>
+       * <vaadin-navbar-layout>
        *  <h3 slot="branding">Company Name</h3>
        *  <vaadin-tabs slot="menu">
        *    <vaadin-tab>Menu item</vaadin-tab>
@@ -119,14 +139,14 @@ This program is available under Apache License Version 2.0, available at https:/
        *    <h3>Page title</h3>
        *    <p>Page content</p>
        *  </div>
-       * </vaadin-app-layout>
+       * </vaadin-navbar-layout>
        * ```
        *
        * For best results, the component should be added to the root level of your application (i.e., as a direct child of `<body>`)
        *
        * ### Styling
        *
-       * The following Shadow DOM parts of the `<vaadin-app-layout>` are available for styling:
+       * The following Shadow DOM parts of the `<vaadin-navbar-layout>` are available for styling:
        *
        * Part name     | Description
        * --------------|---------------------------------------------------------|
@@ -138,9 +158,9 @@ This program is available under Apache License Version 2.0, available at https:/
        *
        * Custom CSS property | Description | Default value
        * ---|---|---
-       * `--vaadin-app-layout-viewport-bottom` | Bottom offset of the visible viewport area | `0` or detected offset
-       * `--vaadin-app-layout-navbar-height` | Height of the navigation bar and branding inside | `auto`, depends on the navbar content
-       * `--vaadin-app-layout-navbar-background` | Background of the navigation bar | slightly gray, depends on the theme
+       * `--vaadin-navbar-layout-viewport-bottom` | Bottom offset of the visible viewport area | `0` or detected offset
+       * `--vaadin-navbar-layout-navbar-height` | Height of the navigation bar and branding inside | `auto`, depends on the navbar content
+       * `--vaadin-navbar-layout-navbar-background` | Background of the navigation bar | slightly gray, depends on the theme
        *
        * See [ThemableMixin – how to apply styles for shadow parts](https://github.com/vaadin/vaadin-themable-mixin/wiki)
        *
@@ -150,9 +170,9 @@ This program is available under Apache License Version 2.0, available at https:/
        *
        * Slot name     | Description
        * --------------|---------------------------------------------------|
-       * no name       | Default placeholder for the page content
-       * `branding`    | Placeholder for the logo or application name
-       * `menu`        | Placeholder for an application menu
+       * no name       | Default slot for the page content
+       * `branding`    | Slot for the logo or application name
+       * `menu`        | Slot for an application menu
        *
        * See examples of setting the content into slots in the live demos.
        *
@@ -161,12 +181,12 @@ This program is available under Apache License Version 2.0, available at https:/
        * @mixes Vaadin.ThemableMixin
        * @demo demo/index.html
        */
-      class AppLayoutElement extends Vaadin.ElementMixin(Vaadin.ThemableMixin(Polymer.Element)) {
+      class NavbarLayoutElement extends Vaadin.ElementMixin(Vaadin.ThemableMixin(Polymer.Element)) {
         static get is() {
-          return 'vaadin-app-layout';
+          return 'vaadin-navbar-layout';
         }
         static get version() {
-          return '1.0.2';
+          return '1.0.0';
         }
 
         constructor() {
@@ -192,19 +212,19 @@ This program is available under Apache License Version 2.0, available at https:/
           const landscape = innerWidth > innerHeight;
           const clientHeight = document.documentElement.clientHeight;
           if (landscape && clientHeight > innerHeight) {
-            this.style.setProperty('--vaadin-app-layout-viewport-bottom', clientHeight - innerHeight + 'px');
+            this.style.setProperty('--vaadin-navbar-layout-viewport-bottom', clientHeight - innerHeight + 'px');
           } else {
-            this.style.setProperty('--vaadin-app-layout-viewport-bottom', '0');
+            this.style.setProperty('--vaadin-navbar-layout-viewport-bottom', '0');
           }
         }
       }
 
-      customElements.define(AppLayoutElement.is, AppLayoutElement);
+      customElements.define(NavbarLayoutElement.is, NavbarLayoutElement);
 
       /**
        * @namespace Vaadin
        */
-      window.Vaadin.AppLayoutElement = AppLayoutElement;
+      window.Vaadin.NavbarLayoutElement = NavbarLayoutElement;
     })();
   </script>
 </dom-module>

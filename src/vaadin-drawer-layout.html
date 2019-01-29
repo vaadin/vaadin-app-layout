@@ -1,0 +1,161 @@
+<!--
+@license
+Vaadin Drawer Layout
+Copyright (C) 2018 Vaadin Ltd
+This program is available under Apache License Version 2.0, available at https://vaadin.com/license/
+-->
+
+<link rel="import" href="../../polymer/polymer-element.html">
+<link rel="import" href="../../vaadin-themable-mixin/vaadin-themable-mixin.html">
+<link rel="import" href="../../vaadin-element-mixin/vaadin-element-mixin.html">
+
+<dom-module id="vaadin-drawer-layout">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        flex: auto;
+        height: 100%;
+      }
+
+      :host([hidden]) {
+        display: none !important;
+      }
+
+      .drawer {
+        flex: none;
+        background-color: rgb(240,240,240);
+        height: 100%;
+        width: var(--vaadin-drawer-layout-drawer-width, 15em);
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .content {
+        flex: auto;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .drawer.overlay {
+        /* TODO(jouni): does not work when placed inside vaadin-navbar-layout - webkit-overflow-scrolling creates a new render layer that clips the drawer */
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        /* TODO(jouni): not RTL compatible */
+        left: 0;
+        z-index: 2;
+      }
+
+      :host([drawer-align="end"]) .drawer {
+        order: 1;
+        left: auto;
+        right: 0;
+      }
+
+      :host(:not([opened])) .drawer {
+        display: none;
+      }
+
+      .backdrop {
+        display: none;
+      }
+
+      :host([opened]) .drawer.overlay ~ .backdrop {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+        background: #000;
+        opacity: 0.2;
+      }
+    </style>
+    <!-- TODO(jouni): ARIA attributes. The drawer should act similar to a modal dialog when in ”overlay” mode -->
+    <div class="drawer">
+      <slot name="drawer"></slot>
+    </div>
+    <div class="content" aria-live="polite">
+      <slot></slot>
+    </div>
+    <div class="backdrop"></div>
+  </template>
+
+  <script>
+    (function() {
+
+      /**
+       * `<vaadin-drawer-layout>` is a web component that creates a navigation drawer that can be toggled open or closed.
+       *
+       * ```
+       * <vaadin-drawer-layout>
+       * </vaadin-drawer-layout>
+       * ```
+       *
+       * @memberof Vaadin
+       * @mixes Vaadin.ElementMixin
+       * @mixes Vaadin.ThemableMixin
+       * @demo demo/index.html
+       */
+      class DrawerLayoutElement extends Vaadin.ElementMixin(Vaadin.ThemableMixin(Polymer.Element)) {
+        static get is() {
+          return 'vaadin-drawer-layout';
+        }
+
+        static get version() {
+          return '1.0.0';
+        }
+
+        static get properties() {
+          return {
+            opened: {
+              type: Boolean,
+              value: true,
+              reflectToAttribute: true
+            }
+          }
+        }
+
+        /** @private */
+        connectedCallback() {
+          super.connectedCallback();
+
+          if (this.getAttribute('mode') != 'overlay') {
+            this.opened = true;
+          } else {
+            this.shadowRoot.querySelector('.drawer').classList.add('overlay');
+          }
+
+          this.shadowRoot.querySelector('.backdrop').addEventListener('click', e => {
+            this.opened = false;
+          });
+
+          if (this.getAttribute('mode') != 'overlay') {
+            // TODO(jouni): should debounce
+            window.addEventListener('resize', e => this._updateMode());
+          }
+
+          this._updateMode();
+        }
+
+        _updateMode() {
+          if (document.documentElement.clientWidth <= 800) {
+            this.shadowRoot.querySelector('.drawer').classList.add('overlay');
+            this.opened = false;
+          } else {
+            this.shadowRoot.querySelector('.drawer').classList.remove('overlay');
+          }
+        }
+      }
+
+      customElements.define(DrawerLayoutElement.is, DrawerLayoutElement);
+
+      /**
+       * @namespace Vaadin
+       */
+      window.Vaadin.DrawerLayoutElement = DrawerLayoutElement;
+    })();
+  </script>
+</dom-module>
