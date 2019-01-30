@@ -1,6 +1,6 @@
 {
   "name": "@vaadin/vaadin-app-layout",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "vaadin-app-layout",
   "main": "vaadin-app-layout.html",
   "repository": "vaadin/vaadin-app-layout",
@@ -17,6 +17,11 @@
     "url": "https://github.com/vaadin/vaadin-app-layout/issues"
   },
   "homepage": "https://vaadin.com/components",
+  "files": [
+    "vaadin-*.js",
+    "src",
+    "theme"
+  ],
   "scripts": {
     "test": "wct",
     "preversion": "gulp version:update"
