@@ -1,0 +1,116 @@
+<!--
+@license
+Vaadin Navbar
+Copyright (C) 2019 Vaadin Ltd
+This program is available under Apache License Version 2.0, available at https://vaadin.com/license/
+-->
+
+<link rel="import" href="../../polymer/polymer-element.html">
+<link rel="import" href="../../vaadin-themable-mixin/vaadin-themable-mixin.html">
+<link rel="import" href="../../vaadin-element-mixin/vaadin-element-mixin.html">
+
+<dom-module id="vaadin-navbar">
+  <template>
+    <style>
+      :host {
+        display: flex !important;
+        align-items: center;
+        box-sizing: border-box;
+        background-color: #fefefe;
+        box-shadow: 0 0 8px;
+
+        /* Use custom properties so that vaadin-navbar-layout can use them in calc() */
+        --vaadin-navbar-padding-inline-start: 16px;
+        --vaadin-navbar-padding-inline-end: 16px;
+        --vaadin-navbar-padding-block-start: 8px;
+        --vaadin-navbar-padding-block-end: 8px;
+        padding: var(--vaadin-navbar-padding-block-start)
+                 var(--vaadin-navbar-padding-inline-end)
+                 var(--vaadin-navbar-padding-block-end)
+                 var(--vaadin-navbar-padding-inline-start);
+
+        --vaadin-navbar-bottom-menu: false;
+      }
+
+      :host([hidden]) {
+        display: none !important;
+      }
+
+      :host(:not([orientation])),
+      :host([orientation="horizontal"]) {
+        width: 100%;
+      }
+
+      :host([orientation="vertical"]) {
+        height: 100%;
+        flex-direction: column;
+      }
+
+      [part="center"] {
+        flex: auto;
+        text-align: center;
+      }
+
+      @media (pointer: coarse) and (max-width: 800px) and (min-height: 500px) {
+        :host {
+          --vaadin-navbar-bottom-menu: true;
+        }
+      }
+
+      :host([bottom-menu]) [part="menu"] {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #f3f3f3;
+        min-height: 44px;
+      }
+    </style>
+    <div part="start">
+      <slot name="start"></slot>
+    </div>
+    <div part="center">
+      <slot></slot>
+      <div part="menu">
+        <slot name="menu"></slot>
+      </div>
+    </div>
+    <div part="end">
+      <slot name="end"></slot>
+    </div>
+  </template>
+
+  <script>
+    (function() {
+
+      /**
+       *
+       * @memberof Vaadin
+       * @mixes Vaadin.ElementMixin
+       * @mixes Vaadin.ThemableMixin
+       * @demo demo/index.html
+       */
+      class NavbarElement extends Vaadin.ElementMixin(Vaadin.ThemableMixin(Polymer.Element)) {
+        static get is() {
+          return 'vaadin-navbar';
+        }
+
+        static get version() {
+          return '1.0.0';
+        }
+
+        ready() {
+          super.ready();
+          this.dispatchEvent(new CustomEvent('vaadin-app-layout-update-offsets', {bubbles: true, composed: true}));
+        }
+      }
+
+      customElements.define(NavbarElement.is, NavbarElement);
+
+      /**
+       * @namespace Vaadin
+       */
+      window.Vaadin.NavbarElement = NavbarElement;
+    })();
+  </script>
+</dom-module>

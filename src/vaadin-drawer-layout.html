@@ -1,105 +1,84 @@
 <!--
 @license
 Vaadin Drawer Layout
-Copyright (C) 2018 Vaadin Ltd
+Copyright (C) 2019 Vaadin Ltd
 This program is available under Apache License Version 2.0, available at https://vaadin.com/license/
 -->
 
-<link rel="import" href="../../polymer/polymer-element.html">
-<link rel="import" href="../../vaadin-themable-mixin/vaadin-themable-mixin.html">
-<link rel="import" href="../../vaadin-element-mixin/vaadin-element-mixin.html">
+<link rel="import" href="vaadin-app-layout-base.html">
 
-<dom-module id="vaadin-drawer-layout">
+<dom-module id="vaadin-drawer-layout-style">
   <template>
     <style>
-      :host {
-        display: flex;
-        flex: auto;
-        height: 100%;
+      :host([orientation="horizontal"]) [offset-element] {
+        transform: translateX(-100%);
       }
 
-      :host([hidden]) {
-        display: none !important;
+      :host([orientation="vertical"]) [offset-element] {
+        transform: translateY(-100%);
       }
 
-      .drawer {
-        flex: none;
-        background-color: rgb(240,240,240);
-        height: 100%;
-        width: var(--vaadin-drawer-layout-drawer-width, 15em);
-        overflow: auto;
-        -webkit-overflow-scrolling: touch;
+      :host([opened]) [offset-element] {
+        transform: translateX(0%);
+        touch-action: manipulation;
       }
 
-      .content {
-        flex: auto;
-        overflow: auto;
-        -webkit-overflow-scrolling: touch;
+      :host(:not([opened])) [content-element],
+      :host([drawer-overlay]) [content-element] {
+        padding-top: var(--_valb-content-inset-top);
+        padding-right: var(--_valb-content-inset-right);
+        padding-bottom: var(--_valb-content-inset-bottom);
+        padding-left: var(--_valb-content-inset-left);
       }
 
-      .drawer.overlay {
-        /* TODO(jouni): does not work when placed inside vaadin-navbar-layout - webkit-overflow-scrolling creates a new render layer that clips the drawer */
-        position: fixed;
+      :host([drawer-overlay]) [backdrop] {
+        position: absolute;
         top: 0;
+        right: 0;
         bottom: 0;
-        /* TODO(jouni): not RTL compatible */
         left: 0;
+        background-color: #000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 200ms;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      :host(.no-anim) [backdrop] {
+        transition: none !important;
+      }
+
+      :host([fixed][drawer-overlay]) [offset-element] {
+        top: 0;
+        bottom: var(--vaadin-viewport-offset-bottom, 0);
         z-index: 2;
       }
 
-      :host([drawer-align="end"]) .drawer {
-        order: 1;
-        left: auto;
-        right: 0;
-      }
-
-      :host(:not([opened])) .drawer {
-        display: none;
-      }
-
-      .backdrop {
-        display: none;
-      }
-
-      :host([opened]) .drawer.overlay ~ .backdrop {
-        display: block;
+      :host([fixed][drawer-overlay]) [backdrop] {
         position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        z-index: 1;
-        background: #000;
+        z-index: 2;
+      }
+
+      :host([opened][drawer-overlay]) [backdrop] {
         opacity: 0.2;
+        pointer-events: auto;
+        touch-action: manipulation;
       }
     </style>
-    <!-- TODO(jouni): ARIA attributes. The drawer should act similar to a modal dialog when in ”overlay” mode -->
-    <div class="drawer">
-      <slot name="drawer"></slot>
-    </div>
-    <div class="content" aria-live="polite">
-      <slot></slot>
-    </div>
-    <div class="backdrop"></div>
   </template>
+</dom-module>
 
+<dom-module id="vaadin-navbar-layout">
   <script>
     (function() {
 
       /**
-       * `<vaadin-drawer-layout>` is a web component that creates a navigation drawer that can be toggled open or closed.
-       *
-       * ```
-       * <vaadin-drawer-layout>
-       * </vaadin-drawer-layout>
-       * ```
        *
        * @memberof Vaadin
-       * @mixes Vaadin.ElementMixin
-       * @mixes Vaadin.ThemableMixin
+       * @extends Vaadin.AppLayoutBaseElement
        * @demo demo/index.html
        */
-      class DrawerLayoutElement extends Vaadin.ElementMixin(Vaadin.ThemableMixin(Polymer.Element)) {
+      class DrawerLayoutElement extends Vaadin.AppLayoutBaseElement {
         static get is() {
           return 'vaadin-drawer-layout';
         }
@@ -108,45 +87,88 @@ This program is available under Apache License Version 2.0, available at https:/
           return '1.0.0';
         }
 
+        static get template() {
+          return this._modifiedTemplate('drawer');
+        }
+
         static get properties() {
           return {
+            // Drawer visible or not
             opened: {
               type: Boolean,
               value: true,
+              reflectToAttribute: true,
+              observer: '_openedChanged'
+            },
+
+            // State for styling
+            drawerOverlay: {
+              type: Boolean,
+              value: false,
+              reflectToAttribute: true
+            },
+
+            // Use to always force the drawer to be an overlay on top of the content
+            overlayMode: {
+              type: Boolean,
+              value: false,
               reflectToAttribute: true
             }
           }
         }
 
-        /** @private */
-        connectedCallback() {
-          super.connectedCallback();
-
-          if (this.getAttribute('mode') != 'overlay') {
-            this.opened = true;
-          } else {
-            this.shadowRoot.querySelector('.drawer').classList.add('overlay');
-          }
-
-          this.shadowRoot.querySelector('.backdrop').addEventListener('click', e => {
-            this.opened = false;
-          });
-
-          if (this.getAttribute('mode') != 'overlay') {
-            // TODO(jouni): should debounce
-            window.addEventListener('resize', e => this._updateMode());
-          }
-
-          this._updateMode();
+        constructor() {
+          super();
+          this.orientation = 'horizontal';
         }
 
-        _updateMode() {
-          if (document.documentElement.clientWidth <= 800) {
-            this.shadowRoot.querySelector('.drawer').classList.add('overlay');
-            this.opened = false;
-          } else {
-            this.shadowRoot.querySelector('.drawer').classList.remove('overlay');
+        connectedCallback() {
+          super.connectedCallback();
+          this._updateOverlayMode();
+        }
+
+        _openedChanged() {
+          if (!this.shadowRoot.querySelector('[backdrop]')) {
+            const backdrop = document.createElement('div');
+            backdrop.setAttribute('backdrop', '');
+            this.shadowRoot.insertBefore(backdrop, this.shadowRoot.querySelector('[offset-element]'));
+            backdrop.addEventListener('click', () => this.opened = false);
+            backdrop.addEventListener('touchstart', () => this.opened = false);
           }
+
+          this._updateOffsetProperties(true);
+        }
+
+        _getOffsetValues() {
+          const offset = super._getOffsetValues();
+
+          if (!this.opened || this.drawerOverlay) {
+            if (this.orientation == 'horizontal') {
+              offset.left = 0;
+            } else {
+              offset.top = 0;
+            }
+          }
+
+          return offset;
+        }
+
+        _resize() {
+          super._resize();
+          this._updateOverlayMode();
+        }
+
+        _updateOverlayMode() {
+          const threshold = getComputedStyle(this).getPropertyValue('--vaadin-app-layout-threshold');
+
+          if (this.offsetWidth <= parseInt(threshold)) {
+            this.opened = false;
+            this.drawerOverlay = true;
+          } else {
+            this.drawerOverlay = this.overlayMode || false;
+          }
+
+          // TODO(jouni): ARIA attributes. The drawer should act similar to a modal dialog when in ”overlay” mode
         }
       }
 

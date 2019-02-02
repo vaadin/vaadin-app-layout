@@ -5,9 +5,9 @@ Copyright (C) 2018 Vaadin Ltd
 This program is available under Apache License Version 2.0, available at https://vaadin.com/license/
 -->
 
-<link rel="import" href="../../polymer/polymer-element.html">
-<link rel="import" href="../../vaadin-themable-mixin/vaadin-themable-mixin.html">
-<link rel="import" href="../../vaadin-element-mixin/vaadin-element-mixin.html">
+<link rel="import" href="../../vaadin-button/vaadin-button.html">
+<link rel="import" href="../../vaadin-lumo-styles/icons.html">
+<link rel="import" href="../../iron-icon/iron-icon.html">
 
 <dom-module id="vaadin-drawer-toggle">
   <template>
@@ -15,20 +15,40 @@ This program is available under Apache License Version 2.0, available at https:/
       :host {
         display: inline-block;
         cursor: default;
+        position: relative;
+        outline: none;
+      }
+
+      :host([focus-ring]) {
+        outline: 2px solid;
+      }
+
+      #button {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: inherit;
       }
     </style>
-    <slot></slot>
+    <slot>
+      <!-- TODO(jouni): don't user Lumo in the core styles, and make this customizable (font-icon) -->
+      <iron-icon icon="lumo:menu"></iron-icon>
+    </slot>
+    <button id="button" type="button"></button>
   </template>
 
   <script>
     (function() {
 
       /**
-       * `<vaadin-drawer-toggle>` is a web component that controls a <vaadin-drawer-toggle> component.
+       * The Drawer Toggle component controls a Drawer Layout component.
        *
        * ```
        * <vaadin-drawer-toggle for="layout">Toggle drawer</vaadin-drawer-toggle>
-       * <vaadin-drawer-toggle id="layout"></vaadin-drawer-toggle>
+       * <vaadin-drawer-layout id="layout"></vaadin-drawer-layout>
        * ```
        *
        * @memberof Vaadin
@@ -36,7 +56,7 @@ This program is available under Apache License Version 2.0, available at https:/
        * @mixes Vaadin.ThemableMixin
        * @demo demo/index.html
        */
-      class DrawerToggleElement extends Vaadin.ElementMixin(Vaadin.ThemableMixin(Polymer.Element)) {
+      class DrawerToggleElement extends Vaadin.ButtonElement {
         static get is() {
           return 'vaadin-drawer-toggle';
         }
@@ -45,21 +65,36 @@ This program is available under Apache License Version 2.0, available at https:/
           return '1.0.0';
         }
 
-        /** @private */
+        constructor() {
+          super();
+
+          this.addEventListener('click', e => {
+            if (this._target) {
+              this._target.opened = !this._target.opened;
+            }
+          });
+
+          // TODO(jouni): ARIA attributes
+        }
+
         connectedCallback() {
           super.connectedCallback();
+          this._findTarget();
+        }
 
+        _findTarget() {
           let root = this.getRootNode();
           if (root == document) {
-            // Avoid matching elements in the <head> element (such as SVG elements that come through the HTML Imports polyfill)
+            // Avoid matching elements in the <head> that come through the HTML Imports polyfill
             root = document.body;
           }
 
-          // Find the target <vaadin-navbar-layout> and open/close it when clicking this toggle
-          const target = root.querySelector('#' + this.getAttribute('for'));
-          this.addEventListener('click', e => {
-            target.opened = !target.opened;
-          });
+          // Find the target <vaadin-drawer-layout>
+          if (this.hasAttribute('for')) {
+            this._target = root.querySelector('#' + this.getAttribute('for'));
+          } else {
+            this._target = root.querySelector('vaadin-drawer-layout');
+          }
         }
       }
 

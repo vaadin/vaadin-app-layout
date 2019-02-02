@@ -5,217 +5,74 @@ Copyright (C) 2019 Vaadin Ltd
 This program is available under Apache License Version 2.0, available at https://vaadin.com/license/
 -->
 
-<link rel="import" href="../../polymer/polymer-element.html">
-<link rel="import" href="../../vaadin-themable-mixin/vaadin-themable-mixin.html">
-<link rel="import" href="../../vaadin-element-mixin/vaadin-element-mixin.html">
+<link rel="import" href="vaadin-app-layout-base.html">
 
-<dom-module id="vaadin-navbar-layout">
+<dom-module id="vaadin-navbar-layout-style">
   <template>
     <style>
-      :host {
-        display: flex !important;
-        flex-direction: column;
-        width: 100%;
-        height: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: var(--vaadin-navbar-layout-viewport-bottom);
-        /* CSS API for host */
-        --vaadin-navbar-layout-viewport-bottom: 0;
-      }
-
-      :host([navbar-position="start"]) {
-        flex-direction: column;
-      }
-
-      :host([navbar-position="end"]) {
-        flex-direction: column-reverse;
-      }
-
-      :host([hidden]) {
-        display: none !important;
-      }
-
-      /* [part="branding"],
-      [part="navbar"]::after {
-        display: none;
-      } */
-
-      [part="navbar"] {
-        flex: none;
-        display: flex;
-        align-items: center;
-        height: var(--vaadin-navbar-layout-navbar-height, auto);
-        background: var(--vaadin-navbar-layout-navbar-background, #eee);
-      }
-
-      [part="start"] {
-        display: flex;
-        align-items: center;
-      }
-
-      /* [part="navbar"]::after {
-        content: '';
-      } */
-
-      /* [part="branding"],
-      [part="navbar"]::after { */
-        /*
-          Makes the menu part horizontally centered on wide viewports,
-          regardless of the size of contents inside the branding
-          and the secondary parts. Prevents unnecessary menu shrinking.
-
-          NOTE: IE requires a unit for the flex-basis value.
-
-          NOTE: `0px` might confuse linters and minifiers.
-        */
-        /* flex: 1 0 0.001px; */
-      /* } */
-
-      /* [part=navbar] > ::slotted([slot="menu"]) {
-        display: flex;
-        align-items: center;
-        overflow: hidden;
-        max-width: 100%;
-        margin: auto;
-      } */
-
-      [part="content"] {
-        flex: auto;
-        height: 100%;
-        overflow: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      @media (max-width: 600px) {
-        :host:not([navbar-position]) {
-          flex-direction: column-reverse;
-        }
-
-        /* [part=navbar] > ::slotted([slot="menu"]) {
-          flex: initial;
-        } */
-
-        /* [part="branding"],
-        [part="navbar"]::after {
-          display: flex;
-        } */
+      [offset-element] ::slotted(vaadin-navbar) {
+        padding-top: calc(var(--vaadin-navbar-padding-block-start) + constant(safe-area-inset-top));
+        padding-top: calc(var(--vaadin-navbar-padding-block-start) + env(safe-area-inset-top));
+        padding-left: calc(var(--vaadin-navbar-padding-inline-start) + constant(safe-area-inset-left));
+        padding-left: calc(var(--vaadin-navbar-padding-inline-start) + env(safe-area-inset-left));
+        padding-right: calc(var(--vaadin-navbar-padding-inline-end) + constant(safe-area-inset-right));
+        padding-right: calc(var(--vaadin-navbar-padding-inline-end) + env(safe-area-inset-right));
       }
     </style>
-
-    <nav part="navbar">
-      <slot name="navbar">
-        <div part="start">
-          <slot name="start"></slot>
-        </div>
-        <slot name="center"></slot>
-        <div part="end">
-          <slot name="end"></slot>
-        </div>
-      </slot>
-    </nav>
-    <div part="content" role="main" aria-live="polite">
-      <slot></slot>
-    </div>
-
   </template>
+</dom-module>
 
+<dom-module id="vaadin-navbar-layout">
   <script>
     (function() {
 
       /**
-       * `<vaadin-navbar-layout>` is a Web Component providing a quick and easy way to get a common application layout structure done.
-       *
-       * ```
-       * <vaadin-navbar-layout>
-       *  <h3 slot="branding">Company Name</h3>
-       *  <vaadin-tabs slot="menu">
-       *    <vaadin-tab>Menu item</vaadin-tab>
-       *  </vaadin-tabs>
-       *  <!-- Everything else will be the page content -->
-       *  <div>
-       *    <h3>Page title</h3>
-       *    <p>Page content</p>
-       *  </div>
-       * </vaadin-navbar-layout>
-       * ```
-       *
-       * For best results, the component should be added to the root level of your application (i.e., as a direct child of `<body>`)
-       *
-       * ### Styling
-       *
-       * The following Shadow DOM parts of the `<vaadin-navbar-layout>` are available for styling:
-       *
-       * Part name     | Description
-       * --------------|---------------------------------------------------------|
-       * `navbar`      | Container for the navigation bar
-       * `branding`    | Placeholder for the logo or for the app name. By default is invisible on small screens
-       * `content`     | Container for page content.
-       *
-       * The following custom CSS properties are available for styling:
-       *
-       * Custom CSS property | Description | Default value
-       * ---|---|---
-       * `--vaadin-navbar-layout-viewport-bottom` | Bottom offset of the visible viewport area | `0` or detected offset
-       * `--vaadin-navbar-layout-navbar-height` | Height of the navigation bar and branding inside | `auto`, depends on the navbar content
-       * `--vaadin-navbar-layout-navbar-background` | Background of the navigation bar | slightly gray, depends on the theme
-       *
-       * See [ThemableMixin – how to apply styles for shadow parts](https://github.com/vaadin/vaadin-themable-mixin/wiki)
-       *
-       * ### Component's slots
-       *
-       * The following slots are available to be set
-       *
-       * Slot name     | Description
-       * --------------|---------------------------------------------------|
-       * no name       | Default slot for the page content
-       * `branding`    | Slot for the logo or application name
-       * `menu`        | Slot for an application menu
-       *
-       * See examples of setting the content into slots in the live demos.
        *
        * @memberof Vaadin
-       * @mixes Vaadin.ElementMixin
-       * @mixes Vaadin.ThemableMixin
+       * @extends Vaadin.AppLayoutBaseElement
        * @demo demo/index.html
        */
-      class NavbarLayoutElement extends Vaadin.ElementMixin(Vaadin.ThemableMixin(Polymer.Element)) {
+      class NavbarLayoutElement extends Vaadin.AppLayoutBaseElement {
         static get is() {
           return 'vaadin-navbar-layout';
         }
+
         static get version() {
           return '1.0.0';
         }
 
-        constructor() {
-          super();
-
-          if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-            this._boundIosResizeListener = () => this._detectIosNavbar();
-          }
+        static get template() {
+          return this._modifiedTemplate('navbar');
         }
 
         /** @private */
         connectedCallback() {
           super.connectedCallback();
-          if (this._boundIosResizeListener) {
-            this._detectIosNavbar();
-            window.addEventListener('resize', this._boundIosResizeListener);
-          }
+          this.shadowRoot.addEventListener('slotchange', this.__boundSlotChangeListener);
         }
 
-        _detectIosNavbar() {
-          const innerHeight = window.innerHeight;
-          const innerWidth = window.innerWidth;
-          const landscape = innerWidth > innerHeight;
-          const clientHeight = document.documentElement.clientHeight;
-          if (landscape && clientHeight > innerHeight) {
-            this.style.setProperty('--vaadin-navbar-layout-viewport-bottom', clientHeight - innerHeight + 'px');
-          } else {
-            this.style.setProperty('--vaadin-navbar-layout-viewport-bottom', '0');
+        /** @protected */
+        _getOffsetValues() {
+          const navbar = this.querySelector('vaadin-navbar');
+
+          let bottomMenu = false;
+          if (navbar && this.orientation == "vertical") {
+            bottomMenu = getComputedStyle(navbar).getPropertyValue('--vaadin-navbar-bottom-menu').trim().toLowerCase() == 'true';
+            if (bottomMenu) {
+              navbar.setAttribute('bottom-menu', '');
+            } else if (navbar) {
+              navbar.removeAttribute('bottom-menu');
+            }
           }
+
+          const offset = super._getOffsetValues();
+
+          if(bottomMenu) {
+            const menu = navbar.shadowRoot.querySelector('[part="menu"]');
+            offset.bottom = menu.offsetHeight;
+          }
+
+          return offset;
         }
       }
 
