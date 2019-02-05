@@ -11,11 +11,15 @@ This program is available under Apache License Version 2.0, available at https:/
   <template>
     <style>
       :host([orientation="horizontal"]) [offset-element] {
+        /* TODO(jouni): update once we support aligning the drawer to end (right/bottom side) of the layout */
         transform: translateX(-100%);
+        max-width: 80%;
       }
 
       :host([orientation="vertical"]) [offset-element] {
+        /* TODO(jouni): update once we support aligning the drawer to end (right/bottom side) of the layout */
         transform: translateY(-100%);
+        max-height: 80%;
       }
 
       :host([opened]) [offset-element] {
@@ -23,15 +27,7 @@ This program is available under Apache License Version 2.0, available at https:/
         touch-action: manipulation;
       }
 
-      :host(:not([opened])) [content-element],
-      :host([drawer-overlay]) [content-element] {
-        padding-top: var(--_valb-content-inset-top);
-        padding-right: var(--_valb-content-inset-right);
-        padding-bottom: var(--_valb-content-inset-bottom);
-        padding-left: var(--_valb-content-inset-left);
-      }
-
-      :host([drawer-overlay]) [backdrop] {
+      :host([drawer-overlay]) [part="backdrop"] {
         position: absolute;
         top: 0;
         right: 0;
@@ -40,27 +36,32 @@ This program is available under Apache License Version 2.0, available at https:/
         background-color: #000;
         opacity: 0;
         pointer-events: none;
-        transition: opacity 200ms;
+        transition: opacity var(--vaadin-app-layout-transition);
         -webkit-tap-highlight-color: transparent;
       }
 
-      :host(.no-anim) [backdrop] {
+      :host(.no-anim) [part="backdrop"] {
         transition: none !important;
       }
 
-      :host([fixed][drawer-overlay]) [offset-element] {
+      :host([fixed][drawer-overlay]) [offset-element],
+      :host([fixed][drawer-overlay]) [part="backdrop"] {
+        z-index: 1;
+      }
+
+      :host([orientation="horizontal"][fixed][drawer-overlay]) [offset-element] {
         top: 0;
         bottom: var(--vaadin-viewport-offset-bottom, 0);
-        z-index: 2;
+        /* TODO(jouni): update once we support aligning the drawer to end (right side) of the layout */
+        left: 0;
       }
 
-      :host([fixed][drawer-overlay]) [backdrop] {
+      :host([fixed][drawer-overlay]) [part="backdrop"] {
         position: fixed;
-        z-index: 2;
       }
 
-      :host([opened][drawer-overlay]) [backdrop] {
-        opacity: 0.2;
+      :host([opened][drawer-overlay]) [part="backdrop"] {
+        opacity: 0.3;
         pointer-events: auto;
         touch-action: manipulation;
       }
@@ -108,13 +109,13 @@ This program is available under Apache License Version 2.0, available at https:/
               reflectToAttribute: true
             },
 
-            // Use to always force the drawer to be an overlay on top of the content
+            // Forces the drawer to always be an overlay on top of the content
             overlayMode: {
               type: Boolean,
               value: false,
               reflectToAttribute: true
             }
-          }
+          };
         }
 
         constructor() {
@@ -128,9 +129,9 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         _openedChanged() {
-          if (!this.shadowRoot.querySelector('[backdrop]')) {
+          if (!this.shadowRoot.querySelector('[part="backdrop"]')) {
             const backdrop = document.createElement('div');
-            backdrop.setAttribute('backdrop', '');
+            backdrop.setAttribute('part', 'backdrop');
             this.shadowRoot.insertBefore(backdrop, this.shadowRoot.querySelector('[offset-element]'));
             backdrop.addEventListener('click', () => this.opened = false);
             backdrop.addEventListener('touchstart', () => this.opened = false);

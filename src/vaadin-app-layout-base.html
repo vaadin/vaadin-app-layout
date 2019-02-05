@@ -6,8 +6,10 @@ This program is available under Apache License Version 2.0, available at https:/
 -->
 
 <link rel="import" href="../../polymer/polymer-element.html">
+<link rel="import" href="../../polymer/lib/utils/render-status.html">
 <link rel="import" href="../../vaadin-themable-mixin/vaadin-themable-mixin.html">
 <link rel="import" href="../../vaadin-element-mixin/vaadin-element-mixin.html">
+<link rel="import" href="safe-area-inset.html">
 
 <dom-module id="vaadin-app-layout-base">
   <template>
@@ -15,6 +17,7 @@ This program is available under Apache License Version 2.0, available at https:/
       :host {
         display: block;
         --vaadin-app-layout-threshold: 800px;
+        --vaadin-app-layout-transition: 200ms;
       }
 
       :host([hidden]) {
@@ -31,7 +34,12 @@ This program is available under Apache License Version 2.0, available at https:/
         top: 0;
         left: 0;
         right: 0;
-        transition: top 200ms, left 200ms, right 200ms, bottom 200ms, transform 200ms;
+        transition:
+          top var(--vaadin-app-layout-transition),
+          left var(--vaadin-app-layout-transition),
+          right var(--vaadin-app-layout-transition),
+          bottom var(--vaadin-app-layout-transition),
+          transform var(--vaadin-app-layout-transition);
       }
 
       :host([orientation="horizontal"]) [offset-element] {
@@ -47,6 +55,7 @@ This program is available under Apache License Version 2.0, available at https:/
       }
 
       :host([fixed][orientation="horizontal"]) [offset-element] {
+        /* stylelint-disable-next-line length-zero-no-unit */
         bottom: calc(var(--vaadin-app-layout-offset-block-end, 0px) + var(--vaadin-viewport-offset-bottom, 0px));
       }
 
@@ -54,38 +63,13 @@ This program is available under Apache License Version 2.0, available at https:/
         right: auto;
       }
 
-      @supports (padding-left: constant(safe-area-inset-top)) {
-        :host {
-          --_valb-content-inset-top: constant(safe-area-inset-top);
-          --_valb-content-inset-right: constant(safe-area-inset-right);
-          --_valb-content-inset-bottom: constant(safe-area-inset-bottom);
-          --_valb-content-inset-left: constant(safe-area-inset-left);
-        }
-      }
-
-      @supports (padding-left: env(safe-area-inset-top)) {
-        :host {
-          --_valb-content-inset-top: env(safe-area-inset-top);
-          --_valb-content-inset-right: env(safe-area-inset-right);
-          --_valb-content-inset-bottom: env(safe-area-inset-bottom);
-          --_valb-content-inset-left: env(safe-area-inset-left);
-        }
-      }
-
       [content-element] {
-        /* TODO(jouni): should the env inset be the responsibility of the user/developer? */
-        padding-top: calc(var(--vaadin-app-layout-offset-block-start) + var(--_valb-content-inset-top, 0px));
-        padding-right: calc(var(--vaadin-app-layout-offset-inline-end) + var(--_valb-content-inset-right, 0px));
-        padding-bottom: calc(var(--vaadin-app-layout-offset-block-end) + var(--_valb-content-inset-bottom, 0px));
-        padding-left: calc(var(--vaadin-app-layout-offset-inline-start) + var(--_valb-content-inset-left, 0px));
-        transition: padding 200ms;
-      }
-
-      [content-element] ::slotted(*) {
-        --_valb-content-inset-top: 0px;
-        --_valb-content-inset-right: 0px;
-        --_valb-content-inset-bottom: 0px;
-        --_valb-content-inset-left: 0px;
+        padding:
+          var(--vaadin-app-layout-offset-block-start)
+          var(--vaadin-app-layout-offset-inline-end)
+          var(--vaadin-app-layout-offset-block-end)
+          var(--vaadin-app-layout-offset-inline-start);
+        transition: padding var(--vaadin-app-layout-transition);
       }
 
       :host(:not([fixed])) [content-element] {
@@ -140,14 +124,15 @@ This program is available under Apache License Version 2.0, available at https:/
               reflectToAttribute: true,
               observer: '_updateOffsetProperties'
             }
-          }
+          };
         }
 
         static _modifiedTemplate(layoutName) {
           if (!templateCache[layoutName]) {
             const template = super.template.cloneNode(true);
             template.content.querySelector('[offset-element] slot').setAttribute('name', layoutName);
-            const style = Polymer.DomModule.prototype.modules[`vaadin-${layoutName}-layout-style`].querySelector('template').content.querySelector('style');
+            const extraModule = Polymer.DomModule.prototype.modules[`vaadin-${layoutName}-layout-style`];
+            const style = extraModule.querySelector('template').content.querySelector('style');
             template.content.insertBefore(style, template.content.querySelector('style').nextSibling);
             templateCache[layoutName] = template;
           }
@@ -158,6 +143,7 @@ This program is available under Apache License Version 2.0, available at https:/
           super();
           // TODO(jouni): might want to debounce
           this.__boundResizeListener = this._resize.bind(this);
+          this.classList.add('no-anim');
         }
 
         connectedCallback() {
@@ -168,7 +154,7 @@ This program is available under Apache License Version 2.0, available at https:/
             this._updateOffsetProperties();
           });
 
-          this._updateOffsetProperties();
+          Polymer.RenderStatus.beforeNextRender(this, this._updateOffsetProperties);
         }
 
         disconnectedCallback() {
@@ -191,7 +177,6 @@ This program is available under Apache License Version 2.0, available at https:/
 
         _resize() {
           this._detectIosNavbar();
-          // this._updateOffsetProperties();
         }
 
         _getOffsetValues() {
@@ -215,13 +200,14 @@ This program is available under Apache License Version 2.0, available at https:/
 
         _updateOffsetProperties(animate) {
           // Ignore initial property observer callbacks
-          if (arguments.length == 2 && arguments[1] === undefined) return;
+          if (arguments.length == 2 && arguments[1] === undefined) {
+            return;
+          }
 
           const offset = this._getOffsetValues();
 
           const contentElement = this.shadowRoot.querySelector('[content-element]');
-          // Need to use units so that these work with calc()
-          // TODO(jouni): these might not work in IE11
+          // TODO(jouni): This does not work in IE11. Would need to make [content-element] a Polymer element.
           contentElement.style.setProperty(`--vaadin-app-layout-offset-block-start`, offset.top + 'px');
           contentElement.style.setProperty(`--vaadin-app-layout-offset-inline-end`, offset.right + 'px');
           contentElement.style.setProperty(`--vaadin-app-layout-offset-block-end`, offset.bottom + 'px');
@@ -229,8 +215,8 @@ This program is available under Apache License Version 2.0, available at https:/
 
           if (!animate) {
             this.classList.add('no-anim');
-            requestAnimationFrame(() => this.classList.remove('no-anim'));
           }
+          setTimeout(() => this.classList.remove('no-anim'), 200);
         }
       }
 
