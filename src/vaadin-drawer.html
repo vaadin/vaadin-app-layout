@@ -1,0 +1,92 @@
+<!--
+@license
+Vaadin Drawer
+Copyright (C) 2018 Vaadin Ltd
+This program is available under Apache License Version 2.0, available at https://vaadin.com/license/
+-->
+
+<link rel="import" href="../../polymer/polymer-element.html">
+<link rel="import" href="../../vaadin-themable-mixin/vaadin-themable-mixin.html">
+<link rel="import" href="../../vaadin-element-mixin/vaadin-element-mixin.html">
+
+<dom-module id="vaadin-drawer">
+  <template>
+    <style>
+      :host {
+        display: flex !important;
+        flex-direction: column;
+        box-sizing: border-box;
+        background-color: #f3f3f3;
+        width: 16em;
+        height: 100%;
+
+        /* Use custom properties so that we can use them in calc() */
+        --vaadin-drawer-padding-inline-start: 16px;
+        --vaadin-drawer-padding-inline-end: 16px;
+        --vaadin-drawer-padding-block-start: 16px;
+        --vaadin-drawer-padding-block-end: 16px;
+      }
+
+      :host([hidden]) {
+        display: none !important;
+      }
+
+      [part="center"] {
+        flex: auto;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        /* TODO(jouni): update once we support aligning the drawer to end (right side) of the layout */
+        padding:
+          calc(var(--vaadin-drawer-padding-block-start) + var(--safe-area-inset-top))
+          var(--vaadin-drawer-padding-inline-end)
+          calc(var(--vaadin-drawer-padding-block-end) + var(--safe-area-inset-bottom))
+          calc(var(--vaadin-drawer-padding-inline-start) + var(--safe-area-inset-left));
+      }
+    </style>
+    <div part="start">
+      <slot name="start"></slot>
+    </div>
+    <div part="center">
+      <slot></slot>
+    </div>
+    <div part="end">
+      <slot name="end"></slot>
+    </div>
+  </template>
+
+  <script>
+    (function() {
+
+      /**
+       *
+       * @memberof Vaadin
+       * @mixes Vaadin.ElementMixin
+       * @mixes Vaadin.ThemableMixin
+       * @demo demo/index.html
+       */
+      class DrawerElement extends Vaadin.ElementMixin(Vaadin.ThemableMixin(Polymer.Element)) {
+        static get is() {
+          return 'vaadin-drawer';
+        }
+
+        static get version() {
+          return '1.0.0';
+        }
+
+        ready() {
+          super.ready();
+          Polymer.RenderStatus.afterNextRender(this, () => {
+            this.dispatchEvent(new CustomEvent('vaadin-app-layout-update-offsets', {bubbles: true, composed: true}));
+          });
+        }
+      }
+
+      customElements.define(DrawerElement.is, DrawerElement);
+
+      /**
+       * @namespace Vaadin
+       */
+      window.Vaadin.DrawerElement = DrawerElement;
+    })();
+  </script>
+</dom-module>
