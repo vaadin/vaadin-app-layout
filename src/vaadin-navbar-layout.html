@@ -10,14 +10,6 @@ This program is available under Apache License Version 2.0, available at https:/
 <dom-module id="vaadin-navbar-layout-style">
   <template>
     <style>
-      [offset-element] ::slotted(vaadin-navbar) {
-        padding-top: calc(var(--vaadin-navbar-padding-block-start) + constant(safe-area-inset-top));
-        padding-top: calc(var(--vaadin-navbar-padding-block-start) + env(safe-area-inset-top));
-        padding-left: calc(var(--vaadin-navbar-padding-inline-start) + constant(safe-area-inset-left));
-        padding-left: calc(var(--vaadin-navbar-padding-inline-start) + env(safe-area-inset-left));
-        padding-right: calc(var(--vaadin-navbar-padding-inline-end) + constant(safe-area-inset-right));
-        padding-right: calc(var(--vaadin-navbar-padding-inline-end) + env(safe-area-inset-right));
-      }
     </style>
   </template>
 </dom-module>
@@ -45,34 +37,48 @@ This program is available under Apache License Version 2.0, available at https:/
           return this._modifiedTemplate('navbar');
         }
 
-        /** @private */
-        connectedCallback() {
-          super.connectedCallback();
-          this.shadowRoot.addEventListener('slotchange', this.__boundSlotChangeListener);
-        }
-
-        /** @protected */
         _getOffsetValues() {
-          const navbar = this.querySelector('vaadin-navbar');
-
-          let bottomMenu = false;
-          if (navbar && this.orientation == "vertical") {
-            bottomMenu = getComputedStyle(navbar).getPropertyValue('--vaadin-navbar-bottom-menu').trim().toLowerCase() == 'true';
-            if (bottomMenu) {
-              navbar.setAttribute('bottom-menu', '');
-            } else if (navbar) {
-              navbar.removeAttribute('bottom-menu');
-            }
-          }
+          this._updateNavbarMenu();
 
           const offset = super._getOffsetValues();
 
-          if(bottomMenu) {
+          const navbar = this.querySelector('vaadin-navbar');
+          if (navbar && this._isBottomMenu()) {
             const menu = navbar.shadowRoot.querySelector('[part="menu"]');
             offset.bottom = menu.offsetHeight;
           }
 
           return offset;
+        }
+
+        _updateNavbarMenu() {
+          const navbar = this.querySelector('vaadin-navbar');
+
+          if (this._isBottomMenu()) {
+            navbar.setAttribute('bottom-menu', '');
+
+            if (this.fixed) {
+              navbar.setAttribute('fixed', '');
+            } else {
+              navbar.removeAttribute('fixed');
+            }
+          } else if (navbar) {
+            navbar.removeAttribute('bottom-menu');
+            navbar.removeAttribute('fixed');
+          }
+        }
+
+        _isBottomMenu() {
+          if (this.orientation == 'vertical') {
+            const navbar = this.querySelector('vaadin-navbar');
+            return navbar && getComputedStyle(navbar).getPropertyValue('--vaadin-navbar-bottom-menu').trim().toLowerCase() == 'true';
+          }
+          return false;
+        }
+
+        _resize() {
+          super._resize();
+          this._updateNavbarMenu();
         }
       }
 

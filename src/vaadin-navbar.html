@@ -15,21 +15,22 @@ This program is available under Apache License Version 2.0, available at https:/
       :host {
         display: flex !important;
         align-items: center;
+        justify-content: space-between;
         box-sizing: border-box;
-        background-color: #fefefe;
-        box-shadow: 0 0 8px;
+        background-color: #f3f3f3;
+        --vaadin-navbar-bottom-menu: false;
 
         /* Use custom properties so that vaadin-navbar-layout can use them in calc() */
-        --vaadin-navbar-padding-inline-start: 16px;
-        --vaadin-navbar-padding-inline-end: 16px;
         --vaadin-navbar-padding-block-start: 8px;
+        --vaadin-navbar-padding-inline-end: 16px;
         --vaadin-navbar-padding-block-end: 8px;
-        padding: var(--vaadin-navbar-padding-block-start)
-                 var(--vaadin-navbar-padding-inline-end)
-                 var(--vaadin-navbar-padding-block-end)
-                 var(--vaadin-navbar-padding-inline-start);
+        --vaadin-navbar-padding-inline-start: 16px;
 
-        --vaadin-navbar-bottom-menu: false;
+        padding:
+          calc(var(--vaadin-navbar-padding-block-start) + var(--safe-area-inset-top))
+          calc(var(--vaadin-navbar-padding-inline-end) + var(--safe-area-inset-right))
+          var(--vaadin-navbar-padding-block-end)
+          calc(var(--vaadin-navbar-padding-inline-start) + var(--safe-area-inset-left));
       }
 
       :host([hidden]) {
@@ -46,9 +47,14 @@ This program is available under Apache License Version 2.0, available at https:/
         flex-direction: column;
       }
 
+      [part] {
+        display: flex;
+        align-items: center;
+      }
+
       [part="center"] {
-        flex: auto;
         text-align: center;
+        overflow: hidden;
       }
 
       @media (pointer: coarse) and (max-width: 800px) and (min-height: 500px) {
@@ -58,12 +64,20 @@ This program is available under Apache License Version 2.0, available at https:/
       }
 
       :host([bottom-menu]) [part="menu"] {
-        position: fixed;
+        position: absolute;
         bottom: 0;
         left: 0;
         right: 0;
         background-color: #f3f3f3;
-        min-height: 44px;
+        display: flex;
+        justify-content: center;
+      }
+
+      :host([fixed][bottom-menu]) [part="menu"] {
+        /* TODO(jouni): this does not work if the host has a transform (which could be used for "reveals" effect for the navbar) */
+        position: fixed;
+        padding-bottom: constant(safe-area-inset-bottom);
+        padding-bottom: env(safe-area-inset-bottom);
       }
     </style>
     <div part="start">
@@ -101,7 +115,9 @@ This program is available under Apache License Version 2.0, available at https:/
 
         ready() {
           super.ready();
-          this.dispatchEvent(new CustomEvent('vaadin-app-layout-update-offsets', {bubbles: true, composed: true}));
+          Polymer.RenderStatus.afterNextRender(this, () => {
+            this.dispatchEvent(new CustomEvent('vaadin-app-layout-update-offsets', {bubbles: true, composed: true}));
+          });
         }
       }
 
