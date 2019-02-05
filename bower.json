@@ -40,7 +40,6 @@
     "web-component-tester": "^6.1.5",
     "vaadin-demo-helpers": "vaadin/vaadin-demo-helpers#^2.0.4",
     "vaadin-tabs": "vaadin/vaadin-tabs#^2.1.0",
-    "vaadin-icons": "vaadin/vaadin-icons#^4.2.0",
-    "vaadin-text-field": "vaadin/vaadin-text-field#^2.3.0"
+    "vaadin-icons": "vaadin/vaadin-icons#^4.2.0"
   }
 }
