@@ -45,6 +45,24 @@
         <vaadin-navbar slot="navbar">
           <vaadin-drawer-toggle slot="start"></vaadin-drawer-toggle>
           <h3 slot="start">MyApp</h3>
+          <vaadin-tabs slot="menu" theme="minimal">
+            <vaadin-tab theme="icon-on-top">
+              <iron-icon icon="vaadin:home"></iron-icon>
+              Dashboard
+            </vaadin-tab>
+            <vaadin-tab theme="icon-on-top">
+              <iron-icon icon="vaadin:list"></iron-icon>
+              Storefront
+            </vaadin-tab>
+            <vaadin-tab theme="icon-on-top">
+              <iron-icon icon="vaadin:options"></iron-icon>
+              Products
+            </vaadin-tab>
+            <vaadin-tab theme="icon-on-top">
+              <iron-icon icon="vaadin:question"></iron-icon>
+              Users
+            </vaadin-tab>
+          </vaadin-tabs>
         </vaadin-navbar>
         <vaadin-drawer-layout fixed>
           <vaadin-drawer slot="drawer">

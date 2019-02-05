@@ -176,7 +176,9 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         _resize() {
+          this.classList.add('no-anim');
           this._detectIosNavbar();
+          Polymer.RenderStatus.afterNextRender(this, () => this.classList.remove('no-anim'));
         }
 
         _getOffsetValues() {
@@ -216,7 +218,8 @@ This program is available under Apache License Version 2.0, available at https:/
           if (!animate) {
             this.classList.add('no-anim');
           }
-          setTimeout(() => this.classList.remove('no-anim'), 200);
+
+          Polymer.RenderStatus.afterNextRender(this, () => this.classList.remove('no-anim'));
         }
       }
 
