@@ -8,19 +8,26 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
 
-    <link rel="import" href="../vaadin-navbar-layout.html">
     <link rel="import" href="../src/vaadin-drawer-layout.html">
-    <link rel="import" href="../src/vaadin-drawer-toggle.html">
-    <link rel="import" href="../vaadin-navbar.html">
-    <link rel="import" href="../src/vaadin-drawer.html">
+    <link rel="import" href="../vaadin-navbar-layout.html">
     <link rel="import" href="../../vaadin-tabs/theme/lumo/vaadin-tabs.html">
     <link rel="import" href="../../vaadin-tabs/theme/lumo/vaadin-tab.html">
     <link rel="import" href="../../vaadin-icons/vaadin-icons.html">
+    <link rel="import" href="../vaadin-navbar.html">
+    <link rel="import" href="../src/vaadin-drawer.html">
+    <link rel="import" href="../src/vaadin-drawer-toggle.html">
 
     <custom-style>
       <style include="lumo-color lumo-typography">
         body {
-          margin: var(--lumo-space-l);
+          margin: 0;
+        }
+
+        html,
+        body,
+        vaadin-navbar-layout,
+        vaadin-drawer-layout {
+          /* height: 100%; */
         }
 
         h1:first-child {
@@ -34,6 +41,11 @@
         vaadin-tab {
           flex-grow: 1;
         }
+
+        main {
+          border: 2px solid red;
+          box-sizing: border-box;
+        }
       </style>
     </custom-style>
   </head>
@@ -41,30 +53,32 @@
 
 
 
-      <vaadin-navbar-layout fixed>
+      <vaadin-navbar-layout orientation="vertical">
         <vaadin-navbar slot="navbar">
           <vaadin-drawer-toggle slot="start"></vaadin-drawer-toggle>
           <h3 slot="start">MyApp</h3>
-          <vaadin-tabs slot="menu" theme="minimal">
-            <vaadin-tab theme="icon-on-top">
-              <iron-icon icon="vaadin:home"></iron-icon>
-              Dashboard
-            </vaadin-tab>
-            <vaadin-tab theme="icon-on-top">
-              <iron-icon icon="vaadin:list"></iron-icon>
-              Storefront
-            </vaadin-tab>
-            <vaadin-tab theme="icon-on-top">
-              <iron-icon icon="vaadin:options"></iron-icon>
-              Products
-            </vaadin-tab>
-            <vaadin-tab theme="icon-on-top">
-              <iron-icon icon="vaadin:question"></iron-icon>
-              Users
-            </vaadin-tab>
-          </vaadin-tabs>
         </vaadin-navbar>
-        <vaadin-drawer-layout fixed>
+
+        <vaadin-tabs slot="touch-optimized-navbar" theme="minimal">
+          <vaadin-tab theme="icon-on-top">
+            <iron-icon icon="vaadin:home"></iron-icon>
+            Dashboard
+          </vaadin-tab>
+          <vaadin-tab theme="icon-on-top">
+            <iron-icon icon="vaadin:list"></iron-icon>
+            Storefront
+          </vaadin-tab>
+          <vaadin-tab theme="icon-on-top">
+            <iron-icon icon="vaadin:options"></iron-icon>
+            Products
+          </vaadin-tab>
+          <vaadin-tab theme="icon-on-top">
+            <iron-icon icon="vaadin:question"></iron-icon>
+            Users
+          </vaadin-tab>
+        </vaadin-tabs>
+
+        <vaadin-drawer-layout>
           <vaadin-drawer slot="drawer">
             <vaadin-tabs orientation="vertical" theme="minimal">
               <vaadin-tab>
@@ -84,6 +98,23 @@
                 Users
               </vaadin-tab>
             </vaadin-tabs>
+
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Donec elementum ligula eu sapien consequat eleifend. </p>
+            <p>Donec nec dolor erat, condimentum sagittis sem. Praesent porttitor porttitor risus, dapibus rutrum ipsum gravida et. Integer lectus nisi, facilisis sit amet eleifend nec, pharetra ut augue. Integer quam nunc, consequat nec egestas ac, volutpat ac nisi. </p>
+            <p>Sed consectetur dignissim dignissim. Donec pretium est sit amet ipsum fringilla feugiat. Aliquam erat volutpat. Maecenas scelerisque, orci sit amet cursus tincidunt, libero nisl eleifend tortor, vitae cursus risus mauris vitae nisi. Cras laoreet ultrices ligula eget tempus. </p>
+            <p>Aenean metus purus, iaculis ut imperdiet eget, sodales et massa. Duis pellentesque nisl vel massa dapibus non lacinia velit volutpat. Maecenas accumsan interdum sodales. In hac habitasse platea dictumst. Pellentesque ornare blandit orci, eget tristique risus convallis ut. Vivamus a sapien neque. </p>
+            <h2>Lorem Ipsum Dolor Sit Amet Consectetur Adipisicing</h2>
+            <p>Nam quis sem orci. Phasellus ligula tellus, lobortis nec accumsan eget, mattis at erat. </p>
+            <h2>Lorem Ipsum Dolor Sit Amet Consectetur A</h2>
+            <input type="text">
+            <p>Pellentesque at odio quam, et egestas nunc. Sed quis leo et orci consectetur porttitor nec fringilla lorem. Duis sit amet adipiscing enim. </p>
+            <p>Suspendisse luctus justo sed risus dictum eu dignissim libero iaculis. Donec velit magna, auctor ullamcorper blandit eget, lobortis ac lectus. Praesent rhoncus eros quis lectus tempor a commodo leo aliquam. Donec convallis libero in nibh feugiat eleifend aliquet eros vehicula. </p>
+            <p>Quisque est dui, auctor ac adipiscing at, facilisis ac magna. Mauris semper iaculis erat, sed facilisis felis ultrices eu. Phasellus ut orci non lectus ornare facilisis. Suspendisse gravida malesuada mollis. Praesent rutrum orci non nulla aliquet aliquam. </p>
+            <h2>Lorem Ipsum Dolor Sit Amet Consectetur Adipisicing</h2>
+            <p>Nam quis sem orci. Phasellus ligula tellus, lobortis nec accumsan eget, mattis at erat. </p>
+            <h2>Lorem Ipsum Dolor Sit Amet Consectetur A</h2>
+            <p>Pellentesque at odio quam, et egestas nunc. Sed quis leo et orci consectetur porttitor nec fringilla lorem. Duis sit amet adipiscing enim. </p>
           </vaadin-drawer>
         <main>
           <h1>Main content</h1>
@@ -108,63 +139,6 @@
       </vaadin-drawer-layout>
       </vaadin-navbar-layout>
 
-
-
-      <!-- <vaadin-drawer-layout fixed>
-        <vaadin-drawer slot="drawer">
-          <h1>Drawer content</h1>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
-          <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Donec elementum ligula eu sapien consequat eleifend. </p>
-          <p>Donec nec dolor erat, condimentum sagittis sem. Praesent porttitor porttitor risus, dapibus rutrum ipsum gravida et. Integer lectus nisi, facilisis sit amet eleifend nec, pharetra ut augue. Integer quam nunc, consequat nec egestas ac, volutpat ac nisi. </p>
-          <p>Sed consectetur dignissim dignissim. Donec pretium est sit amet ipsum fringilla feugiat. Aliquam erat volutpat. Maecenas scelerisque, orci sit amet cursus tincidunt, libero nisl eleifend tortor, vitae cursus risus mauris vitae nisi. Cras laoreet ultrices ligula eget tempus. </p>
-          <p>Aenean metus purus, iaculis ut imperdiet eget, sodales et massa. Duis pellentesque nisl vel massa dapibus non lacinia velit volutpat. Maecenas accumsan interdum sodales. In hac habitasse platea dictumst. Pellentesque ornare blandit orci, eget tristique risus convallis ut. Vivamus a sapien neque. </p>
-          <h2>Lorem Ipsum Dolor Sit Amet Consectetur Adipisicing</h2>
-          <p>Nam quis sem orci. Phasellus ligula tellus, lobortis nec accumsan eget, mattis at erat. </p>
-          <h2>Lorem Ipsum Dolor Sit Amet Consectetur A</h2>
-          <p>Pellentesque at odio quam, et egestas nunc. Sed quis leo et orci consectetur porttitor nec fringilla lorem. Duis sit amet adipiscing enim. </p>
-          <p>Suspendisse luctus justo sed risus dictum eu dignissim libero iaculis. Donec velit magna, auctor ullamcorper blandit eget, lobortis ac lectus. Praesent rhoncus eros quis lectus tempor a commodo leo aliquam. Donec convallis libero in nibh feugiat eleifend aliquet eros vehicula. </p>
-          <p>Quisque est dui, auctor ac adipiscing at, facilisis ac magna. Mauris semper iaculis erat, sed facilisis felis ultrices eu. Phasellus ut orci non lectus ornare facilisis. Suspendisse gravida malesuada mollis. Praesent rutrum orci non nulla aliquet aliquam. </p>
-          <h2>Lorem Ipsum Dolor Sit Amet Consectetur Adipisicing</h2>
-          <p>Nam quis sem orci. Phasellus ligula tellus, lobortis nec accumsan eget, mattis at erat. </p>
-          <h2>Lorem Ipsum Dolor Sit Amet Consectetur A</h2>
-          <p>Pellentesque at odio quam, et egestas nunc. Sed quis leo et orci consectetur porttitor nec fringilla lorem. Duis sit amet adipiscing enim. </p>
-          <p>Suspendisse luctus justo sed risus dictum eu dignissim libero iaculis. Donec velit magna, auctor ullamcorper blandit eget, lobortis ac lectus. Praesent rhoncus eros quis lectus tempor a commodo leo aliquam. Donec convallis libero in nibh feugiat eleifend aliquet eros vehicula. </p>
-          <p>Quisque est dui, auctor ac adipiscing at, facilisis ac magna. Mauris semper iaculis erat, sed facilisis felis ultrices eu. Phasellus ut orci non lectus ornare facilisis. Suspendisse gravida malesuada mollis. Praesent rutrum orci non nulla aliquet aliquam. <button>asdf</button></p>
-        </vaadin-drawer>
-
-        <vaadin-navbar-layout fixed>
-          <vaadin-navbar slot="navbar">
-            <vaadin-drawer-toggle slot="start"></vaadin-drawer-toggle>
-            <div>Title</div>
-            <div slot="menu">
-              <button>Dashboard</button>
-              <button>Storefront</button>
-              <button>Products</button>
-              <button>Users</button>
-            </div>
-          </vaadin-navbar>
-
-        <h1>Main content</h1>
-
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
-        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Donec elementum ligula eu sapien consequat eleifend. </p>
-        <p>Donec nec dolor erat, condimentum sagittis sem. Praesent porttitor porttitor risus, dapibus rutrum ipsum gravida et. Integer lectus nisi, facilisis sit amet eleifend nec, pharetra ut augue. Integer quam nunc, consequat nec egestas ac, volutpat ac nisi. </p>
-        <p>Sed consectetur dignissim dignissim. Donec pretium est sit amet ipsum fringilla feugiat. Aliquam erat volutpat. Maecenas scelerisque, orci sit amet cursus tincidunt, libero nisl eleifend tortor, vitae cursus risus mauris vitae nisi. Cras laoreet ultrices ligula eget tempus. </p>
-        <p>Aenean metus purus, iaculis ut imperdiet eget, sodales et massa. Duis pellentesque nisl vel massa dapibus non lacinia velit volutpat. Maecenas accumsan interdum sodales. In hac habitasse platea dictumst. Pellentesque ornare blandit orci, eget tristique risus convallis ut. Vivamus a sapien neque. </p>
-        <h2>Lorem Ipsum Dolor Sit Amet Consectetur Adipisicing</h2>
-        <p>Nam quis sem orci. Phasellus ligula tellus, lobortis nec accumsan eget, mattis at erat. </p>
-        <h2>Lorem Ipsum Dolor Sit Amet Consectetur A</h2>
-        <p>Pellentesque at odio quam, et egestas nunc. Sed quis leo et orci consectetur porttitor nec fringilla lorem. Duis sit amet adipiscing enim. </p>
-        <p>Suspendisse luctus justo sed risus dictum eu dignissim libero iaculis. Donec velit magna, auctor ullamcorper blandit eget, lobortis ac lectus. Praesent rhoncus eros quis lectus tempor a commodo leo aliquam. Donec convallis libero in nibh feugiat eleifend aliquet eros vehicula. </p>
-        <p>Quisque est dui, auctor ac adipiscing at, facilisis ac magna. Mauris semper iaculis erat, sed facilisis felis ultrices eu. Phasellus ut orci non lectus ornare facilisis. Suspendisse gravida malesuada mollis. Praesent rutrum orci non nulla aliquet aliquam. </p>
-        <h2>Lorem Ipsum Dolor Sit Amet Consectetur Adipisicing</h2>
-        <p>Nam quis sem orci. Phasellus ligula tellus, lobortis nec accumsan eget, mattis at erat. </p>
-        <h2>Lorem Ipsum Dolor Sit Amet Consectetur A</h2>
-        <p>Pellentesque at odio quam, et egestas nunc. Sed quis leo et orci consectetur porttitor nec fringilla lorem. Duis sit amet adipiscing enim. </p>
-        <p>Suspendisse luctus justo sed risus dictum eu dignissim libero iaculis. Donec velit magna, auctor ullamcorper blandit eget, lobortis ac lectus. Praesent rhoncus eros quis lectus tempor a commodo leo aliquam. Donec convallis libero in nibh feugiat eleifend aliquet eros vehicula. </p>
-        <p>Quisque est dui, auctor ac adipiscing at, facilisis ac magna. Mauris semper iaculis erat, sed facilisis felis ultrices eu. Phasellus ut orci non lectus ornare facilisis. Suspendisse gravida malesuada mollis. Praesent rutrum orci non nulla aliquet aliquam. <button>asdf</button></p>
-      </vaadin-navbar-layout>
-      </vaadin-drawer-layout> -->
 
   </body>
 </html>

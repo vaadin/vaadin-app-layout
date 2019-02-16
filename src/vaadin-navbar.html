@@ -20,7 +20,7 @@ This program is available under Apache License Version 2.0, available at https:/
         background-color: #f3f3f3;
         --vaadin-navbar-bottom-menu: false;
 
-        /* Use custom properties so that vaadin-navbar-layout can use them in calc() */
+        /* Use custom properties so that we can use them in calc() */
         --vaadin-navbar-padding-block-start: 8px;
         --vaadin-navbar-padding-inline-end: 16px;
         --vaadin-navbar-padding-block-end: 8px;
@@ -37,19 +37,22 @@ This program is available under Apache License Version 2.0, available at https:/
         display: none !important;
       }
 
-      :host(:not([orientation])),
-      :host([orientation="horizontal"]) {
-        width: 100%;
-      }
-
       :host([orientation="vertical"]) {
         height: 100%;
         flex-direction: column;
+        --vaadin-navbar-padding-block-start: 16px;
+        --vaadin-navbar-padding-inline-end: 4px;
+        --vaadin-navbar-padding-block-end: 16px;
+        --vaadin-navbar-padding-inline-start: 4px;
       }
 
       [part] {
         display: flex;
         align-items: center;
+      }
+
+      :host([orientation="vertical"]) [part] {
+        flex-direction: column;
       }
 
       [part="center"] {
@@ -58,7 +61,8 @@ This program is available under Apache License Version 2.0, available at https:/
       }
 
       @media (pointer: coarse) and (max-width: 800px) and (min-height: 500px) {
-        :host {
+        :host(:not([orientation])),
+        :host([orientation="horizontal"]) {
           --vaadin-navbar-bottom-menu: true;
         }
       }
@@ -80,17 +84,22 @@ This program is available under Apache License Version 2.0, available at https:/
         padding-bottom: env(safe-area-inset-bottom);
       }
     </style>
-    <div part="start">
-      <slot name="start"></slot>
-    </div>
-    <div part="center">
-      <slot></slot>
+    <div class="navbar">
+      <div part="start">
+        <slot name="start"></slot>
+      </div>
+      <div part="center">
+        <slot></slot>
+      </div>
+      <div part="end">
+        <slot name="end"></slot>
+      </div>
       <div part="menu">
         <slot name="menu"></slot>
       </div>
     </div>
-    <div part="end">
-      <slot name="end"></slot>
+    <div part="bottom-menu">
+      <slot name="menu"></slot>
     </div>
   </template>
 
@@ -111,13 +120,6 @@ This program is available under Apache License Version 2.0, available at https:/
 
         static get version() {
           return '1.0.0';
-        }
-
-        ready() {
-          super.ready();
-          Polymer.RenderStatus.afterNextRender(this, () => {
-            this.dispatchEvent(new CustomEvent('vaadin-app-layout-update-offsets', {bubbles: true, composed: true}));
-          });
         }
       }
 

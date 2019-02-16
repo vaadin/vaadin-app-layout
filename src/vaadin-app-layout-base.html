@@ -10,77 +10,60 @@ This program is available under Apache License Version 2.0, available at https:/
 <link rel="import" href="../../vaadin-themable-mixin/vaadin-themable-mixin.html">
 <link rel="import" href="../../vaadin-element-mixin/vaadin-element-mixin.html">
 <link rel="import" href="safe-area-inset.html">
+<link rel="import" href="detect-ios-navbar.html">
 
 <dom-module id="vaadin-app-layout-base">
   <template>
     <style>
       :host {
         display: block;
-        --vaadin-app-layout-threshold: 800px;
+        box-sizing: border-box;
         --vaadin-app-layout-transition: 200ms;
+        transition: padding var(--vaadin-app-layout-transition);
+        /* TODO(jouni): only supports px values at the moment */
+        --vaadin-app-layout-threshold: 800px;
       }
 
       :host([hidden]) {
         display: none !important;
       }
 
-      :host(:not([fixed])) {
-        position: relative;
-        height: 400px;
+      [offset-element] {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        transition: all var(--vaadin-app-layout-transition);
       }
 
-      [offset-element] {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        transition:
-          top var(--vaadin-app-layout-transition),
-          left var(--vaadin-app-layout-transition),
-          right var(--vaadin-app-layout-transition),
-          bottom var(--vaadin-app-layout-transition),
-          transform var(--vaadin-app-layout-transition);
+      :host([orientation="vertical"]) [offset-element] {
+        bottom: auto;
+      }
+
+      :host([orientation="vertical-reverse"]) [offset-element] {
+        top: auto;
       }
 
       :host([orientation="horizontal"]) [offset-element] {
         right: auto;
-        bottom: var(--vaadin-viewport-offset-bottom, 0);
       }
 
-      :host([fixed]) [offset-element] {
-        position: fixed;
-        top: var(--vaadin-app-layout-offset-block-start, 0);
-        left: var(--vaadin-app-layout-offset-inline-start, 0);
-        right: var(--vaadin-app-layout-offset-inline-end, 0);
-      }
-
-      :host([fixed][orientation="horizontal"]) [offset-element] {
-        /* stylelint-disable-next-line length-zero-no-unit */
-        bottom: calc(var(--vaadin-app-layout-offset-block-end, 0px) + var(--vaadin-viewport-offset-bottom, 0px));
-      }
-
-      :host([orientation="horizontal"][fixed]) [offset-element] {
-        right: auto;
+      :host([orientation="horizontal-reverse"]) [offset-element] {
+        left: auto;
       }
 
       [content-element] {
-        padding:
-          var(--vaadin-app-layout-offset-block-start)
-          var(--vaadin-app-layout-offset-inline-end)
-          var(--vaadin-app-layout-offset-block-end)
-          var(--vaadin-app-layout-offset-inline-start);
-        transition: padding var(--vaadin-app-layout-transition);
+        height: 100%;
+        overflow: auto;
       }
 
-      :host(:not([fixed])) [content-element] {
-        height: 100%;
-        box-sizing: border-box;
-        overflow: auto;
+      :host(:not([ios-fix])) [content-element] {
         -webkit-overflow-scrolling: touch;
       }
 
-      :host(.no-anim) [offset-element],
-      :host(.no-anim) [content-element] {
+      :host(.no-anim),
+      :host(.no-anim) [offset-element] {
         transition: none !important;
       }
     </style>
@@ -111,18 +94,19 @@ This program is available under Apache License Version 2.0, available at https:/
 
         static get properties() {
           return {
-            fixed: {
-              type: Boolean,
-              value: false,
-              reflectToAttribute: true,
-              observer: '_updateOffsetProperties'
-            },
-
+            /* vertical, vertical-reverse, horizontal, horizontal-reverse */
             orientation: {
               type: String,
               value: 'vertical',
               reflectToAttribute: true,
-              observer: '_updateOffsetProperties'
+              observer: '_updateOffsetSize'
+            },
+
+            /* Is the [offset-element] using fixed positioning */
+            fixed: {
+              type: Boolean,
+              value: false,
+              reflectToAttribute: true
             }
           };
         }
@@ -130,6 +114,7 @@ This program is available under Apache License Version 2.0, available at https:/
         static _modifiedTemplate(layoutName) {
           if (!templateCache[layoutName]) {
             const template = super.template.cloneNode(true);
+            template.content.querySelector('[offset-element]').setAttribute('part', layoutName);
             template.content.querySelector('[offset-element] slot').setAttribute('name', layoutName);
             const extraModule = Polymer.DomModule.prototype.modules[`vaadin-${layoutName}-layout-style`];
             const style = extraModule.querySelector('template').content.querySelector('style');
@@ -143,82 +128,59 @@ This program is available under Apache License Version 2.0, available at https:/
           super();
           // TODO(jouni): might want to debounce
           this.__boundResizeListener = this._resize.bind(this);
-          this.classList.add('no-anim');
         }
 
         connectedCallback() {
           super.connectedCallback();
           window.addEventListener('resize', this.__boundResizeListener);
 
-          this.addEventListener('vaadin-app-layout-update-offsets', e => {
-            this._updateOffsetProperties();
-          });
+          Polymer.RenderStatus.afterNextRender(this, this._updateOffsetSize);
 
-          Polymer.RenderStatus.beforeNextRender(this, this._updateOffsetProperties);
+          if (window.HTMLImports && !window.HTMLImports.useNative) {
+            // Wait for all children to upgrade before trying to measure sizes
+            Array.from(this.querySelectorAll('*')).forEach(child => {
+              if (child.localName.indexOf('-') > -1) {
+                window.customElements.whenDefined(child.localName).then(() => {
+                  // TODO(jouni): might want to debounce
+                  this._updateOffsetSize();
+                });
+              }
+            });
+          }
         }
 
         disconnectedCallback() {
-          super.disconnectedCallback();
           window.removeEventListener('resize', this.__boundResizeListener);
-        }
-
-        // TODO(jouni): this should be a shared utility for all components
-        _detectIosNavbar() {
-          const innerHeight = window.innerHeight;
-          const innerWidth = window.innerWidth;
-          const landscape = innerWidth > innerHeight;
-          const clientHeight = document.documentElement.clientHeight;
-          if (landscape && clientHeight > innerHeight) {
-            document.documentElement.style.setProperty('--vaadin-viewport-offset-bottom', clientHeight - innerHeight + 'px');
-          } else {
-            document.documentElement.style.setProperty('--vaadin-viewport-offset-bottom', '');
-          }
+          super.disconnectedCallback();
         }
 
         _resize() {
-          this.classList.add('no-anim');
-          this._detectIosNavbar();
-          Polymer.RenderStatus.afterNextRender(this, () => this.classList.remove('no-anim'));
+          this._blockAnimationUntilAfterNextRender();
         }
 
-        _getOffsetValues() {
-          const offset = {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0
-          };
-
-          const offsetElement = this.shadowRoot.querySelector('[offset-element]');
-
-          if (this.orientation == 'horizontal') {
-            offset.left = offsetElement.offsetWidth;
-          } else {
-            offset.top = offsetElement.offsetHeight;
-          }
-
-          return offset;
-        }
-
-        _updateOffsetProperties(animate) {
+        _updateOffsetSize(animate) {
           // Ignore initial property observer callbacks
           if (arguments.length == 2 && arguments[1] === undefined) {
             return;
           }
 
-          const offset = this._getOffsetValues();
+          const offsetElement = this.shadowRoot.querySelector('[offset-element]');
 
-          const contentElement = this.shadowRoot.querySelector('[content-element]');
-          // TODO(jouni): This does not work in IE11. Would need to make [content-element] a Polymer element.
-          contentElement.style.setProperty(`--vaadin-app-layout-offset-block-start`, offset.top + 'px');
-          contentElement.style.setProperty(`--vaadin-app-layout-offset-inline-end`, offset.right + 'px');
-          contentElement.style.setProperty(`--vaadin-app-layout-offset-block-end`, offset.bottom + 'px');
-          contentElement.style.setProperty(`--vaadin-app-layout-offset-inline-start`, offset.left + 'px');
-
-          if (!animate) {
-            this.classList.add('no-anim');
+          const rect = offsetElement.getBoundingClientRect();
+          let size = rect.width + 'px';
+          if (this.orientation.indexOf('horizontal') == -1) {
+            size = rect.height + 'px';
           }
 
+          this.style.setProperty(`--${this.localName}-offset`, size);
+
+          if (!animate) {
+            this._blockAnimationUntilAfterNextRender();
+          }
+        }
+
+        _blockAnimationUntilAfterNextRender() {
+          this.classList.add('no-anim');
           Polymer.RenderStatus.afterNextRender(this, () => this.classList.remove('no-anim'));
         }
       }

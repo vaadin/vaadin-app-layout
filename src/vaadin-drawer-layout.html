@@ -27,8 +27,11 @@ This program is available under Apache License Version 2.0, available at https:/
         touch-action: manipulation;
       }
 
+      [part="backdrop"] {
+        position: fixed;
+      }
+
       :host([drawer-overlay]) [part="backdrop"] {
-        position: absolute;
         top: 0;
         right: 0;
         bottom: 0;
@@ -44,20 +47,14 @@ This program is available under Apache License Version 2.0, available at https:/
         transition: none !important;
       }
 
-      :host([fixed][drawer-overlay]) [offset-element],
-      :host([fixed][drawer-overlay]) [part="backdrop"] {
+      :host([drawer-overlay]) [offset-element],
+      :host([drawer-overlay]) [part="backdrop"] {
         z-index: 1;
       }
 
-      :host([orientation="horizontal"][fixed][drawer-overlay]) [offset-element] {
-        top: 0;
+      :host([orientation^="horizontal"]:not([drawer-overlay])) [offset-element] {
+        top: var(--vaadin-navbar-layout-offset, 0);
         bottom: var(--vaadin-viewport-offset-bottom, 0);
-        /* TODO(jouni): update once we support aligning the drawer to end (right side) of the layout */
-        left: 0;
-      }
-
-      :host([fixed][drawer-overlay]) [part="backdrop"] {
-        position: fixed;
       }
 
       :host([opened][drawer-overlay]) [part="backdrop"] {
@@ -65,6 +62,23 @@ This program is available under Apache License Version 2.0, available at https:/
         pointer-events: auto;
         touch-action: manipulation;
       }
+
+      :host([orientation="vertical"][opened]:not([drawer-overlay])) {
+        padding-top: var(--vaadin-drawer-layout-offset);
+      }
+
+      :host([orientation="vertical-reverse"][opened]:not([drawer-overlay])) {
+        padding-bottom: var(--vaadin-drawer-layout-offset);
+      }
+
+      :host([orientation="horizontal"][opened]:not([drawer-overlay])) {
+        padding-left: var(--vaadin-drawer-layout-offset);
+      }
+
+      :host([orientation="horizontal-reverse"][opened]:not([drawer-overlay])) {
+        padding-right: var(--vaadin-drawer-layout-offset);
+      }
+
     </style>
   </template>
 </dom-module>
@@ -137,21 +151,21 @@ This program is available under Apache License Version 2.0, available at https:/
             backdrop.addEventListener('touchstart', () => this.opened = false);
           }
 
-          this._updateOffsetProperties(true);
-        }
-
-        _getOffsetValues() {
-          const offset = super._getOffsetValues();
-
-          if (!this.opened || this.drawerOverlay) {
-            if (this.orientation == 'horizontal') {
-              offset.left = 0;
-            } else {
-              offset.top = 0;
-            }
+          if (this.opened) {
+            this._updateOffsetSize(true);
+          } else {
+            // TODO hide the drawer from keyboard nav when closed
+            this.style.setProperty('--vaadin-drawer-layout-offset', '');
           }
 
-          return offset;
+          // On iOS, -webkit-overflow-scrolling: touch; creates a new clipping context for fixed elements
+          if (window.navigator.userAgent.match(/iPhone|iPad/i) && this.parentNode && this.parentNode instanceof Vaadin.AppLayoutBaseElement) {
+            if (this.opened) {
+              this.parentNode.setAttribute('ios-fix', '');
+            } else {
+              this.parentNode.removeAttribute('ios-fix');
+            }
+          }
         }
 
         _resize() {
@@ -162,11 +176,12 @@ This program is available under Apache License Version 2.0, available at https:/
         _updateOverlayMode() {
           const threshold = getComputedStyle(this).getPropertyValue('--vaadin-app-layout-threshold');
 
-          if (this.offsetWidth <= parseInt(threshold)) {
+          // TODO(jouni): support all CSS units, not just px
+          if (this.overlayMode || this.offsetWidth <= parseInt(threshold)) {
             this.opened = false;
             this.drawerOverlay = true;
           } else {
-            this.drawerOverlay = this.overlayMode || false;
+            this.drawerOverlay = false;
           }
 
           // TODO(jouni): ARIA attributes. The drawer should act similar to a modal dialog when in ”overlay” mode

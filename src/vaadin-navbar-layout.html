@@ -10,6 +10,25 @@ This program is available under Apache License Version 2.0, available at https:/
 <dom-module id="vaadin-navbar-layout-style">
   <template>
     <style>
+      :host([orientation^="vertical"]) [offset-element] {
+        left: var(--vaadin-drawer-layout-offset, 0);
+      }
+
+      :host([orientation="vertical"]) {
+        padding-top: var(--vaadin-navbar-layout-offset);
+      }
+
+      :host([orientation="vertical-reverse"]) {
+        padding-bottom: var(--vaadin-navbar-layout-offset);
+      }
+
+      :host([orientation="horizontal"]) {
+        padding-left: var(--vaadin-navbar-layout-offset);
+      }
+
+      :host([orientation="horizontal-reverse"]) {
+        padding-right: var(--vaadin-navbar-layout-offset);
+      }
     </style>
   </template>
 </dom-module>
@@ -37,18 +56,18 @@ This program is available under Apache License Version 2.0, available at https:/
           return this._modifiedTemplate('navbar');
         }
 
-        _getOffsetValues() {
-          this._updateNavbarMenu();
+        _updateOffsetSize(animate) {
+          super._updateOffsetSize(animate);
 
-          const offset = super._getOffsetValues();
+          this._updateNavbarMenu();
 
           const navbar = this.querySelector('vaadin-navbar');
           if (navbar && this._isBottomMenu()) {
             const menu = navbar.shadowRoot.querySelector('[part="menu"]');
-            offset.bottom = menu.offsetHeight;
+            this.style.setProperty('--vaadin-navbar-layout-offset-bottom', menu.getBoundingClientRect().height + 'px');
+          } else {
+            this.style.setProperty('--vaadin-navbar-layout-offset-bottom', '');
           }
-
-          return offset;
         }
 
         _updateNavbarMenu() {
