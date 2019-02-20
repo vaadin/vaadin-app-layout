@@ -5,45 +5,82 @@ Copyright (C) 2019 Vaadin Ltd
 This program is available under Apache License Version 2.0, available at https://vaadin.com/license/
 -->
 
-<link rel="import" href="vaadin-app-layout-base.html">
+<link rel="import" href="safe-area-inset.html">
+<link rel="import" href="detect-ios-navbar.html">
+<link rel="import" href="../../polymer/polymer-element.html">
+<link rel="import" href="vaadin-app-layout-mixin.html">
 
-<dom-module id="vaadin-navbar-layout-style">
+<dom-module id="vaadin-navbar-layout">
   <template>
-    <style>
-      :host([orientation^="vertical"]) [offset-element] {
-        left: var(--vaadin-drawer-layout-offset, 0);
+    <style include="vaadin-app-layout-mixin">
+      :host {
+        --vaadin-navbar-layout-touch-optimized: false;
+        --vaadin-navbar-layout-offset-top: var(--_vaadin-navbar-layout-offset-size);
+        --vaadin-navbar-layout-offset-bottom: var(--_vaadin-navbar-layout-offset-size-bottom);
+        padding-top: var(--vaadin-navbar-layout-offset-top);
+        padding-bottom: var(--vaadin-navbar-layout-offset-bottom);
+        padding-left: var(--vaadin-navbar-layout-offset-left);
       }
 
-      :host([orientation="vertical"]) {
-        padding-top: var(--vaadin-navbar-layout-offset);
+
+      @media (pointer: coarse) and (max-width: 800px) and (min-height: 500px) {
+        :host {
+          --vaadin-navbar-layout-touch-optimized: true;
+        }
       }
 
-      :host([orientation="vertical-reverse"]) {
-        padding-bottom: var(--vaadin-navbar-layout-offset);
+      [part="navbar"] {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: var(--vaadin-drawer-layout-offset-left, 0);
+        transition: left var(--vaadin-app-layout-transition);
+        padding-top: var(--safe-area-inset-top);
+        padding-left: var(--safe-area-inset-left);
+        padding-right: var(--safe-area-inset-right);
+      }
+
+      :host([orientation="vertical"]) [part="navbar"][bottom] {
+        top: auto;
+        bottom: 0;
+        padding-bottom: var(--safe-area-inset-bottom);
       }
 
       :host([orientation="horizontal"]) {
-        padding-left: var(--vaadin-navbar-layout-offset);
+        --vaadin-navbar-layout-offset-top: 0;
+        --vaadin-navbar-layout-offset-left: var(--_vaadin-navbar-layout-offset-size);
       }
 
-      :host([orientation="horizontal-reverse"]) {
-        padding-right: var(--vaadin-navbar-layout-offset);
+      :host([orientation="horizontal"]) [part="navbar"] {
+        right: auto;
+        bottom: var(--vaadin-viewport-offset-bottom, 0);
+      }
+
+      :host([orientation="horizontal"]) [part="navbar"] ::slotted(vaadin-navbar) {
+        flex-direction: column;
+        height: 100%;
       }
     </style>
+    <div content>
+      <slot></slot>
+    </div>
+    <div part="navbar">
+      <slot name="navbar"></slot>
+    </div>
+    <div part="navbar" bottom hidden>
+      <slot name="navbar-bottom"></slot>
+    </div>
   </template>
-</dom-module>
-
-<dom-module id="vaadin-navbar-layout">
   <script>
     (function() {
 
       /**
-       *
        * @memberof Vaadin
-       * @extends Vaadin.AppLayoutBaseElement
+       * @mixes Vaadin.AppLayoutMixin
+       * @extends Polymer.Element
        * @demo demo/index.html
        */
-      class NavbarLayoutElement extends Vaadin.AppLayoutBaseElement {
+      class NavbarLayoutElement extends Vaadin.AppLayoutMixin(Polymer.Element) {
         static get is() {
           return 'vaadin-navbar-layout';
         }
@@ -52,52 +89,74 @@ This program is available under Apache License Version 2.0, available at https:/
           return '1.0.0';
         }
 
-        static get template() {
-          return this._modifiedTemplate('navbar');
+        static get properties() {
+          return {
+            // vertical (default) or horizontal
+            orientation: {
+              type: String,
+              value: 'vertical',
+              reflectToAttribute: true
+            },
+          };
         }
 
-        _updateOffsetSize(animate) {
-          super._updateOffsetSize(animate);
-
-          this._updateNavbarMenu();
-
-          const navbar = this.querySelector('vaadin-navbar');
-          if (navbar && this._isBottomMenu()) {
-            const menu = navbar.shadowRoot.querySelector('[part="menu"]');
-            this.style.setProperty('--vaadin-navbar-layout-offset-bottom', menu.getBoundingClientRect().height + 'px');
-          } else {
-            this.style.setProperty('--vaadin-navbar-layout-offset-bottom', '');
-          }
-        }
-
-        _updateNavbarMenu() {
-          const navbar = this.querySelector('vaadin-navbar');
-
-          if (this._isBottomMenu()) {
-            navbar.setAttribute('bottom-menu', '');
-
-            if (this.fixed) {
-              navbar.setAttribute('fixed', '');
-            } else {
-              navbar.removeAttribute('fixed');
-            }
-          } else if (navbar) {
-            navbar.removeAttribute('bottom-menu');
-            navbar.removeAttribute('fixed');
-          }
-        }
-
-        _isBottomMenu() {
-          if (this.orientation == 'vertical') {
-            const navbar = this.querySelector('vaadin-navbar');
-            return navbar && getComputedStyle(navbar).getPropertyValue('--vaadin-navbar-bottom-menu').trim().toLowerCase() == 'true';
-          }
-          return false;
+        connectedCallback() {
+          super.connectedCallback();
+          this._updateTouchOptimizedMode();
         }
 
         _resize() {
           super._resize();
-          this._updateNavbarMenu();
+          this._updateTouchOptimizedMode();
+        }
+
+        _updateOffsetSize() {
+          super._updateOffsetSize();
+
+          const navbar = this.shadowRoot.querySelector('[part="navbar"]');
+          const navbarRect = navbar.getBoundingClientRect();
+
+          // TODO(jouni): use shady css if we want to support IE11
+          if (this.orientation == 'vertical') {
+            this.style.setProperty('--_vaadin-navbar-layout-offset-size', navbarRect.height + 'px');
+
+            const navbarBottom = this.shadowRoot.querySelector('[part="navbar"][bottom]');
+            const navbarBottomRect = navbarBottom.getBoundingClientRect();
+            this.style.setProperty('--_vaadin-navbar-layout-offset-size-bottom', navbarBottomRect.height + 'px');
+          } else {
+            this.style.setProperty('--_vaadin-navbar-layout-offset-size', navbarRect.width + 'px');
+          }
+        }
+
+        _updateTouchOptimizedMode() {
+          // TODO(jouni): use shady css if we want to support IE11
+          let touchOptimized = getComputedStyle(this).getPropertyValue('--vaadin-navbar-layout-touch-optimized');
+          touchOptimized = touchOptimized.trim().toLowerCase() == 'true';
+
+          const navbarBottom = this.shadowRoot.querySelector('[part="navbar"][bottom]');
+          const navbars = this.querySelectorAll('[slot*="navbar"]');
+
+          if (navbars.length > 0) {
+            Array.from(navbars).forEach(navbar => {
+              if (navbar.getAttribute('slot').indexOf('touch-optimized') > -1) {
+                navbar.__touchOptimized = true;
+              }
+
+              if (this.orientation == 'vertical' && touchOptimized && navbar.__touchOptimized) {
+                navbar.setAttribute('slot', 'navbar-bottom');
+              } else {
+                navbar.setAttribute('slot', 'navbar');
+              }
+            });
+          }
+
+          if (this.orientation == 'vertical' && touchOptimized) {
+            navbarBottom.removeAttribute('hidden');
+          } else {
+            navbarBottom.setAttribute('hidden', '');
+          }
+
+          this._updateOffsetSize();
         }
       }
 

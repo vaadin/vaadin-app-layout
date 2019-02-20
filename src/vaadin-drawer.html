@@ -16,41 +16,28 @@ This program is available under Apache License Version 2.0, available at https:/
         display: flex !important;
         flex-direction: column;
         box-sizing: border-box;
-        background-color: #f3f3f3;
-        width: 16em;
         height: 100%;
-
-        /* Use custom properties so that we can use them in calc() */
-        --vaadin-drawer-padding-inline-start: 16px;
-        --vaadin-drawer-padding-inline-end: 16px;
-        --vaadin-drawer-padding-block-start: 16px;
-        --vaadin-drawer-padding-block-end: 16px;
       }
 
       :host([hidden]) {
         display: none !important;
       }
 
-      [part="center"] {
+      [part="content"] {
         flex: auto;
         overflow: auto;
         -webkit-overflow-scrolling: touch;
         /* TODO(jouni): update once we support aligning the drawer to end (right side) of the layout */
-        padding:
-          calc(var(--vaadin-drawer-padding-block-start) + var(--safe-area-inset-top))
-          var(--vaadin-drawer-padding-inline-end)
-          calc(var(--vaadin-drawer-padding-block-end) + var(--safe-area-inset-bottom))
-          calc(var(--vaadin-drawer-padding-inline-start) + var(--safe-area-inset-left));
       }
     </style>
-    <div part="start">
-      <slot name="start"></slot>
+    <div part="header">
+      <slot name="header"></slot>
     </div>
-    <div part="center">
+    <div part="content">
       <slot></slot>
     </div>
-    <div part="end">
-      <slot name="end"></slot>
+    <div part="footer">
+      <slot name="footer"></slot>
     </div>
   </template>
 

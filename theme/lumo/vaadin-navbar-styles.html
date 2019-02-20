@@ -5,24 +5,8 @@
 <dom-module id="lumo-navbar" theme-for="vaadin-navbar">
   <template>
     <style>
-      :host,
-      :host([bottom-menu]) [part="menu"] {
-        --vaadin-navbar-padding-inline-start: var(--lumo-space-l);
-        --vaadin-navbar-padding-inline-end: var(--lumo-space-l);
-        --vaadin-navbar-padding-block-start: var(--lumo-space-xs);
-        --vaadin-navbar-padding-block-end: var(--lumo-space-xs);
-        background: var(--lumo-base-color) linear-gradient(var(--lumo-contrast-5pct), var(--lumo-contrast-5pct));
-      }
-
-      @supports (-webkit-backdrop-filter: blur(1px)) {
-        :host,
-        :host([bottom-menu]) [part="menu"] {
-          background-color: rgba(255, 255, 255, 0.7);
-        }
-
-        :host([bottom-menu]) [part="menu"] {
-          padding-top: var(--lumo-space-xs);
-        }
+      :host {
+        padding: var(--lumo-space-xs) var(--lumo-space-m);
       }
 
       [part] ::slotted(h2),

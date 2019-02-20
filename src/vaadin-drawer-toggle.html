@@ -13,14 +13,12 @@ This program is available under Apache License Version 2.0, available at https:/
   <template>
     <style>
       :host {
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         cursor: default;
         position: relative;
         outline: none;
-      }
-
-      :host([focus-ring]) {
-        outline: 2px solid;
       }
 
       #button {
@@ -79,8 +77,6 @@ This program is available under Apache License Version 2.0, available at https:/
               }
             }
           });
-
-          // TODO(jouni): ARIA attributes
         }
 
         connectedCallback() {
@@ -99,6 +95,7 @@ This program is available under Apache License Version 2.0, available at https:/
           if (this.hasAttribute('for')) {
             this._target = root.querySelector('#' + this.getAttribute('for'));
           } else {
+            // Find the first drawer-layout in the same DOM scope as the toggle
             this._target = root.querySelector('vaadin-drawer-layout');
           }
         }

@@ -17,89 +17,32 @@ This program is available under Apache License Version 2.0, available at https:/
         align-items: center;
         justify-content: space-between;
         box-sizing: border-box;
-        background-color: #f3f3f3;
-        --vaadin-navbar-bottom-menu: false;
-
-        /* Use custom properties so that we can use them in calc() */
-        --vaadin-navbar-padding-block-start: 8px;
-        --vaadin-navbar-padding-inline-end: 16px;
-        --vaadin-navbar-padding-block-end: 8px;
-        --vaadin-navbar-padding-inline-start: 16px;
-
-        padding:
-          calc(var(--vaadin-navbar-padding-block-start) + var(--safe-area-inset-top))
-          calc(var(--vaadin-navbar-padding-inline-end) + var(--safe-area-inset-right))
-          var(--vaadin-navbar-padding-block-end)
-          calc(var(--vaadin-navbar-padding-inline-start) + var(--safe-area-inset-left));
       }
 
       :host([hidden]) {
         display: none !important;
       }
 
-      :host([orientation="vertical"]) {
-        height: 100%;
-        flex-direction: column;
-        --vaadin-navbar-padding-block-start: 16px;
-        --vaadin-navbar-padding-inline-end: 4px;
-        --vaadin-navbar-padding-block-end: 16px;
-        --vaadin-navbar-padding-inline-start: 4px;
-      }
-
       [part] {
         display: flex;
+        flex-direction: inherit;
         align-items: center;
-      }
-
-      :host([orientation="vertical"]) [part] {
-        flex-direction: column;
       }
 
       [part="center"] {
         text-align: center;
+        justify-content: center;
         overflow: hidden;
       }
-
-      @media (pointer: coarse) and (max-width: 800px) and (min-height: 500px) {
-        :host(:not([orientation])),
-        :host([orientation="horizontal"]) {
-          --vaadin-navbar-bottom-menu: true;
-        }
-      }
-
-      :host([bottom-menu]) [part="menu"] {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-color: #f3f3f3;
-        display: flex;
-        justify-content: center;
-      }
-
-      :host([fixed][bottom-menu]) [part="menu"] {
-        /* TODO(jouni): this does not work if the host has a transform (which could be used for "reveals" effect for the navbar) */
-        position: fixed;
-        padding-bottom: constant(safe-area-inset-bottom);
-        padding-bottom: env(safe-area-inset-bottom);
-      }
     </style>
-    <div class="navbar">
-      <div part="start">
-        <slot name="start"></slot>
-      </div>
-      <div part="center">
-        <slot></slot>
-      </div>
-      <div part="end">
-        <slot name="end"></slot>
-      </div>
-      <div part="menu">
-        <slot name="menu"></slot>
-      </div>
+    <div part="start">
+      <slot name="start"></slot>
     </div>
-    <div part="bottom-menu">
-      <slot name="menu"></slot>
+    <div part="center">
+      <slot></slot>
+    </div>
+    <div part="end">
+      <slot name="end"></slot>
     </div>
   </template>
 
