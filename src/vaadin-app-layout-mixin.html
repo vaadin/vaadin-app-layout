@@ -70,12 +70,12 @@ This program is available under Apache License Version 2.0, available at https:/
             if (child.localName.indexOf('-') > -1) {
               window.customElements.whenDefined(child.localName).then(() => {
                 // TODO(jouni): might want to debounce
-                this._afterFirstRender();
+                Polymer.RenderStatus.beforeNextRender(this, this._afterFirstRender);
               });
             }
           });
         } else {
-          Polymer.RenderStatus.afterNextRender(this, this._afterFirstRender);
+          Polymer.RenderStatus.beforeNextRender(this, this._afterFirstRender);
         }
       }
 
