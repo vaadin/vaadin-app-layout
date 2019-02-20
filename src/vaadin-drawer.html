@@ -27,7 +27,6 @@ This program is available under Apache License Version 2.0, available at https:/
         flex: auto;
         overflow: auto;
         -webkit-overflow-scrolling: touch;
-        /* TODO(jouni): update once we support aligning the drawer to end (right side) of the layout */
       }
     </style>
     <div part="header">
@@ -59,15 +58,6 @@ This program is available under Apache License Version 2.0, available at https:/
         static get version() {
           return '1.0.0';
         }
-
-        // ready() {
-        //   super.ready();
-        //   Polymer.RenderStatus.afterNextRender(this, () => {
-        //     requestAnimationFrame(() => {
-        //       this.dispatchEvent(new CustomEvent('vaadin-app-layout-update-offsets', {bubbles: true, composed: true}));
-        //     });
-        //   });
-        // }
       }
 
       customElements.define(DrawerElement.is, DrawerElement);
