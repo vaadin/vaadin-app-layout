@@ -53,6 +53,68 @@
       </template>
     </vaadin-demo-snippet>
 
+    <h3>Simple App Layout with links</h3>
+    <vaadin-demo-snippet id="element-basic-demos-links-example" iframe-src="iframe-lumo-styled.html">
+      <template preserve-content>
+        <!-- Apply typography and color theme modules globally from `vaadin-lumo-styles` -->
+        <custom-style>
+          <style include="lumo-typography lumo-color">
+          </style>
+        </custom-style>
+        <style>
+          .content {
+            padding: 16px;
+          }
+
+          h3 {
+            text-align: center;
+          }
+
+          a:hover {
+            text-decoration: none;
+          }
+        </style>
+        <vaadin-app-layout>
+          <vaadin-tabs slot="menu">
+            <vaadin-tab theme="icon-on-top">
+              <a tabindex="-1">
+                <iron-icon icon="vaadin:home"></iron-icon>
+                Page 1
+              </a>
+            </vaadin-tab>
+            <vaadin-tab theme="icon-on-top">
+              <a tabindex="-1">
+              <iron-icon icon="vaadin:list"></iron-icon>
+              Page 2
+              </a>
+            </vaadin-tab>
+            <vaadin-tab theme="icon-on-top">
+              <a tabindex="-1">
+                <iron-icon icon="vaadin:options"></iron-icon>
+                Page 3
+              </a>
+            </vaadin-tab>
+            <vaadin-tab theme="icon-on-top">
+              <a tabindex="-1">
+                <iron-icon icon="vaadin:question"></iron-icon>
+                Page 4
+              </a>
+            </vaadin-tab>
+          </vaadin-tabs>
+
+          <div class="content">
+            <h3>Page title</h3>
+            <p>Page content</p>
+          </div>
+        </vaadin-app-layout>
+        <script>
+          window.addDemoReadyListener('#element-basic-demos-links-example', function(document) {
+            Array.from(document.querySelectorAll('vaadin-tab')).forEach(e => e.addEventListener('click', e2 => e.querySelector('a').click()));
+          });
+        </script>
+      </template>
+    </vaadin-demo-snippet>
+
     <h3>App Layout with text branding and large number of menu items</h3>
     <vaadin-demo-snippet id="element-basic-demos-text-example" iframe-src="iframe-lumo-styled.html">
       <template preserve-content>
