@@ -239,7 +239,7 @@ This program is available under Apache License Version 2.0, available at https:/
           super.disconnectedCallback();
 
           this._navbarChildObserver && this._navbarChildObserver.disconnect();
-          this.removeEventListener(this._drawerToggleClickListener);
+          this.removeEventListener('drawer-toggle-click', this._drawerToggleClickListener);
         }
 
         _resize() {
