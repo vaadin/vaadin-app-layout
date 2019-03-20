@@ -66,39 +66,14 @@ This program is available under Apache License Version 2.0, available at https:/
           super();
 
           this.addEventListener('click', e => {
-            if (this._target) {
-              this._target.opened = !this._target.opened;
-
-              if (this._target.opened) {
-                this.setAttribute('opened', '');
-              } else {
-                this.removeAttribute('opened');
-              }
-            }
             this.dispatchEvent(new CustomEvent('drawer-toggle-click', {bubbles: true, composed: true}));
           });
         }
 
         connectedCallback() {
           super.connectedCallback();
-          this._findTarget();
         }
 
-        _findTarget() {
-          let root = this.getRootNode();
-          if (root == document) {
-            // Avoid matching elements in the <head> that come through the HTML Imports polyfill
-            root = document.body;
-          }
-
-          // Find the target <vaadin-drawer-layout>
-          if (this.hasAttribute('for')) {
-            this._target = root.querySelector('#' + this.getAttribute('for'));
-          } else {
-            // Find the first drawer-layout in the same DOM scope as the toggle
-            this._target = root.querySelector('vaadin-drawer-layout');
-          }
-        }
       }
 
       customElements.define(DrawerToggleElement.is, DrawerToggleElement);
