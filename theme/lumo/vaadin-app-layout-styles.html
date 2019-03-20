@@ -1,0 +1,47 @@
+<link rel="import" href="../../../vaadin-lumo-styles/color.html">
+<link rel="import" href="../../../vaadin-lumo-styles/spacing.html">
+<link rel="import" href="../../../vaadin-lumo-styles/typography.html">
+
+<dom-module id="lumo-app-layout" theme-for="vaadin-app-layout">
+  <template>
+    <style>
+      [part="navbar"] {
+        background: var(--lumo-base-color) linear-gradient(var(--lumo-contrast-5pct), var(--lumo-contrast-5pct));
+      }
+
+      :host(:not([overlay])) [part="drawer"] {
+        border-right: 1px solid var(--lumo-contrast-10pct);
+      }
+
+      :host([overlay]) [part="drawer"] {
+        background: var(--lumo-base-color);
+      }
+
+      [part="backdrop"] {
+        background-color: var(--lumo-shade-20pct);
+        opacity: 1;
+      }
+
+      [part] ::slotted(h2),
+      [part] ::slotted(h3),
+      [part] ::slotted(h4) {
+        margin-top: var(--lumo-space-xs) !important;
+        margin-bottom: var(--lumo-space-xs) !important;
+      }
+
+      @supports (-webkit-backdrop-filter: blur(1px)) {
+        [part="navbar"] {
+          /* TODO(jouni): should use a Lumo color, but we don’t have a suitable one */
+          background: rgba(255, 255, 255, 0.8) linear-gradient(var(--lumo-contrast-5pct), var(--lumo-contrast-5pct));
+          -webkit-backdrop-filter: blur(24px);
+        }
+
+        :host([overlay]) [part="drawer"] {
+          /* TODO(jouni): should use a Lumo color, but we don’t have a suitable one */
+          background: rgba(255, 255, 255, 0.9);
+          -webkit-backdrop-filter: blur(24px);
+        }
+      }
+    </style>
+  </template>
+</dom-module>

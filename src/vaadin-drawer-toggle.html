@@ -75,6 +75,7 @@ This program is available under Apache License Version 2.0, available at https:/
                 this.removeAttribute('opened');
               }
             }
+            this.dispatchEvent(new CustomEvent('drawer-toggle-click', {bubbles: true, composed: true}));
           });
         }
 
