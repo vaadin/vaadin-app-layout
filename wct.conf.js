@@ -24,8 +24,7 @@ module.exports = {
       exclude: [],
       thresholds: {
         global: {
-          // TODO (diegocardoso) Increase thresholds back when add tests (previously it was 90)
-          statements: 60
+          statements: 80
         }
       }
     }
