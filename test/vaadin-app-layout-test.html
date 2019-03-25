@@ -53,7 +53,6 @@
 
       it('should toggle drawer on vaadin-drawer-toggle click', () => {
         const drawerToggle = layout.querySelector('vaadin-drawer-toggle');
-
         const currentDrawerState = layout.drawerOpened;
 
         drawerToggle.click();
@@ -77,8 +76,10 @@
       it('should hide drawer on resize if window is small', () => {
         resizeIframeTo(600);
 
-        expect(layout.overlay).to.be.true;
-        layout.style.removeProperty('--vaadin-app-layout-drawer-overlay');
+        setTimeout(() => {
+          expect(layout.overlay).to.be.true;
+          layout.style.removeProperty('--vaadin-app-layout-drawer-overlay');
+        });
       });
     });
   </script>
