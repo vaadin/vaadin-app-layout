@@ -97,7 +97,12 @@ This program is available under Apache License Version 2.0, available at https:/
 
       _blockAnimationUntilAfterNextRender() {
         this.setAttribute('no-anim', '');
-        Polymer.RenderStatus.afterNextRender(this, () => this.removeAttribute('no-anim'));
+        Polymer.RenderStatus.afterNextRender(this, () => {
+          this.removeAttribute('no-anim');
+          if (window.ShadyCSS) {
+            window.ShadyCSS.styleSubtree(this);
+          }
+        });
       }
     };
   </script>
