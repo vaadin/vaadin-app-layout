@@ -246,6 +246,10 @@ This program is available under Apache License Version 2.0, available at https:/
           this.removeEventListener('drawer-toggle-click', this._drawerToggleClickListener);
         }
 
+        _isShadyCSS() {
+          return window.ShadyCSS && !window.ShadyCSS.nativeCSS;
+        }
+
         _resize() {
           super._resize();
           this._updateTouchOptimizedMode();
@@ -263,7 +267,7 @@ This program is available under Apache License Version 2.0, available at https:/
             const navbarBottom = this.shadowRoot.querySelector('[part="navbar"][bottom]');
             const navbarBottomRect = navbarBottom.getBoundingClientRect();
 
-            if (window.ShadyCSS) {
+            if (this._isShadyCSS()) {
               window.ShadyCSS.styleSubtree(this, {'--_vaadin-app-layout-navbar-offset-size': navbarRect.height + 'px'});
               window.ShadyCSS.styleSubtree(this, {'--_vaadin-app-layout-navbar-offset-size-bottom': navbarBottomRect.height + 'px'});
             } else {
@@ -279,7 +283,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
           // TODO(jouni): use shady css if we want to support IE11
 
-          if (window.ShadyCSS) {
+          if (this._isShadyCSS()) {
             window.ShadyCSS.styleSubtree(this, {'--_vaadin-app-layout-drawer-offset-size': drawerRect.width + 'px'});
             // Have to update both because ShadyCSS may no apply the one below if not in use
             window.ShadyCSS.styleSubtree(this, {'--vaadin-app-layout-drawer-offset-left': 'var(--_vaadin-app-layout-drawer-offset-size)'});
@@ -293,7 +297,7 @@ This program is available under Apache License Version 2.0, available at https:/
           // TODO(jouni): use shady css if we want to support IE11
 
           let overlay;
-          if (window.ShadyCSS) {
+          if (this._isShadyCSS()) {
             window.ShadyCSS.styleSubtree(this);
             overlay = window.ShadyCSS.getComputedStyleValue(this, '--vaadin-app-layout-drawer-overlay');
           } else {
