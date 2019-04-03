@@ -29,7 +29,6 @@ This program is available under Apache License Version 2.0, available at https:/
 
       :host([overlay]) {
         --vaadin-app-layout-drawer-offset-left: 0;
-        --vaadin-app-layout-navbar-offset-bottom: 0;
         --vaadin-app-layout-navbar-offset-left: 0;
       }
 
@@ -106,6 +105,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
       :host([overlay]) [part="drawer"] {
         top: 0;
+        bottom: 0;
       }
 
       :host([overlay]) [part="drawer"],
@@ -242,7 +242,6 @@ This program is available under Apache License Version 2.0, available at https:/
           const navbar = this.shadowRoot.querySelector('[part="navbar"]');
           const navbarRect = navbar.getBoundingClientRect();
 
-          // TODO(jouni): use shady css if we want to support IE11
           const navbarBottom = this.shadowRoot.querySelector('[part="navbar"][bottom]');
           const navbarBottomRect = navbarBottom.getBoundingClientRect();
 
@@ -257,8 +256,6 @@ This program is available under Apache License Version 2.0, available at https:/
           const drawer = this.shadowRoot.querySelector('[part="drawer"]');
           const drawerRect = drawer.getBoundingClientRect();
 
-          // TODO(jouni): use shady css if we want to support IE11
-
           if (this._isShadyCSS()) {
             window.ShadyCSS.styleSubtree(this, {'--_vaadin-app-layout-drawer-offset-size': drawerRect.width + 'px'});
             // Have to update both because ShadyCSS may no apply the one below if not in use
@@ -270,7 +267,6 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         _updateOverlayMode() {
-          // TODO(jouni): use shady css if we want to support IE11
 
           let overlay;
           if (this._isShadyCSS()) {
@@ -296,7 +292,6 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         _updateTouchOptimizedMode() {
-          // TODO(jouni): use shady css if we want to support IE11
           const touchOptimized = getComputedStyle(this)
             .getPropertyValue('--vaadin-app-layout-touch-optimized')
             .trim()
