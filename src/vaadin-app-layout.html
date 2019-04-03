@@ -246,10 +246,6 @@ This program is available under Apache License Version 2.0, available at https:/
           this.removeEventListener('drawer-toggle-click', this._drawerToggleClickListener);
         }
 
-        _isShadyCSS() {
-          return window.ShadyCSS && !window.ShadyCSS.nativeCSS;
-        }
-
         _resize() {
           super._resize();
           this._updateTouchOptimizedMode();
