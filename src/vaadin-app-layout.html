@@ -246,8 +246,10 @@ This program is available under Apache License Version 2.0, available at https:/
           const navbarBottomRect = navbarBottom.getBoundingClientRect();
 
           if (this._isShadyCSS()) {
-            window.ShadyCSS.styleSubtree(this, {'--_vaadin-app-layout-navbar-offset-size': navbarRect.height + 'px'});
-            window.ShadyCSS.styleSubtree(this, {'--_vaadin-app-layout-navbar-offset-size-bottom': navbarBottomRect.height + 'px'});
+            window.ShadyCSS.styleSubtree(this, {
+              '--_vaadin-app-layout-navbar-offset-size': navbarRect.height + 'px',
+              '--_vaadin-app-layout-navbar-offset-size-bottom': navbarBottomRect.height + 'px'
+            });
           } else {
             this.style.setProperty('--_vaadin-app-layout-navbar-offset-size', navbarRect.height + 'px');
             this.style.setProperty('--_vaadin-app-layout-navbar-offset-size-bottom', navbarBottomRect.height + 'px');
@@ -257,9 +259,11 @@ This program is available under Apache License Version 2.0, available at https:/
           const drawerRect = drawer.getBoundingClientRect();
 
           if (this._isShadyCSS()) {
-            window.ShadyCSS.styleSubtree(this, {'--_vaadin-app-layout-drawer-offset-size': drawerRect.width + 'px'});
-            // Have to update both because ShadyCSS may not apply the one below if not in use
-            window.ShadyCSS.styleSubtree(this, {'--vaadin-app-layout-drawer-offset-left': 'var(--_vaadin-app-layout-drawer-offset-size)'});
+            window.ShadyCSS.styleSubtree(this, {
+              '--_vaadin-app-layout-drawer-offset-size': drawerRect.width + 'px',
+              // Have to update both because ShadyCSS may not apply the one below if not in use
+              '--vaadin-app-layout-drawer-offset-left': 'var(--_vaadin-app-layout-drawer-offset-size)'
+            });
           } else {
             this.style.setProperty('--_vaadin-app-layout-drawer-offset-size', drawerRect.width + 'px');
           }
@@ -267,15 +271,7 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         _updateOverlayMode() {
-          let overlay;
-
-          if (this._isShadyCSS()) {
-            window.ShadyCSS.styleSubtree(this);
-            overlay = window.ShadyCSS.getComputedStyleValue(this, '--vaadin-app-layout-drawer-overlay');
-          } else {
-            overlay = getComputedStyle(this).getPropertyValue('--vaadin-app-layout-drawer-overlay');
-          }
-          overlay = overlay.trim().toLowerCase() == 'true';
+          const overlay = this._getCustomPropertyValue('--vaadin-app-layout-drawer-overlay') == 'true';
 
           this.overlay = overlay;
 
@@ -291,11 +287,21 @@ This program is available under Apache License Version 2.0, available at https:/
           this.drawerOpened = false;
         }
 
+        _getCustomPropertyValue(customProperty) {
+          let customPropertyValue;
+
+          if (this._isShadyCSS()) {
+            window.ShadyCSS.styleSubtree(this);
+            customPropertyValue = window.ShadyCSS.getComputedStyleValue(this, customProperty);
+          } else {
+            customPropertyValue = getComputedStyle(this).getPropertyValue(customProperty);
+          }
+
+          return (customPropertyValue || '').trim().toLowerCase();
+        }
+
         _updateTouchOptimizedMode() {
-          const touchOptimized = getComputedStyle(this)
-            .getPropertyValue('--vaadin-app-layout-touch-optimized')
-            .trim()
-            .toLowerCase() == 'true';
+          const touchOptimized = this._getCustomPropertyValue('--vaadin-app-layout-touch-optimized') == 'true';
 
           const navbarBottom = this.shadowRoot.querySelector('[part="navbar"][bottom]');
           const navbars = this.querySelectorAll('[slot*="navbar"]');
