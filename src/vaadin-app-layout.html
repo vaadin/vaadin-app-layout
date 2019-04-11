@@ -164,7 +164,7 @@ This program is available under Apache License Version 2.0, available at https:/
     </div>
     <div part="backdrop" on-click="_close" on-touchstart="_close"></div>
     <div part="drawer" id="drawer">
-      <slot name="drawer" id="drawer"></slot>
+      <slot name="drawer" id="drawerSlot"></slot>
     </div>
     <div content>
       <slot></slot>
@@ -263,7 +263,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
           this._updateTouchOptimizedMode();
 
-          this._navbarChildObserver = new Polymer.FlattenedNodesObserver(this.$.drawer, (info) => {
+          this._navbarChildObserver = new Polymer.FlattenedNodesObserver(this.$.drawerSlot, (info) => {
             this._updateDrawerSize();
           });
           this._updateDrawerSize();
