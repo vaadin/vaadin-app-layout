@@ -7,7 +7,9 @@
   "description": "vaadin-app-layout",
   "main": [
     "vaadin-app-layout.html",
-    "theme/material/vaadin-app-layout.html"
+    "theme/material/vaadin-app-layout.html",
+    "vaadin-drawer-toggle.html",
+    "theme/material/vaadin-drawer-toggle.html"
   ],
   "keywords": [
     "Vaadin",
