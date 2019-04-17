@@ -338,6 +338,20 @@ This program is available under Apache License Version 2.0, available at https:/
           }
         }
 
+        _drawerOpenedObserver() {
+          const drawer = this.$.drawer;
+
+          drawer.removeAttribute('tabindex');
+
+          if (this.overlay) {
+            if (this.drawerOpened) {
+              drawer.setAttribute('tabindex', 0);
+              drawer.focus();
+            }
+          }
+        }
+
+
         _isShadyCSS() {
           return window.ShadyCSS && !window.ShadyCSS.nativeCss;
         }
@@ -400,19 +414,6 @@ This program is available under Apache License Version 2.0, available at https:/
             this.style.setProperty('--_vaadin-app-layout-drawer-offset-size', drawerRect.width + 'px');
           }
 
-        }
-
-        _drawerOpenedObserver() {
-          const drawer = this.$.drawer;
-
-          drawer.removeAttribute('tabindex');
-
-          if (this.overlay) {
-            if (this.drawerOpened) {
-              drawer.setAttribute('tabindex', 0);
-              drawer.focus();
-            }
-          }
         }
 
         _updateOverlayMode() {
