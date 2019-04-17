@@ -91,6 +91,24 @@
 
         expect(layout.drawerOpened).to.be.false;
       });
+
+      it('should close drawer when calling helper method', () => {
+        layout.overlay = true;
+        layout.drawerOpened = true;
+
+        Vaadin.AppLayoutElement.dispatchCloseOverlayDrawerEvent();
+
+        expect(layout.drawerOpened).to.be.false;
+      });
+
+      it('should close drawer when dispatching custom event', () => {
+        layout.overlay = true;
+        layout.drawerOpened = true;
+
+        window.dispatchEvent(new CustomEvent('close-overlay-drawer'));
+
+        expect(layout.drawerOpened).to.be.false;
+      });
     });
   </script>
 </body>
