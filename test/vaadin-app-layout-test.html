@@ -94,7 +94,7 @@
 
       it('should close drawer when calling helper method', () => {
         // force overlay=true to show backdrop
-        window.ShadyCSS.styleSubtree(layout, {'--vaadin-app-layout-drawer-overlay': true});
+        window.ShadyCSS.styleSubtree(layout, {'--vaadin-app-layout-drawer-overlay': 'true'});
         layout._updateOverlayMode();
         layout.drawerOpened = true;
 
@@ -106,7 +106,7 @@
 
       it('should close drawer when dispatching custom event', () => {
         // force overlay=true to show backdrop
-        window.ShadyCSS.styleSubtree(layout, {'--vaadin-app-layout-drawer-overlay': true});
+        window.ShadyCSS.styleSubtree(layout, {'--vaadin-app-layout-drawer-overlay': 'true'});
         layout._updateOverlayMode();
         layout.drawerOpened = true;
 
