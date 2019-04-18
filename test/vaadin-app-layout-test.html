@@ -94,7 +94,7 @@
 
       it('should be able to change primary-section to "drawer"', () => {
         // force it to desktop layout
-        window.ShadyCSS.styleSubtree(layout, {'--vaadin-app-layout-drawer-overlay': false});
+        window.ShadyCSS.styleSubtree(layout, {'--vaadin-app-layout-drawer-overlay': 'false'});
         layout.drawerOpened = true; // force drawer to be opened
         layout._updateOverlayMode();
 
