@@ -24,7 +24,7 @@ module.exports = {
       exclude: [],
       thresholds: {
         global: {
-          statements: 90
+          statements: 80
         }
       }
     }
