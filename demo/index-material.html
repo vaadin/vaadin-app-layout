@@ -89,15 +89,14 @@
       <p>Aenean metus purus, iaculis ut imperdiet eget, sodales et massa. Duis pellentesque nisl vel massa dapibus non lacinia velit volutpat. Maecenas accumsan interdum sodales. In hac habitasse platea dictumst. Pellentesque ornare blandit orci, eget tristique risus convallis ut. Vivamus a sapien neque. </p>
       <h2>Lorem Ipsum Dolor Sit Amet Consectetur Adipisicing</h2>
       <p>Nam quis sem orci. Phasellus ligula tellus, lobortis nec accumsan eget, mattis at erat. </p>
-      <h2>Lorem Ipsum Dolor Sit Amet Consectetur A</h2>
       <input type="text">
     </main>
   </vaadin-app-layout>
   <script>
     const togglePrimary = document.getElementById('togglePrimary');
-    const appLayout = document.querySelector('vaadin-app-layout')
+    const appLayout = document.querySelector('vaadin-app-layout');
     togglePrimary.addEventListener('click', () => {
-      appLayout.primarySection = appLayout.primarySection === 'navbar'? 'drawer' : 'navbar';
+      appLayout.primarySection = appLayout.primarySection === 'navbar' ? 'drawer' : 'navbar';
     });
   </script>
 </body>
