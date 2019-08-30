@@ -159,7 +159,7 @@
                 height: var(--lumo-icon-size-s);
               }
             </style>
-            <vaadin-app-layout id="appLayout">
+            <vaadin-app-layout>
               <vaadin-drawer-toggle slot="navbar"></vaadin-drawer-toggle>
               <h2 slot="navbar">App Name</h2>
               <vaadin-tabs orientation="vertical" slot="drawer">
@@ -191,25 +191,18 @@
                 return 'x-app-layout';
               }
 
-              constructor() {
-                super();
-                this.__boundRouterLocationChanged = this._routerLocationChanged.bind(this);
-              }
-
               connectedCallback() {
                 super.connectedCallback();
-                window.addEventListener('vaadin-router-location-changed', this.__boundRouterLocationChanged);
+                window.addEventListener('vaadin-router-location-changed', this._routerLocationChanged);
               }
 
               disconnectedCallback() {
                 super.disconnectedCallback();
-                this.removeEventListener('vaadin-router-location-changed', this.__boundRouterLocationChanged);
+                this.removeEventListener('vaadin-router-location-changed', this._routerLocationChanged);
               }
 
               _routerLocationChanged() {
-                if (this.$.appLayout.overlay) {
-                  this.$.appLayout.drawerOpened = false;
-                }
+                Vaadin.AppLayoutElement.dispatchCloseOverlayDrawerEvent()
               }
             });
           </script>
