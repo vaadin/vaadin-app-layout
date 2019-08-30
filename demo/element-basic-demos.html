@@ -159,7 +159,7 @@
                 height: var(--lumo-icon-size-s);
               }
             </style>
-            <vaadin-app-layout>
+            <vaadin-app-layout id="appLayout">
               <vaadin-drawer-toggle slot="navbar"></vaadin-drawer-toggle>
               <h2 slot="navbar">App Name</h2>
               <vaadin-tabs orientation="vertical" slot="drawer">
@@ -189,6 +189,27 @@
             customElements.define('x-app-layout', class extends Polymer.Element {
               static get is() {
                 return 'x-app-layout';
+              }
+
+              constructor() {
+                super();
+                this.__boundRouterLocationChanged = this._routerLocationChanged.bind(this);
+              }
+
+              connectedCallback() {
+                super.connectedCallback();
+                window.addEventListener('vaadin-router-location-changed', this.__boundRouterLocationChanged);
+              }
+
+              disconnectedCallback() {
+                super.disconnectedCallback();
+                this.removeEventListener('vaadin-router-location-changed', this.__boundRouterLocationChanged);
+              }
+
+              _routerLocationChanged() {
+                if (this.$.appLayout.overlay) {
+                  this.$.appLayout.drawerOpened = false;
+                }
               }
             });
           </script>
