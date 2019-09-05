@@ -31,7 +31,8 @@ This program is available under Apache License Version 2.0, available at https:/
         padding-left: var(--vaadin-app-layout-navbar-offset-left);
       }
 
-      :host([hidden]) {
+      :host([hidden]),
+      [hidden] {
         display: none !important;
       }
 
@@ -514,7 +515,6 @@ This program is available under Apache License Version 2.0, available at https:/
           // TODO(jouni): ARIA attributes. The drawer should act similar to a modal dialog when in ”overlay” mode
         }
 
-        // TODO(jouni): what mechanism should we use to close the overlay drawer a navigation is triggered?
         _close() {
           this.drawerOpened = false;
         }
@@ -535,7 +535,8 @@ This program is available under Apache License Version 2.0, available at https:/
         _updateTouchOptimizedMode() {
           const touchOptimized = this._getCustomPropertyValue('--vaadin-app-layout-touch-optimized') == 'true';
 
-          const navbarBottom = this.shadowRoot.querySelector('[part="navbar"][bottom]');
+          // querySelectorAll returns item in document order (https://www.w3.org/TR/selectors-api/#queryselectorall)
+          const [navbarTop, navbarBottom] = this.shadowRoot.querySelectorAll('[part="navbar"]');
           const navbars = this.querySelectorAll('[slot*="navbar"]');
 
           if (navbars.length > 0) {
@@ -553,8 +554,12 @@ This program is available under Apache License Version 2.0, available at https:/
           }
 
           if (touchOptimized) {
+            if (navbarTop.childCount === 0) {
+              navbarTop.setAttribute('hidden', '');
+            }
             navbarBottom.removeAttribute('hidden');
           } else {
+            navbarTop.removeAttribute('hidden');
             navbarBottom.setAttribute('hidden', '');
           }
 
