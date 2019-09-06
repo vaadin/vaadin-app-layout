@@ -162,7 +162,7 @@ This program is available under Apache License Version 2.0, available at https:/
         }
       }
     </style>
-    <div part="navbar">
+    <div part="navbar" id="navbarTop">
       <slot name="navbar"></slot>
     </div>
     <div part="backdrop" on-click="_close" on-touchstart="_close"></div>
@@ -172,7 +172,7 @@ This program is available under Apache License Version 2.0, available at https:/
     <div content>
       <slot></slot>
     </div>
-    <div part="navbar" bottom hidden>
+    <div part="navbar" id="navbarBottom" bottom hidden>
       <slot name="navbar-bottom"></slot>
     </div>
   </template>
@@ -438,7 +438,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
         _updateDrawerSize() {
           const childCount = this.querySelectorAll('[slot=drawer]').length;
-          const drawer = this.shadowRoot.querySelector('[part=drawer]');
+          const drawer = this.$.drawer;
 
           if (childCount === 0) {
             drawer.setAttribute('hidden', '');
@@ -536,11 +536,10 @@ This program is available under Apache License Version 2.0, available at https:/
           const touchOptimized = this._getCustomPropertyValue('--vaadin-app-layout-touch-optimized') == 'true';
 
           // querySelectorAll returns item in document order (https://www.w3.org/TR/selectors-api/#queryselectorall)
-          const [navbarTop, navbarBottom] = this.shadowRoot.querySelectorAll('[part="navbar"]');
-          const navbars = this.querySelectorAll('[slot*="navbar"]');
+          const navbarItems = this.querySelectorAll('[slot*="navbar"]');
 
-          if (navbars.length > 0) {
-            Array.from(navbars).forEach(navbar => {
+          if (navbarItems.length > 0) {
+            Array.from(navbarItems).forEach(navbar => {
               if (navbar.getAttribute('slot').indexOf('touch-optimized') > -1) {
                 navbar.__touchOptimized = true;
               }
@@ -554,13 +553,13 @@ This program is available under Apache License Version 2.0, available at https:/
           }
 
           if (touchOptimized) {
-            if (navbarTop.childCount === 0) {
-              navbarTop.setAttribute('hidden', '');
+            if (this.$.navbarTop.children['navbar'].assignedElements().length === 0) {
+              this.$.navbarTop.setAttribute('hidden', '');
             }
-            navbarBottom.removeAttribute('hidden');
+            this.$.navbarBottom.removeAttribute('hidden');
           } else {
-            navbarTop.removeAttribute('hidden');
-            navbarBottom.setAttribute('hidden', '');
+            this.$.navbarTop.removeAttribute('hidden');
+            this.$.navbarBottom.setAttribute('hidden', '');
           }
 
           this._updateOffsetSize();
