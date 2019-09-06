@@ -553,13 +553,14 @@ This program is available under Apache License Version 2.0, available at https:/
             });
           }
 
-          if (touchOptimized) {
-            if (this.$.navbarTop.children['navbar'].assignedElements().length === 0) {
-              this.$.navbarTop.setAttribute('hidden', '');
-            }
-            this.$.navbarBottom.removeAttribute('hidden');
+          if (this.$.navbarTop.children['navbar'].assignedElements().length === 0) {
+            this.$.navbarTop.setAttribute('hidden', '');
           } else {
             this.$.navbarTop.removeAttribute('hidden');
+          }
+          if (touchOptimized) {
+            this.$.navbarBottom.removeAttribute('hidden');
+          } else {
             this.$.navbarBottom.setAttribute('hidden', '');
           }
 
