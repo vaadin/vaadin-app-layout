@@ -1,40 +1,30 @@
-gemini.suite('vaadin-app-layout', function(rootSuite) {
+gemini.suite('vaadin-app-layout', rootSuite => {
   function wait(actions, find) {
-    return actions
-      .waitForJSCondition(function(window) {
-        return window.webComponentsAreReady;
-      }, 80000);
+    return actions.waitForJSCondition(window => {
+      return window.webComponentsAreReady;
+    }, 80000);
   }
 
-  function goToAboutBlank(actions, find) {
-    // Firefox stops responding on socket after a test, workaround:
-    return actions.executeJS(function(window) {
-      window.location.href = 'about:blank'; // just go away, please!
-    });
-  }
-
-  rootSuite
-    .before(wait)
-    .after(goToAboutBlank);
+  rootSuite.before(wait);
 
   ['lumo', 'lumo-dark', 'material'].forEach(theme => {
-    gemini.suite(`drawer-${theme}`, function(suite) {
+    gemini.suite(`drawer-${theme}`, suite => {
       suite
-        .setUrl(`/drawer.html?theme=${theme}`)
+        .setUrl(`drawer.html?theme=${theme}`)
         .setCaptureElements('#drawer-tests')
         .capture('default');
     });
 
-    gemini.suite(`primary-drawer-${theme}`, function(suite) {
+    gemini.suite(`primary-drawer-${theme}`, suite => {
       suite
-        .setUrl(`/primary-drawer.html?theme=${theme}`)
+        .setUrl(`primary-drawer.html?theme=${theme}`)
         .setCaptureElements('#primary-drawer-tests')
         .capture('default');
     });
 
-    gemini.suite(`tabs-${theme}`, function(suite) {
+    gemini.suite(`tabs-${theme}`, suite => {
       suite
-        .setUrl(`/tabs.html?theme=${theme}`)
+        .setUrl(`tabs.html?theme=${theme}`)
         .setCaptureElements('#tabs-tests')
         .capture('default');
     });

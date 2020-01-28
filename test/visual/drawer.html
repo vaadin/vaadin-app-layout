@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-
+<html>
 <head lang="en">
   <meta charset="UTF-8">
-  <title></title>
-  <script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <title>Drawer tests</title>
+
+  <script type="module">
+    import '@polymer/polymer/lib/elements/custom-style.js';
+  </script>
+
   <script>
     const themeQuery = window.location.search.replace(/.*theme=([\w\-]+).*/, '$1') || 'lumo';
     const [theme, variant] = themeQuery.split('-');
-
-    document.write(`
-      <link rel="import" href="../../theme/${theme}/vaadin-app-layout.html">
-      <link rel="import" href="../../theme/${theme}/vaadin-drawer-toggle.html">
-    `);
 
     if (variant) {
       document.documentElement.setAttribute('theme', variant);
@@ -22,13 +21,6 @@
         </custom-style>
       `);
     }
-
-    window.addEventListener('WebComponentsReady', function() {
-      setTimeout(function() {
-        window.ShadyDOM && window.ShadyDOM.flush(); // Force DOM composition
-        window.webComponentsAreReady = true; // Checked in gemini before capture callback
-      });
-    });
   </script>
 </head>
 
@@ -41,6 +33,10 @@
 
     #drawer-tests {
       min-height: 300px;
+    }
+
+    vaadin-app-layout:not(:defined) {
+      display: none;
     }
   </style>
 
@@ -57,4 +53,21 @@
     </vaadin-app-layout>
   </div>
 
+  <script type="module">
+    (async() => {
+      const theme = window.location.search.replace(/.*theme=(\w+).*/, '$1') || 'lumo';
+
+      await Promise.all([
+        import('../../theme/' + theme + '/vaadin-drawer-toggle.js'),
+        import('../../theme/' + theme + '/vaadin-app-layout.js')
+      ]);
+
+      await document.querySelector('vaadin-app-layout').updateComplete;
+
+      window.requestAnimationFrame(() => {
+        window.webComponentsAreReady = true;
+      });
+    })();
+  </script>
 </body>
+</html>
