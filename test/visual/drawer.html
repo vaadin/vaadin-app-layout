@@ -3,25 +3,6 @@
 <head lang="en">
   <meta charset="UTF-8">
   <title>Drawer tests</title>
-
-  <script type="module">
-    import '@polymer/polymer/lib/elements/custom-style.js';
-  </script>
-
-  <script>
-    const themeQuery = window.location.search.replace(/.*theme=([\w\-]+).*/, '$1') || 'lumo';
-    const [theme, variant] = themeQuery.split('-');
-
-    if (variant) {
-      document.documentElement.setAttribute('theme', variant);
-      document.write(`
-        <custom-style>
-          <style include="lumo-color">
-          </style>
-        </custom-style>
-      `);
-    }
-  </script>
 </head>
 
 <body>
@@ -33,10 +14,6 @@
 
     #drawer-tests {
       min-height: 300px;
-    }
-
-    vaadin-app-layout:not(:defined) {
-      display: none;
     }
   </style>
 
@@ -54,15 +31,26 @@
   </div>
 
   <script type="module">
+    import { cssFromModules } from '@polymer/polymer/lib/utils/style-gather.js';
+
     (async() => {
-      const theme = window.location.search.replace(/.*theme=(\w+).*/, '$1') || 'lumo';
+      const themeQuery = window.location.search.replace(/.*theme=([\w\-]+).*/, '$1') || 'lumo';
+      const [theme, variant] = themeQuery.split('-');
 
       await Promise.all([
         import('../../theme/' + theme + '/vaadin-drawer-toggle.js'),
         import('../../theme/' + theme + '/vaadin-app-layout.js')
       ]);
 
-      await document.querySelector('vaadin-app-layout').updateComplete;
+      if (theme === 'lumo') {
+        const style = document.createElement('style');
+        style.textContent = cssFromModules('lumo-color') + cssFromModules('lumo-typography');
+        document.head.appendChild(style);
+      }
+
+      if (variant === 'dark') {
+        document.documentElement.setAttribute('theme', variant);
+      }
 
       window.requestAnimationFrame(() => {
         window.webComponentsAreReady = true;

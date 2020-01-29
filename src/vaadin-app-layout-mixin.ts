@@ -198,9 +198,10 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
     private _blockAnimationUntilNextRender() {
       this.setAttribute('no-anim', '');
 
-      // LitElement uses microtask timing
-      Promise.resolve().then(() => {
-        this.removeAttribute('no-anim');
+      window.requestAnimationFrame(() => {
+        setTimeout(() => {
+          this.removeAttribute('no-anim');
+        });
       });
     }
 

@@ -75,6 +75,6 @@
   },
   "devDependencies": {
     "@vaadin/vaadin-tabs": "4.0.0-alpha1",
-    "@vaadin/vaadin-component-dev-dependencies": "^4.6.0"
+    "@vaadin/vaadin-component-dev-dependencies": "^4.7.0"
   }
 }

@@ -3,25 +3,6 @@
 <head lang="en">
   <meta charset="UTF-8">
   <title>Tabs tests</title>
-
-  <script type="module">
-    import '@polymer/polymer/lib/elements/custom-style.js';
-  </script>
-
-  <script>
-    const themeQuery = window.location.search.replace(/.*theme=([\w\-]+).*/, '$1') || 'lumo';
-    const [theme, variant] = themeQuery.split('-');
-
-    if (variant) {
-      document.documentElement.setAttribute('theme', variant);
-      document.write(`
-        <custom-style>
-          <style include="lumo-color">
-          </style>
-        </custom-style>
-      `);
-    }
-  </script>
 </head>
 
 <body>
@@ -35,8 +16,10 @@
       min-height: 300px;
     }
 
-    vaadin-app-layout:not(:defined) {
-      display: none;
+    vaadin-tab,
+    vaadin-tab::before,
+    vaadin-tab::after {
+      transition: none !important;
     }
   </style>
 
@@ -71,19 +54,36 @@
   </div>
 
   <script type="module">
+    import { cssFromModules } from '@polymer/polymer/lib/utils/style-gather.js';
+    import '@vaadin/vaadin-lumo-styles/icons.js';
+
     (async() => {
-      const theme = window.location.search.replace(/.*theme=(\w+).*/, '$1') || 'lumo';
+      const themeQuery = window.location.search.replace(/.*theme=([\w\-]+).*/, '$1') || 'lumo';
+      const [theme, variant] = themeQuery.split('-');
+
+      const tabs = document.querySelector('vaadin-tabs');
+      const layout = document.querySelector('vaadin-app-layout');
 
       await Promise.all([
         import('../../theme/' + theme + '/vaadin-drawer-toggle.js'),
         import('../../theme/' + theme + '/vaadin-app-layout.js'),
-        import('@vaadin/vaadin-tabs/theme/' + theme + '/vaadin-tabs.js'),
-        import('@vaadin/vaadin-lumo-styles/icons.js'),
+        import('@vaadin/vaadin-tabs/theme/' + theme + '/vaadin-tabs.js')
       ]);
 
+      if (theme === 'lumo') {
+        const style = document.createElement('style');
+        style.textContent = cssFromModules('lumo-color') + cssFromModules('lumo-typography');
+        document.head.appendChild(style);
+      }
+
+      if (variant === 'dark') {
+        document.documentElement.setAttribute('theme', variant);
+      }
+
       await Promise.all([
-        document.querySelector('vaadin-app-layout').updateComplete,
-        document.querySelector('vaadin-tabs').updateComplete
+        tabs.updateComplete,
+        layout.updateComplete,
+        ...Array.from(tabs.children).map(tab => tab.updateComplete)
       ]);
 
       window.requestAnimationFrame(() => {
