@@ -84,19 +84,17 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
           <slot name="navbar"></slot>
         </div>
         <div part="backdrop" @click="${this._close}" @touchstart="${this._close}"></div>
-        <div class="wrapper">
-          <div
-            part="drawer"
-            tabindex="${ifDefined(this.overlay && this.drawerOpened ? '0' : undefined)}"
-            role="${ifDefined(this.overlay ? 'dialog' : undefined)}"
-            aria-label="${ifDefined(this.overlay ? 'drawer' : undefined)}"
-            aria-modal="${ifDefined(this.overlay ? 'true' : undefined)}"
-          >
-            <slot name="drawer"></slot>
-          </div>
-          <div part="content">
-            <slot></slot>
-          </div>
+        <div
+          part="drawer"
+          tabindex="${ifDefined(this.overlay && this.drawerOpened ? '0' : undefined)}"
+          role="${ifDefined(this.overlay ? 'dialog' : undefined)}"
+          aria-label="${ifDefined(this.overlay ? 'drawer' : undefined)}"
+          aria-modal="${ifDefined(this.overlay ? 'true' : undefined)}"
+        >
+          <slot name="drawer"></slot>
+        </div>
+        <div part="content">
+          <slot></slot>
         </div>
         <div part="navbar bottom" ?hidden="${!this.touchOptimized}">
           <slot name="navbar-bottom"></slot>

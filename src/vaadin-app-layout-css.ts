@@ -129,9 +129,4 @@ export const appLayoutStyles = css`
   :host([drawer-opened]:not([overlay])) {
     padding-left: var(--vaadin-app-layout-drawer-offset-left);
   }
-
-  /* TODO */
-  .wrapper {
-    display: flex;
-  }
 `;
