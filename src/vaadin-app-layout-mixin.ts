@@ -1,6 +1,8 @@
 import { LitElement, html, property, query, PropertyValues } from 'lit-element';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { MediaQueryMixin, mediaProperty } from '@vaadin/media-query-mixin';
+import { ResizableMixin } from '@vaadin/resizable-mixin';
+import { ResizableClass } from '@vaadin/resizable-mixin/resizable-class.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Constructor<T = object> = new (...args: any[]) => T;
@@ -15,8 +17,8 @@ export interface AppLayoutInterface {
 
 export const AppLayoutMixin = <T extends Constructor<LitElement>>(
   base: T
-): T & Constructor<LitElement & AppLayoutInterface> => {
-  class AppLayout extends MediaQueryMixin(base) {
+): T & Constructor<LitElement & AppLayoutInterface & ResizableClass> => {
+  class AppLayout extends MediaQueryMixin(ResizableMixin(base)) {
     /**
      * Helper static method that dispatches a `close-overlay-drawer` event
      */
@@ -72,8 +74,6 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
 
     private _boundCloseOverlayDrawer: EventListener = this._onCloseOverlayDrawer.bind(this);
 
-    private _boundResize: EventListener = this._onResize.bind(this);
-
     private _forceTouch = false;
 
     private _drawerStateSaved: boolean | null | undefined;
@@ -108,17 +108,12 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
       this._blockAnimationUntilNextRender();
 
       window.addEventListener('close-overlay-drawer', this._boundCloseOverlayDrawer);
-
-      // TODO: make app-layout take the full screen height,
-      // as this would let us to use ResizableMixin instead
-      window.addEventListener('resize', this._boundResize);
     }
 
     disconnectedCallback() {
       super.disconnectedCallback();
 
       window.removeEventListener('close-overlay-drawer', this._boundCloseOverlayDrawer);
-      window.removeEventListener('resize', this._boundResize);
     }
 
     protected firstUpdated(props: PropertyValues) {
@@ -193,6 +188,14 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
       }
     }
 
+    protected _sizeChanged(contentRect: DOMRect) {
+      // Ensure resize event is fired after calculations
+      this._blockAnimationUntilNextRender();
+      this._updateOffsetSize();
+
+      super._sizeChanged && super._sizeChanged(contentRect);
+    }
+
     private _blockAnimationUntilNextRender() {
       this.setAttribute('no-anim', '');
 
@@ -217,11 +220,6 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
       event.stopPropagation();
 
       this.drawerOpened = !this.drawerOpened;
-    }
-
-    private _onResize() {
-      this._blockAnimationUntilNextRender();
-      this._updateOffsetSize();
     }
 
     private _setOffsetSize(part: string, value: number) {

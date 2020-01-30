@@ -65,6 +65,7 @@
     "@vaadin/focus-visible-mixin": "^0.1.1",
     "@vaadin/element-base": "^0.2.0",
     "@vaadin/media-query-mixin": "^0.1.0",
+    "@vaadin/resizable-mixin": "0.1.0",
     "@vaadin/themable-element": "^0.1.2",
     "@vaadin/vaadin-lumo-styles": "^1.6.0",
     "@vaadin/vaadin-material-styles": "^1.3.2",
