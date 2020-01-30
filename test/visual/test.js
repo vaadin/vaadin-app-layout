@@ -11,22 +11,37 @@ gemini.suite('vaadin-app-layout', rootSuite => {
     gemini.suite(`drawer-${theme}`, suite => {
       suite
         .setUrl(`drawer.html?theme=${theme}`)
-        .setCaptureElements('#drawer-tests')
-        .capture('default');
+        .setCaptureElements('vaadin-app-layout')
+        .capture('default')
+        .capture('touch-optimized', actions => {
+          actions.executeJS(window => {
+            window.document.querySelector('vaadin-app-layout').setAttribute('touch-optimized', '');
+          });
+        });
     });
 
     gemini.suite(`primary-drawer-${theme}`, suite => {
       suite
         .setUrl(`primary-drawer.html?theme=${theme}`)
-        .setCaptureElements('#primary-drawer-tests')
-        .capture('default');
+        .setCaptureElements('vaadin-app-layout')
+        .capture('default')
+        .capture('touch-optimized', actions => {
+          actions.executeJS(window => {
+            window.document.querySelector('vaadin-app-layout').setAttribute('touch-optimized', '');
+          });
+        });
     });
 
     gemini.suite(`tabs-${theme}`, suite => {
       suite
         .setUrl(`tabs.html?theme=${theme}`)
-        .setCaptureElements('#tabs-tests')
-        .capture('default');
+        .setCaptureElements('vaadin-app-layout')
+        .capture('default')
+        .capture('touch-optimized', actions => {
+          actions.executeJS(window => {
+            window.document.querySelector('vaadin-app-layout').setAttribute('touch-optimized', '');
+          });
+        });
     });
   });
 });

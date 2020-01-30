@@ -7,13 +7,13 @@
 
 <body>
   <style>
+    html,
     body {
-      margin: 0;
       height: 100%;
     }
 
-    #tabs-tests {
-      min-height: 300px;
+    body {
+      margin: 0;
     }
 
     vaadin-tab,
@@ -23,35 +23,33 @@
     }
   </style>
 
-  <div id="tabs-tests">
-    <vaadin-app-layout>
-      <vaadin-drawer-toggle slot="navbar"></vaadin-drawer-toggle>
-      <h2 slot="navbar">App Name</h2>
-      <vaadin-tabs orientation="vertical" slot="drawer">
-        <vaadin-tab>
-          <a href="/">
-            <iron-icon icon="lumo:calendar"></iron-icon>
-            Page 1
-          </a>
-        </vaadin-tab>
-        <vaadin-tab>
-          <a href="page2">
-            <iron-icon icon="lumo:user"></iron-icon>
-            Page 2
-          </a>
-        </vaadin-tab>
-        <vaadin-tab>
-          <a href="page3">
-            <iron-icon icon="lumo:phone"></iron-icon>
-            Page 3
-          </a>
-        </vaadin-tab>
-      </vaadin-tabs>
-      <main>
-        Page content
-      </main>
-    </vaadin-app-layout>
-  </div>
+  <vaadin-app-layout>
+    <vaadin-drawer-toggle slot="navbar touch-optimized"></vaadin-drawer-toggle>
+    <h2 slot="navbar touch-optimized">App Name</h2>
+    <vaadin-tabs orientation="vertical" slot="drawer">
+      <vaadin-tab>
+        <a href="/">
+          <iron-icon icon="lumo:calendar"></iron-icon>
+          Page 1
+        </a>
+      </vaadin-tab>
+      <vaadin-tab>
+        <a href="page2">
+          <iron-icon icon="lumo:user"></iron-icon>
+          Page 2
+        </a>
+      </vaadin-tab>
+      <vaadin-tab>
+        <a href="page3">
+          <iron-icon icon="lumo:phone"></iron-icon>
+          Page 3
+        </a>
+      </vaadin-tab>
+    </vaadin-tabs>
+    <main>
+      Page content
+    </main>
+  </vaadin-app-layout>
 
   <script type="module">
     import { cssFromModules } from '@polymer/polymer/lib/utils/style-gather.js';
