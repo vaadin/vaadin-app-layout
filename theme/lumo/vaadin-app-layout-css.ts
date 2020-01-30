@@ -4,7 +4,7 @@ import '@vaadin/vaadin-lumo-styles/spacing.js';
 import '@vaadin/vaadin-lumo-styles/typography.js';
 
 export const appLayoutStyles = css`
-  [part='navbar']::before {
+  [part~='navbar']::before {
     background: var(--lumo-base-color) linear-gradient(var(--lumo-contrast-5pct), var(--lumo-contrast-5pct));
   }
 
@@ -16,7 +16,7 @@ export const appLayoutStyles = css`
     background: var(--lumo-base-color);
   }
 
-  [part='navbar']::before,
+  [part~='navbar']::before,
   :host([overlay]) [part='drawer']::before {
     position: absolute;
     content: '';
@@ -38,11 +38,11 @@ export const appLayoutStyles = css`
   }
 
   @supports (-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px)) {
-    [part='navbar']::before {
+    [part~='navbar']::before {
       opacity: 0.8;
     }
 
-    [part='navbar'] {
+    [part~='navbar'] {
       -webkit-backdrop-filter: blur(24px);
       backdrop-filter: blur(24px);
     }

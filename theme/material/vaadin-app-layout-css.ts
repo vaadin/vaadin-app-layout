@@ -8,7 +8,7 @@ export const appLayoutStyles = css`
     background-color: var(--material-background-color);
   }
 
-  [part='navbar'] {
+  [part~='navbar'] {
     padding: 0.25em 0.5em;
     background: var(--vaadin-app-layout-navbar-background, var(--material-secondary-background-color));
     box-shadow: var(--material-shadow-elevation-8dp);
@@ -23,7 +23,7 @@ export const appLayoutStyles = css`
     z-index: 1;
   }
 
-  :host([primary-section='navbar']:not([overlay])) [part='navbar'] {
+  :host([primary-section='navbar']:not([overlay])) [part~='navbar'] {
     z-index: 1;
   }
 
@@ -35,14 +35,14 @@ export const appLayoutStyles = css`
     margin-bottom: 0.25rem !important;
   }
 
-  [part='navbar'][bottom] {
+  [part~='navbar'][part~='bottom'] {
     padding: 0 1em;
     box-shadow: var(--material-shadow-elevation-4dp);
   }
 
   /* TODO: use mediaProperty instead */
   @media (min-width: 700px) {
-    [part='navbar'] {
+    [part~='navbar'] {
       padding: 0.5em 0.75em;
       box-shadow: var(--material-shadow-elevation-4dp);
     }

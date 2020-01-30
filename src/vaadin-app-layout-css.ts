@@ -2,12 +2,11 @@ import { css } from 'lit-element';
 
 export const appLayoutStyles = css`
   :host {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    position: relative;
     box-sizing: border-box;
     height: 100%;
-    padding-top: var(--vaadin-app-layout-navbar-offset-top);
-    padding-bottom: var(--vaadin-app-layout-navbar-offset-bottom);
-    padding-left: var(--vaadin-app-layout-navbar-offset-left);
     transition: padding var(--vaadin-app-layout-transition);
     --vaadin-app-layout-transition: 200ms;
     --vaadin-app-layout-navbar-offset-top: var(--_vaadin-app-layout-navbar-offset-size);
@@ -37,13 +36,9 @@ export const appLayoutStyles = css`
     -webkit-overflow-scrolling: touch;
   }
 
-  [part='content'] {
-    height: 100%;
-  }
-
-  [part='navbar'],
-  [part='navbar']::before {
-    position: fixed;
+  /* navbar */
+  [part~='navbar'] {
+    position: sticky;
     display: flex;
     align-items: center;
     top: 0;
@@ -56,27 +51,25 @@ export const appLayoutStyles = css`
     z-index: 1;
   }
 
-  :host([primary-section='drawer'][drawer-opened]:not([overlay])) [part='navbar'] {
-    left: var(--vaadin-app-layout-drawer-offset-left, 0);
+  [part~='navbar']::before {
+    display: block;
+    content: '';
   }
 
-  :host([primary-section='drawer']) [part='drawer'] {
-    top: 0;
-  }
-
-  [part='navbar'][bottom] {
+  [part~='navbar'][part~='bottom'] {
     top: auto;
     bottom: 0;
     padding-bottom: var(--safe-area-inset-bottom);
   }
 
+  /* drawer */
   [part='drawer'] {
-    position: fixed;
+    position: absolute;
     top: var(--vaadin-app-layout-navbar-offset-top, 0);
     right: auto;
     bottom: var(--vaadin-app-layout-navbar-offset-bottom, var(--vaadin-viewport-offset-bottom, 0));
     left: var(--vaadin-app-layout-navbar-offset-left, 0);
-    transition: transform var(--vaadin-app-layout-transition);
+    transition: transform var(--vaadin-app-layout-transition), top var(--vaadin-app-layout-transition);
     transform: translateX(-100%);
     max-width: 90%;
     width: 16em;
@@ -90,6 +83,7 @@ export const appLayoutStyles = css`
     touch-action: manipulation;
   }
 
+  /* backdrop */
   [part='backdrop'] {
     background-color: #000;
     opacity: 0.3;
@@ -100,7 +94,7 @@ export const appLayoutStyles = css`
   }
 
   :host([overlay]) [part='backdrop'] {
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
@@ -126,7 +120,29 @@ export const appLayoutStyles = css`
     touch-action: manipulation;
   }
 
-  :host([drawer-opened]:not([overlay])) {
+  /* content */
+  [part='content'] {
+    flex-grow: 1;
+    transition: padding var(--vaadin-app-layout-transition);
+  }
+
+  :host([drawer-opened]:not([overlay]):not([primary-section='drawer'])) [part='content'] {
     padding-left: var(--vaadin-app-layout-drawer-offset-left);
   }
+
+  /* primary drawer */
+  :host([primary-section='drawer']) {
+    transition: padding var(--vaadin-app-layout-transition);
+  }
+
+  :host([primary-section='drawer'][drawer-opened]:not([overlay])) {
+    padding-left: var(--vaadin-app-layout-drawer-offset-left);
+  }
+
+  :host([primary-section='drawer']) [part='drawer'] {
+    top: 0;
+    bottom: 0;
+  }
+
+  /* TODO: add RTL support */
 `;
