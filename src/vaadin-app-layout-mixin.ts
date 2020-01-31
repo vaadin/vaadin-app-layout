@@ -13,19 +13,14 @@ export interface AppLayoutInterface {
   primarySection: string;
 
   touchOptimized: boolean | null | undefined;
+
+  overlay: boolean | null | undefined;
 }
 
 export const AppLayoutMixin = <T extends Constructor<LitElement>>(
   base: T
 ): T & Constructor<LitElement & AppLayoutInterface & ResizableClass> => {
   class AppLayout extends MediaQueryMixin(ResizableMixin(base)) {
-    /**
-     * Helper static method that dispatches a `close-overlay-drawer` event
-     */
-    public static dispatchCloseOverlayDrawerEvent() {
-      window.dispatchEvent(new CustomEvent('close-overlay-drawer'));
-    }
-
     /**
      * Controls whether the drawer is opened (visible) or not.
      *
@@ -59,7 +54,7 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
      * TODO: expose media query as custom CSS property.
      */
     @mediaProperty({ media: '(pointer: coarse) and (max-width: 800px) and (min-height: 500px)' })
-    protected touch: boolean | null | undefined;
+    protected _touch: boolean | null | undefined;
 
     @query('[part="drawer"]')
     protected _drawer!: HTMLElement;
@@ -140,7 +135,7 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
 
       // Allow user to override "touch-optimized"
       if (props.has('touchOptimized')) {
-        if (this.touchOptimized && !this.touch) {
+        if (this.touchOptimized && !this._touch) {
           // property set by the user
           this._forceTouch = true;
         } else if (!this.touchOptimized && this._forceTouch) {
@@ -149,8 +144,8 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
         }
       }
 
-      if (props.has('touch') && !this._forceTouch) {
-        this.touchOptimized = this.touch;
+      if (props.has('_touch') && !this._forceTouch) {
+        this.touchOptimized = this._touch;
       }
 
       if (props.has('overlay')) {
@@ -185,6 +180,14 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
 
       if (props.has('touchOptimized')) {
         this._updateTouchOptimizedMode();
+
+        this.dispatchEvent(
+          new CustomEvent('touch-optimized-changed', {
+            detail: {
+              value: this.touchOptimized
+            }
+          })
+        );
       }
     }
 

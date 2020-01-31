@@ -13,6 +13,13 @@ export class VaadinAppLayout extends AppLayoutMixin(AppLayoutBase) {
   static get version() {
     return '2.0.4';
   }
+
+  /**
+   * Helper method that dispatches a `close-overlay-drawer` event.
+   */
+  static dispatchCloseOverlayDrawerEvent() {
+    window.dispatchEvent(new CustomEvent('close-overlay-drawer'));
+  }
 }
 
 declare global {
