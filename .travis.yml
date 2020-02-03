@@ -9,7 +9,13 @@ addons:
 
 script:
 
-- npm run check:version
+- if [[ "$TRAVIS_EVENT_TYPE" != "pull_request" ]]; then
+    npm run test:sauce;
+  else
+    npm run check:version &&
+    npm run lint &&
+    npm test;
+  fi
 
 after_success:
   - "cat ${TRAVIS_BUILD_DIR}/coverage/lcov.info | coveralls"
