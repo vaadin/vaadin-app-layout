@@ -64,7 +64,7 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
     @query('[part="navbar"]')
     protected _navbar!: HTMLElement;
 
-    @query('[part~="navbar"][part~="bottom"]')
+    @query('[part~="navbar-bottom"]')
     protected _navbarBottom!: HTMLElement;
 
     private _boundDrawerToggleClick: EventListener = this._onDrawerToggleClick.bind(this);
@@ -93,7 +93,7 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
         <div part="content">
           <slot></slot>
         </div>
-        <div part="navbar bottom" ?hidden="${!this.touchOptimized}">
+        <div part="navbar navbar-bottom" ?hidden="${!this.touchOptimized}">
           <slot name="navbar-bottom"></slot>
         </div>
       `;

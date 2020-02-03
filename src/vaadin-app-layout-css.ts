@@ -51,7 +51,7 @@ export const appLayoutStyles = css`
     content: '';
   }
 
-  [part~='navbar'][part~='bottom'] {
+  [part~='navbar'][part~='navbar-bottom'] {
     top: auto;
     bottom: 0;
     padding-bottom: var(--safe-area-inset-bottom);
