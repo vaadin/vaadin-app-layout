@@ -76,6 +76,8 @@ export const appLayoutStyles = css`
     box-sizing: border-box;
     padding: var(--safe-area-inset-top) 0 var(--safe-area-inset-bottom) var(--safe-area-inset-left);
     outline: none;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   :host([drawer-opened]) [part='drawer'] {
