@@ -31,11 +31,6 @@ export const appLayoutStyles = css`
     --vaadin-app-layout-navbar-offset-left: 0;
   }
 
-  :host(:not([no-scroll])) [part='content'] {
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
   /* navbar */
   [part~='navbar'] {
     position: sticky;
@@ -126,6 +121,8 @@ export const appLayoutStyles = css`
   [part='content'] {
     flex-grow: 1;
     transition: padding var(--vaadin-app-layout-transition);
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   :host([drawer-opened]:not([overlay]):not([primary-section='drawer'])) [part='content'] {
