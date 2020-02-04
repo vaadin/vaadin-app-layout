@@ -99,6 +99,16 @@ describe('app-layout', () => {
       expect(layout.primarySection).to.be.equal('navbar');
     });
 
+    it('should fire "drawer-opened-changed" event when opening drawer', async () => {
+      layout.drawerOpened = false;
+      await layout.updateComplete;
+      const spy = sinon.spy();
+      layout.addEventListener('drawer-opened-changed', spy);
+      layout.drawerOpened = true;
+      await layout.updateComplete;
+      expect(spy).to.be.calledOnce;
+    });
+
     it('should have overflow on the drawer part to allow vertical content scroll', async () => {
       layout.drawerOpened = true;
       await layout.updateComplete;
