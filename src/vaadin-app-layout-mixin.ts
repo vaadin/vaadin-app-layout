@@ -172,12 +172,22 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
         this.toggleAttribute('overlay', Boolean(this.overlay));
       }
 
-      if (props.has('drawerOpened') && this.drawerOpened) {
-        this._updateOffsetSize();
+      if (props.has('drawerOpened')) {
+        if (this.drawerOpened) {
+          this._updateOffsetSize();
 
-        if (this.overlay) {
-          this._drawer.focus();
+          if (this.overlay) {
+            this._drawer.focus();
+          }
         }
+
+        this.dispatchEvent(
+          new CustomEvent('drawer-opened-changed', {
+            detail: {
+              value: this.drawerOpened
+            }
+          })
+        );
       }
 
       if (props.has('touchOptimized')) {
