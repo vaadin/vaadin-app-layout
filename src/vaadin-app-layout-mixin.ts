@@ -209,6 +209,16 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
           })
         );
       }
+
+      if (props.has('primarySection')) {
+        this.dispatchEvent(
+          new CustomEvent('primary-section-changed', {
+            detail: {
+              value: this.primarySection
+            }
+          })
+        );
+      }
     }
 
     protected _sizeChanged(contentRect: DOMRect) {
