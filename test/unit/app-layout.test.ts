@@ -57,6 +57,28 @@ describe('app-layout', () => {
     });
   });
 
+  describe('primarySection', () => {
+    beforeEach(async () => {
+      layout = await fixture(html`
+        <vaadin-app-layout></vaadin-app-layout>
+      `);
+    });
+
+    it('should fire "primary-section-changed" event when property changes', async () => {
+      const spy = sinon.spy();
+      layout.addEventListener('primary-section-changed', spy);
+      layout.primarySection = 'drawer';
+      await layout.updateComplete;
+      expect(spy).to.be.calledOnce;
+    });
+
+    it('should fallback to navbar if invalid "primarySection" is set', async () => {
+      layout.primarySection = 'foobar';
+      await layout.updateComplete;
+      expect(layout.primarySection).to.be.equal('navbar');
+    });
+  });
+
   describe('drawer', () => {
     let drawer: Element;
 
@@ -91,12 +113,6 @@ describe('app-layout', () => {
       toggle.click();
       await layout.updateComplete;
       expect(layout.drawerOpened).to.be.not.equal(currentDrawerState);
-    });
-
-    it('should fallback to navbar if invalid "primarySection" is set', async () => {
-      layout.primarySection = 'foobar';
-      await layout.updateComplete;
-      expect(layout.primarySection).to.be.equal('navbar');
     });
 
     it('should fire "drawer-opened-changed" event when opening drawer', async () => {
