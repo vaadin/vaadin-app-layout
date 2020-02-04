@@ -17,6 +17,8 @@ export interface AppLayoutInterface {
   overlay: boolean | null | undefined;
 }
 
+const CSS_PREFIX = '--_vaadin-app-layout';
+
 export const AppLayoutMixin = <T extends Constructor<LitElement>>(
   base: T
 ): T & Constructor<LitElement & AppLayoutInterface & ResizableClass> => {
@@ -226,7 +228,7 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
     }
 
     private _setOffsetSize(part: string, value: number) {
-      this.style.setProperty(`--_vaadin-app-layout-${part}-offset-size`, `${value}px`);
+      this.style.setProperty(`${CSS_PREFIX}-${part}-offset-size`, `${value}px`);
     }
 
     private _updateDrawerSize(slot: HTMLSlotElement) {
@@ -239,6 +241,7 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
       this._setOffsetSize('navbar', this._navbar.getBoundingClientRect().height);
       this._setOffsetSize('navbar-bottom', this._navbarBottom.getBoundingClientRect().height);
       this._setOffsetSize('drawer', this._drawer.getBoundingClientRect().width);
+      this.style.setProperty(`${CSS_PREFIX}-drawer-scroll-size`, `${this._drawer.scrollHeight}px`);
     }
 
     private _updateTouchOptimizedMode() {
