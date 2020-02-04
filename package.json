@@ -40,7 +40,7 @@
     ]
   },
   "scripts": {
-    "analyze": "wca analyze src/vaadin-*.ts --format json --outFile custom-elements.json",
+    "analyze": "wca analyze src/vaadin-app-layout.ts --format json --outFile custom-elements.json",
     "build": "tsc && replace-in-file \"/(import|from)( '[.]+/)(.*)(?<!.js)(';)/g\" \"\\$1\\$2\\$3.js\\$4\" vaadin-*.{js,d.ts},src/*.{js,d.ts},theme/**/*.{js,d.ts} --isRegex --verbose",
     "dist": "rimraf dist && npm run analyze && npm run build && rollup -c rollup.config.js && cp custom-elements.json dist",
     "check:version": "magi check-version",

@@ -19,6 +19,8 @@ export interface AppLayoutInterface {
 
 const CSS_PREFIX = '--_vaadin-app-layout';
 
+// TODO: align media queries and expose as custom CSS properties
+
 export const AppLayoutMixin = <T extends Constructor<LitElement>>(
   base: T
 ): T & Constructor<LitElement & AppLayoutInterface & ResizableClass> => {
@@ -35,26 +37,30 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
 
     /**
      * Defines whether navbar or drawer will come first visually.
-     * - if `navbar` is set, then the navbar takes full available width and moves the drawer down.
-     * - if `drawer` is set, then the drawer will move the navbar, taking the full available height.
+     * - if `navbar` is set, the navbar takes full available width and moves the drawer down.
+     * - if `drawer` is set, the drawer will move the navbar, taking the full available height.
      */
     @property({ type: String, attribute: 'primary-section', reflect: true })
     primarySection = 'navbar';
 
+    /**
+     * Controls whether the top or bottom navbar is visible.
+     *
+     * Default value depends on the viewport:
+     * - `true`, for desktop size views
+     * - `false`, for mobile size views
+     *
+     * If set to `true`, bottom navbar also shows on desktop.
+     */
     @property({ type: Boolean, attribute: 'touch-optimized', reflect: true })
     touchOptimized: boolean | null | undefined = false;
 
     /**
      * When true, drawer shows an overlay on top of the content.
-     *
-     * TODO: expose media query as custom CSS property.
      */
     @mediaProperty({ media: '(max-width: 800px), (max-height: 600px)' })
     overlay: boolean | null | undefined;
 
-    /**
-     * TODO: expose media query as custom CSS property.
-     */
     @mediaProperty({ media: '(pointer: coarse) and (max-width: 800px) and (min-height: 500px)' })
     protected _touch: boolean | null | undefined;
 
