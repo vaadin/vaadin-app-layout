@@ -170,6 +170,14 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
 
       if (props.has('overlay')) {
         this.toggleAttribute('overlay', Boolean(this.overlay));
+
+        this.dispatchEvent(
+          new CustomEvent('overlay-changed', {
+            detail: {
+              value: this.overlay
+            }
+          })
+        );
       }
 
       if (props.has('drawerOpened')) {

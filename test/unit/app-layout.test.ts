@@ -186,6 +186,17 @@ describe('app-layout', () => {
         await layout.updateComplete;
         expect(layout.overlay).to.be.false;
       });
+
+      it('should fire "overlay-changed" event when changing property', async () => {
+        const spy = sinon.spy();
+        layout.addEventListener('overlay-changed', spy);
+        matchMedia(OVERLAY, true);
+        await layout.updateComplete;
+        expect(spy).to.be.calledOnce;
+        matchMedia(OVERLAY, false);
+        await layout.updateComplete;
+        expect(spy).to.be.calledTwice;
+      });
     });
 
     describe('drawer opening and closing', () => {
