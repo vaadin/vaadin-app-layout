@@ -65,7 +65,11 @@ describe('app-layout', () => {
         <vaadin-app-layout>
           <vaadin-drawer-toggle slot="navbar"></vaadin-drawer-toggle>
           <h2 slot="navbar">App name</h2>
-          <section slot="drawer">Drawer content</section>
+          <section slot="drawer">
+            <p>Item 1</p>
+            <p>Item 2</p>
+            <p>Item 3</p>
+          </section>
           <main>Page content</main>
         </vaadin-app-layout>
       `);
@@ -93,6 +97,32 @@ describe('app-layout', () => {
       layout.primarySection = 'foobar';
       await layout.updateComplete;
       expect(layout.primarySection).to.be.equal('navbar');
+    });
+
+    it('should have overflow on the drawer part to allow vertical content scroll', async () => {
+      layout.drawerOpened = true;
+      await layout.updateComplete;
+      layout.style.height = '150px';
+      await oneEvent(layout, 'resize');
+      expect(drawer.scrollHeight).to.be.greaterThan(drawer.clientHeight);
+    });
+
+    it('should set custom CSS property to scrollHeight when drawer has overflow', async () => {
+      layout.drawerOpened = true;
+      await layout.updateComplete;
+      layout.style.height = '150px';
+      await oneEvent(layout, 'resize');
+      const value = getComputedStyle(layout).getPropertyValue('--_vaadin-app-layout-drawer-scroll-size');
+      expect(value).to.equal(`${drawer.scrollHeight}px`);
+    });
+
+    it('should set custom CSS property to 100% when drawer does not have overflow', async () => {
+      layout.drawerOpened = true;
+      await layout.updateComplete;
+      layout.style.height = '300px';
+      await oneEvent(layout, 'resize');
+      const value = getComputedStyle(layout).getPropertyValue('--_vaadin-app-layout-drawer-scroll-size');
+      expect(value).to.equal('100%');
     });
   });
 

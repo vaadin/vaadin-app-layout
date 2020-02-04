@@ -241,7 +241,13 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
       this._setOffsetSize('navbar', this._navbar.getBoundingClientRect().height);
       this._setOffsetSize('navbar-bottom', this._navbarBottom.getBoundingClientRect().height);
       this._setOffsetSize('drawer', this._drawer.getBoundingClientRect().width);
-      this.style.setProperty(`${CSS_PREFIX}-drawer-scroll-size`, `${this._drawer.scrollHeight}px`);
+      this._updateDrawerHeight();
+    }
+
+    private _updateDrawerHeight() {
+      const { scrollHeight, offsetHeight } = this._drawer;
+      const height = scrollHeight > offsetHeight ? `${this._drawer.scrollHeight}px` : '100%';
+      this.style.setProperty(`${CSS_PREFIX}-drawer-scroll-size`, height);
     }
 
     private _updateTouchOptimizedMode() {
