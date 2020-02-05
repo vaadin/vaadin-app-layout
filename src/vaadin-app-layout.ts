@@ -8,11 +8,20 @@ import { AppLayoutMixin } from './vaadin-app-layout-mixin';
  * into account:
  *
  *  1. add the component to the root level of your application (as a direct child of `<body>`),
- *  2. set `height: 100%` on both `html` and `body` to make the layout expand to full page height,
- *  3. include a viewport meta tag which contains `viewport-fit=cover` to the page as follows:
+ *  2. include a viewport meta tag which contains `viewport-fit=cover` to the page as follows:
  * ```
  * <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
  * ```
+ *
+ * #### Scrolling areas
+ *
+ * By default, the height of layout is defined by its content, and the component acts with the
+ * "body scrolling" so on mobile (iOS Safari and Android Chrome) the toolbars will collapse
+ * when a scroll happens.
+ *
+ * To use the "content scrolling" instead, set `height: 100%` on `html` and `body` to expand the
+ * layout to full document height. That will make the `content` wrapper scrollable. In this case,
+ * the toolbars on mobile device won't collapse.
  *
  * @attr {boolean} overlay - Attribute set when layout has drawer overlay on mobile devices.
  *
