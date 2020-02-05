@@ -1,6 +1,8 @@
 import { customElement } from 'lit-element';
 import { AppLayoutBase } from './vaadin-app-layout-base';
 import { AppLayoutMixin } from './vaadin-app-layout-mixin';
+import './detect-ios-navbar';
+import './safe-area-inset';
 
 /**
  * `<vaadin-app-layout>` is a Web Component providing a quick and easy way to get a common
