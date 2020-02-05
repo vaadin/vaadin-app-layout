@@ -102,6 +102,7 @@ export const appLayoutStyles = css`
   }
 
   :host([overlay]) [part='drawer'] {
+    position: fixed;
     top: 0;
     bottom: 0;
     width: 20em;
