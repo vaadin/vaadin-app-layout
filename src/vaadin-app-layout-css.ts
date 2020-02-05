@@ -52,7 +52,7 @@ export const appLayoutStyles = css`
     content: '';
   }
 
-  [part~='navbar'][part~='navbar-bottom'] {
+  [part~='navbar-bottom'] {
     top: auto;
     bottom: 0;
     padding-bottom: var(--safe-area-inset-bottom);
@@ -112,6 +112,11 @@ export const appLayoutStyles = css`
   :host([overlay]) [part='drawer'],
   :host([overlay]) [part='backdrop'] {
     z-index: 2;
+  }
+
+  :host([overlay]) [part='content'] {
+    padding-left: var(--safe-area-inset-left);
+    padding-right: var(--safe-area-inset-right);
   }
 
   :host([drawer-opened][overlay]) [part='backdrop'] {

@@ -9,9 +9,12 @@ export const appLayoutStyles = css`
   }
 
   [part~='navbar'] {
-    padding: 0.25em 0.5em;
     background: var(--vaadin-app-layout-navbar-background, var(--material-secondary-background-color));
     box-shadow: var(--material-shadow-elevation-8dp);
+  }
+
+  :host(:not([overlay])) [part~='navbar'] {
+    padding: 0.25em 0.5em;
   }
 
   [part='drawer'] {
@@ -35,16 +38,22 @@ export const appLayoutStyles = css`
     margin-bottom: 0.25rem !important;
   }
 
-  [part~='navbar'][part~='navbar-bottom'] {
-    padding: 0 1em;
+  [part~='navbar-bottom'] {
     box-shadow: var(--material-shadow-elevation-4dp);
+  }
+
+  :host(:not([overlay])) [part~='navbar'][part~='navbar-bottom'] {
+    padding: 0 1em;
   }
 
   /* TODO: use mediaProperty instead */
   @media (min-width: 700px) {
     [part~='navbar'] {
-      padding: 0.5em 0.75em;
       box-shadow: var(--material-shadow-elevation-4dp);
+    }
+
+    :host(:not([overlay])) [part~='navbar'] {
+      padding: 0.5em 0.75em;
     }
   }
 `;
