@@ -1,16 +1,20 @@
-export const detectIosNavbar = () => {
-  if (window.navigator.userAgent.match(/iPhone|iPad/i)) {
+/* istanbul ignore file */
+if (window.navigator.userAgent.match(/iPhone|iPad/i)) {
+  const doc = document.documentElement;
+  const prop = '--vaadin-viewport-offset-bottom';
+
+  const detectIosNavbar = () => {
     const { innerHeight, innerWidth } = window;
     const landscape = innerWidth > innerHeight;
-    const { clientHeight } = document.documentElement;
+    const { clientHeight } = doc;
     if (landscape && clientHeight > innerHeight) {
-      document.documentElement.style.setProperty('--vaadin-viewport-offset-bottom', `${clientHeight - innerHeight}px`);
+      doc.style.setProperty(prop, `${clientHeight - innerHeight}px`);
     } else {
-      document.documentElement.style.setProperty('--vaadin-viewport-offset-bottom', '');
+      doc.style.setProperty(prop, '');
     }
-  }
-};
+  };
 
-detectIosNavbar();
+  detectIosNavbar();
 
-window.addEventListener('resize', detectIosNavbar);
+  window.addEventListener('resize', detectIosNavbar);
+}
