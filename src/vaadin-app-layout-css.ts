@@ -36,6 +36,7 @@ export const appLayoutStyles = css`
     position: sticky;
     display: flex;
     align-items: center;
+    flex-shrink: 0;
     top: 0;
     right: 0;
     left: 0;
