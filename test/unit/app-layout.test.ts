@@ -6,7 +6,7 @@ import {
   nextFrame,
   oneEvent
 } from '@vaadin/vaadin-component-dev-dependencies/testing.js';
-import { matchMedia, restoreMatchMedia } from './match-media';
+import { matchMedia, restoreMatchMedia } from '@vaadin/vaadin-component-dev-dependencies/media.js';
 import { VaadinAppLayout } from '../../src/vaadin-app-layout';
 import '../../src/vaadin-drawer-toggle';
 
