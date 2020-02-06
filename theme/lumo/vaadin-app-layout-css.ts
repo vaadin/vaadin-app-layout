@@ -5,6 +5,8 @@ import '@vaadin/vaadin-lumo-styles/typography.js';
 
 export const appLayoutStyles = css`
   [part~='navbar']::before {
+    top: 0;
+    left: 0;
     background: var(--lumo-base-color) linear-gradient(var(--lumo-contrast-5pct), var(--lumo-contrast-5pct));
   }
 
@@ -20,8 +22,6 @@ export const appLayoutStyles = css`
   :host([overlay]) [part='drawer']::before {
     position: absolute;
     content: '';
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     z-index: -1;
