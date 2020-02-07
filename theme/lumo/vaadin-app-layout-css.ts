@@ -25,6 +25,11 @@ export const appLayoutStyles = css`
     z-index: -1;
   }
 
+  :host([overlay]) [part='drawer']::before {
+    background: var(--lumo-base-color);
+    height: var(--_vaadin-app-layout-drawer-scroll-size, 100%);
+  }
+
   [part='backdrop'] {
     background-color: var(--lumo-shade-20pct);
     opacity: 1;
