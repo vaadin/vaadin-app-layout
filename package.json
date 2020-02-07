@@ -76,7 +76,7 @@
     "tslib": "^1.10.0"
   },
   "devDependencies": {
-    "@vaadin/vaadin-tabs": "4.0.0-alpha1",
+    "@vaadin/vaadin-tabs": "4.0.0-alpha2",
     "@vaadin/vaadin-component-dev-dependencies": "^4.8.0"
   }
 }
