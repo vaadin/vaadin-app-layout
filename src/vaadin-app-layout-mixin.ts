@@ -81,6 +81,12 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
           <slot name="navbar"></slot>
         </div>
         <div part="backdrop" @click="${this._close}" @touchstart="${this._close}"></div>
+        <div part="content">
+          <slot></slot>
+        </div>
+        <div part="navbar navbar-bottom" ?hidden="${!this.touchOptimized}">
+          <slot name="navbar-bottom"></slot>
+        </div>
         <div
           part="drawer"
           tabindex="${ifDefined(this.overlay && this.drawerOpened ? '0' : undefined)}"
@@ -89,12 +95,6 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
           aria-modal="${ifDefined(this.overlay ? 'true' : undefined)}"
         >
           <slot name="drawer"></slot>
-        </div>
-        <div part="content">
-          <slot></slot>
-        </div>
-        <div part="navbar navbar-bottom" ?hidden="${!this.touchOptimized}">
-          <slot name="navbar-bottom"></slot>
         </div>
       `;
     }
