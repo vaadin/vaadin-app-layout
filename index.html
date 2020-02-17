@@ -2,13 +2,46 @@
 
 <html>
   <head>
-    <title>vaadin-app-layout</title>
+    <title>&lt;vaadin-app-layout&gt;</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="../webcomponentsjs/webcomponents-lite.js"></script>
-    <link rel="import" href="../iron-component-page/iron-component-page.html">
+    <style>
+      body {
+        margin: 0;
+      }
+
+      api-viewer {
+        margin: 1rem auto;
+      }
+
+      api-viewer::part(demo-output) {
+        padding: 0;
+      }
+
+      @media(max-width: 799px) {
+        api-viewer {
+          margin: 0;
+        }
+      }
+    </style>
   </head>
   <body>
-    <iron-component-page src="vaadin-app-layout.html"></iron-component-page>
+    <api-viewer src="custom-elements.json">
+      <template data-element="vaadin-app-layout" data-target="host">
+        <vaadin-app-layout style="min-height: 200px; overflow: hidden"></vaadin-app-layout>
+      </template>
+      <template data-element="vaadin-app-layout" data-target="slot">
+        <vaadin-drawer-toggle slot="navbar touch-optimized"></vaadin-drawer-toggle>
+        <p slot="navbar touch-optimized">App name</p>
+        <section slot="drawer">Drawer content</section>
+        <main>Page content</main>
+      </template>
+    </api-viewer>
+
+    <script type="module" src="./vaadin-app-layout.ts"></script>
+    <script type="module" src="./vaadin-drawer-toggle.ts"></script>
+    <script type="module">
+      import 'api-viewer-element';
+    </script>
   </body>
 </html>
