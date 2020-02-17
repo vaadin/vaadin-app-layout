@@ -50,7 +50,7 @@ export class VaadinAppLayout extends AppLayoutMixin(AppLayoutBase) {
   static is = 'vaadin-app-layout';
 
   static get version() {
-    return '2.0.4';
+    return '3.0.0-alpha1';
   }
 
   /**
