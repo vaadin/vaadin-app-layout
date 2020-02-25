@@ -358,7 +358,11 @@ This program is available under Apache License Version 2.0, available at https:/
 
           this._updateTouchOptimizedMode();
 
-          this._navbarChildObserver = new Polymer.FlattenedNodesObserver(this.$.drawerSlot, (info) => {
+          this._navbarChildObserver = new Polymer.FlattenedNodesObserver(this.$.navbarTop, (info) => {
+            this._updateTouchOptimizedMode();
+          });
+
+          this._drawerChildObserver = new Polymer.FlattenedNodesObserver(this.$.drawerSlot, (info) => {
             this._updateDrawerSize();
           });
           this._updateDrawerSize();
@@ -374,6 +378,7 @@ This program is available under Apache License Version 2.0, available at https:/
           super.disconnectedCallback();
 
           this._navbarChildObserver && this._navbarChildObserver.disconnect();
+          this._drawerChildObserver && this._drawerChildObserver.disconnect();
           window.removeEventListener('resize', this.__boundResizeListener);
           this.removeEventListener('drawer-toggle-click', this.__drawerToggleClickListener);
           this.removeEventListener('close-overlay-drawer', this.__drawerToggleClickListener);
