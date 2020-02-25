@@ -176,6 +176,7 @@ This program is available under Apache License Version 2.0, available at https:/
     <div part="navbar" id="navbarBottom" bottom hidden>
       <slot name="navbar-bottom"></slot>
     </div>
+    <div hidden><slot id="touchSlot" name="navbar touch-optimized"></slot></div>
   </template>
   <script>
     (function() {
@@ -358,7 +359,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
           this._updateTouchOptimizedMode();
 
-          this._navbarChildObserver = new Polymer.FlattenedNodesObserver(this.$.navbarTop, (info) => {
+          this._navbarChildObserver = new Polymer.FlattenedNodesObserver(this.$.touchSlot, (info) => {
             this._updateTouchOptimizedMode();
           });
 

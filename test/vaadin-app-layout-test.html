@@ -27,12 +27,6 @@
     </template>
   </test-fixture>
 
-  <test-fixture id="empty">
-    <template>
-      <vaadin-app-layout></vaadin-app-layout>
-    </template>
-  </test-fixture>
-
   <script>
     describe('basic test', function() {
 
@@ -166,28 +160,6 @@
         layout._updateOverlayMode();
         expect(layout.drawerOpened).to.be.true;
         window.ShadyCSS.styleSubtree(layout, {'--vaadin-app-layout-drawer-overlay': null});
-      });
-    });
-
-    describe('empty layout', () => {
-      let layout;
-
-      beforeEach(() => {
-        layout = fixture('empty');
-      });
-
-      it('should update touch optimized mode when adding node dynamically', done => {
-        // force touch-optimized=true to use bottom navbar
-        window.ShadyCSS.styleSubtree(layout, {'--vaadin-app-layout-touch-optimized': 'true'});
-        const toggle = document.createElement('vaadin-drawer-toggle');
-        toggle.setAttribute('slot', 'navbar touch-optimized');
-        layout.appendChild(toggle);
-        window.ShadyDOM && window.ShadyDOM.flush();
-
-        setTimeout(() => {
-          expect(toggle.getAttribute('slot')).to.equal('navbar-bottom');
-          done();
-        });
       });
     });
   </script>
