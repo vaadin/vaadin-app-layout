@@ -53,6 +53,30 @@
           done();
         });
       });
+
+      it('should make node visible when adding to "navbar touch-optimized" slot', done => {
+        // force touch-optimized=true to use bottom navbar
+        window.ShadyCSS.styleSubtree(layout, {'--vaadin-app-layout-touch-optimized': 'true'});
+        const toggle = document.createElement('vaadin-drawer-toggle');
+        toggle.setAttribute('slot', 'navbar touch-optimized');
+        layout.appendChild(toggle);
+
+        Polymer.RenderStatus.afterNextRender(toggle, () => {
+          expect(toggle.offsetHeight).to.be.greaterThan(0);
+          done();
+        });
+      });
+
+      it('should make node visible when adding to "navbar" slot dynamically', done => {
+        const toggle = document.createElement('vaadin-drawer-toggle');
+        toggle.setAttribute('slot', 'navbar');
+        layout.appendChild(toggle);
+
+        Polymer.RenderStatus.afterNextRender(toggle, () => {
+          expect(toggle.offsetHeight).to.be.greaterThan(0);
+          done();
+        });
+      });
     });
   </script>
 </body>
