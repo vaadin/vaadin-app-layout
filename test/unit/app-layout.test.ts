@@ -427,6 +427,32 @@ describe('app-layout', () => {
     });
   });
 
+  describe('dynamic nodes', () => {
+    beforeEach(async () => {
+      layout = await fixture(html`
+        <vaadin-app-layout></vaadin-app-layout>
+      `);
+    });
+
+    it('should make toggle visible when adding to "navbar touch-optimized" slot', async () => {
+      const toggle = document.createElement('vaadin-drawer-toggle');
+      toggle.setAttribute('slot', 'navbar touch-optimized');
+      layout.appendChild(toggle);
+      await toggle.updateComplete;
+      await nextFrame();
+      expect(toggle.offsetHeight).to.be.greaterThan(0);
+    });
+
+    it('should make toggle visible when adding to "navbar" slot', async () => {
+      const toggle = document.createElement('vaadin-drawer-toggle');
+      toggle.setAttribute('slot', 'navbar');
+      layout.appendChild(toggle);
+      await toggle.updateComplete;
+      await nextFrame();
+      expect(toggle.offsetHeight).to.be.greaterThan(0);
+    });
+  });
+
   after(() => {
     restoreMatchMedia();
   });
