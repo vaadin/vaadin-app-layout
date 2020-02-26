@@ -81,10 +81,12 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
 
     private _drawerStateSaved: boolean | null | undefined;
 
+    private _moveChildren = false;
+
     protected render() {
       return html`
         <div part="navbar">
-          <slot name="navbar"></slot>
+          <slot name="navbar" @slotchange="${this._onNavbarSlotChange}"></slot>
         </div>
         <div part="backdrop" @click="${this._close}" @touchstart="${this._close}"></div>
         <div part="content">
@@ -101,6 +103,9 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
           aria-modal="${ifDefined(this.overlay ? 'true' : undefined)}"
         >
           <slot name="drawer"></slot>
+        </div>
+        <div hidden>
+          <slot name="navbar touch-optimized" @slotchange="${this._onTouchSlotChange}"></slot>
         </div>
       `;
     }
@@ -259,6 +264,23 @@ export const AppLayoutMixin = <T extends Constructor<LitElement>>(
       event.stopPropagation();
 
       this.drawerOpened = !this.drawerOpened;
+    }
+
+    private _onNavbarSlotChange() {
+      if (!this._moveChildren) {
+        this._updateTouchOptimizedMode();
+      }
+    }
+
+    private _onTouchSlotChange() {
+      // Handle "navbar touch-optimized" slotchange event (move children)
+      // and set a flag to avoid doing that again for "navbar" slotchange
+      this._moveChildren = true;
+      this._updateTouchOptimizedMode();
+
+      window.requestAnimationFrame(() => {
+        this._moveChildren = false;
+      });
     }
 
     private _setOffsetSize(part: string, value: number) {
