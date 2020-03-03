@@ -31,7 +31,7 @@ import './safe-area-inset';
  * }
  * ```
  * This will make the `content` wrapper scrollable. In this case, the toolbars on mobile device
- * won't collapse. It is necessary to wrap the style rule in a `@media screen` query otherwise 
+ * won't collapse. It is necessary to wrap the style rule in a `@media screen` query otherwise
  * printing content across multiple pages will be affected.
  *
  * @attr {boolean} overlay - Attribute set when layout has drawer overlay on mobile devices.
