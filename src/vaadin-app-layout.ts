@@ -22,8 +22,17 @@ import './safe-area-inset';
  * when a scroll happens.
  *
  * To use the "content scrolling" instead, set `height: 100%` on `html` and `body` to expand the
- * layout to full document height. That will make the `content` wrapper scrollable. In this case,
- * the toolbars on mobile device won't collapse.
+ * layout to full document height as follows:
+ * ```
+ * @media screen {
+ *   html, body {
+ *     height: 100%;
+ *   }
+ * }
+ * ```
+ * This will make the `content` wrapper scrollable. In this case, the toolbars on mobile device
+ * won't collapse. It is necessary to wrap the style rule in a `@media screen` query otherwise 
+ * printing content across multiple pages will be affected.
  *
  * @attr {boolean} overlay - Attribute set when layout has drawer overlay on mobile devices.
  *
