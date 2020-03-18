@@ -60,13 +60,13 @@
     "test:visual": "npm run build && gemini test test/visual"
   },
   "dependencies": {
-    "@vaadin/active-state-mixin": "^0.1.2",
-    "@vaadin/control-state-mixin": "^0.1.4",
-    "@vaadin/disabled-state-mixin": "^0.1.0",
-    "@vaadin/focus-visible-mixin": "^0.1.2",
+    "@vaadin/active-state-mixin": "^0.1.5",
+    "@vaadin/control-state-mixin": "^0.1.5",
+    "@vaadin/disabled-state-mixin": "^0.1.1",
+    "@vaadin/focus-visible-mixin": "^0.1.3",
     "@vaadin/element-base": "^0.2.0",
-    "@vaadin/media-query-mixin": "^0.1.1",
-    "@vaadin/resizable-mixin": "^0.1.0",
+    "@vaadin/media-query-mixin": "^0.1.2",
+    "@vaadin/resizable-mixin": "^0.1.1",
     "@vaadin/themable-element": "^0.1.2",
     "@vaadin/vaadin-lumo-styles": "^1.6.0",
     "@vaadin/vaadin-material-styles": "^1.3.2",
@@ -77,6 +77,6 @@
   },
   "devDependencies": {
     "@vaadin/vaadin-tabs": "4.0.0-alpha2",
-    "@vaadin/vaadin-component-dev-dependencies": "^4.8.0"
+    "@vaadin/vaadin-component-dev-dependencies": "^4.9.0"
   }
 }
