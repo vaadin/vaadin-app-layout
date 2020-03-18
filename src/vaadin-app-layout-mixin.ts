@@ -1,11 +1,9 @@
 import { LitElement, html, property, query, PropertyValues } from 'lit-element';
+import { Constructor } from '@vaadin/mixin-utils';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { MediaQueryMixin, mediaProperty } from '@vaadin/media-query-mixin';
 import { ResizableMixin } from '@vaadin/resizable-mixin';
 import { ResizableClass } from '@vaadin/resizable-mixin/resizable-class.js';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Constructor<T = object> = new (...args: any[]) => T;
 
 export interface AppLayoutInterface {
   drawerOpened: boolean | null | undefined;
@@ -23,7 +21,7 @@ const CSS_PREFIX = '--_vaadin-app-layout';
 
 export const AppLayoutMixin = <T extends Constructor<LitElement>>(
   base: T
-): T & Constructor<LitElement & AppLayoutInterface & ResizableClass> => {
+): T & Constructor<AppLayoutInterface & ResizableClass> => {
   class AppLayout extends MediaQueryMixin(ResizableMixin(base)) {
     /**
      * Controls whether the drawer is opened (visible) or not.

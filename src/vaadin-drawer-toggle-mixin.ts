@@ -1,14 +1,12 @@
 import { LitElement, html, property, PropertyValues } from 'lit-element';
+import { Constructor } from '@vaadin/mixin-utils';
 import { ActiveStateMixin } from '@vaadin/active-state-mixin/active-state-mixin.js';
 import { ActiveStateClass } from '@vaadin/active-state-mixin/active-state-class.js';
 import { ControlStateMixin, ControlStateInterface } from '@vaadin/control-state-mixin/control-state-mixin.js';
 import { DisabledStateMixin, DisabledStateInterface } from '@vaadin/disabled-state-mixin/disabled-state-mixin.js';
 import { FocusVisibleMixin, FocusVisibleInterface } from '@vaadin/focus-visible-mixin/focus-visible-mixin.js';
 
-type DrawerToggleBase = new () => LitElement;
-
-type DrawerToggle = new () => LitElement &
-  DisabledStateInterface &
+export type DrawerToggle = DisabledStateInterface &
   FocusVisibleInterface &
   ActiveStateClass &
   ControlStateInterface &
@@ -18,7 +16,7 @@ export interface DrawerToggleInterface {
   ariaLabel: string;
 }
 
-export const DrawerToggleMixin = <T extends DrawerToggleBase>(base: T): DrawerToggle => {
+export const DrawerToggleMixin = <T extends Constructor<LitElement>>(base: T): T & Constructor<DrawerToggle> => {
   class DrawerToggle extends ControlStateMixin(FocusVisibleMixin(ActiveStateMixin(DisabledStateMixin(base)))) {
     @property({ type: String, attribute: 'aria-label' }) ariaLabel = 'Toggle';
 
