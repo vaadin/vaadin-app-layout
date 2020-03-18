@@ -60,6 +60,7 @@
   },
   "dependencies": {
     "@vaadin/active-state-mixin": "^0.1.5",
+    "@vaadin/browser-utils": "^0.1.0",
     "@vaadin/control-state-mixin": "^0.1.5",
     "@vaadin/disabled-state-mixin": "^0.1.1",
     "@vaadin/focus-visible-mixin": "^0.1.3",
