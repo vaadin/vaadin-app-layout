@@ -1,47 +1,47 @@
-gemini.suite('vaadin-app-layout', rootSuite => {
-  function wait(actions, find) {
-    return actions.waitForJSCondition(window => {
-      return window.webComponentsAreReady;
-    }, 80000);
-  }
-
-  rootSuite.before(wait);
+describe('vaadin-app-layout', () => {
+  const locator = 'vaadin-app-layout[data-ready]';
 
   ['lumo', 'lumo-dark', 'material'].forEach(theme => {
-    gemini.suite(`drawer-${theme}`, suite => {
-      suite
-        .setUrl(`drawer.html?theme=${theme}`)
-        .setCaptureElements('vaadin-app-layout')
-        .capture('default')
-        .capture('touch-optimized', actions => {
-          actions.executeJS(window => {
-            window.document.querySelector('vaadin-app-layout').setAttribute('touch-optimized', '');
-          });
-        });
+    it(`${theme}-drawer`, function() {
+      return this.browser
+        .url(`drawer.html?theme=${theme}`)
+        .waitForVisible(locator, 15000)
+        .assertView(`${theme}-drawer`, locator);
     });
 
-    gemini.suite(`primary-drawer-${theme}`, suite => {
-      suite
-        .setUrl(`primary-drawer.html?theme=${theme}`)
-        .setCaptureElements('vaadin-app-layout')
-        .capture('default')
-        .capture('touch-optimized', actions => {
-          actions.executeJS(window => {
-            window.document.querySelector('vaadin-app-layout').setAttribute('touch-optimized', '');
-          });
-        });
+    it(`${theme}-drawer-touch`, function() {
+      return this.browser
+        .url(`drawer.html?theme=${theme}&touch=true`)
+        .waitForVisible(locator, 15000)
+        .assertView(`${theme}-drawer-touch`, locator);
     });
 
-    gemini.suite(`tabs-${theme}`, suite => {
-      suite
-        .setUrl(`tabs.html?theme=${theme}`)
-        .setCaptureElements('vaadin-app-layout')
-        .capture('default')
-        .capture('touch-optimized', actions => {
-          actions.executeJS(window => {
-            window.document.querySelector('vaadin-app-layout').setAttribute('touch-optimized', '');
-          });
-        });
+    it(`${theme}-primary-drawer`, function() {
+      return this.browser
+        .url(`primary-drawer.html?theme=${theme}`)
+        .waitForVisible(locator, 15000)
+        .assertView(`${theme}-primary-drawer`, locator);
+    });
+
+    it(`${theme}-primary-drawer-touch`, function() {
+      return this.browser
+        .url(`primary-drawer.html?theme=${theme}&touch=true`)
+        .waitForVisible(locator, 15000)
+        .assertView(`${theme}-primary-drawer-touch`, locator);
+    });
+
+    it(`${theme}-tabs`, function() {
+      return this.browser
+        .url(`tabs.html?theme=${theme}`)
+        .waitForVisible(locator, 15000)
+        .assertView(`${theme}-tabs`, locator);
+    });
+
+    it(`${theme}-tabs-touch`, function() {
+      return this.browser
+        .url(`tabs.html?theme=${theme}&touch=true`)
+        .waitForVisible(locator, 15000)
+        .assertView(`${theme}-tabs-touch`, locator);
     });
   });
 });

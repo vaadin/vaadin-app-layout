@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Tabs tests</title>
+  <script>
+    window.polymerSkipLoadingFontRoboto = true;
+  </script>
 </head>
 
 <body>
@@ -58,6 +61,7 @@
 
     (async() => {
       const themeQuery = window.location.search.replace(/.*theme=([\w\-]+).*/, '$1') || 'lumo';
+      const touch = window.location.search.replace(/.*touch=(\w+).*/, '$1') || '';
       const [theme, variant] = themeQuery.split('-');
 
       const tabs = document.querySelector('vaadin-tabs');
@@ -85,8 +89,12 @@
         ...Array.from(tabs.children).map(tab => tab.updateComplete)
       ]);
 
+      if (touch === 'true') {
+        layout.setAttribute('touch-optimized', '');
+      }
+
       window.requestAnimationFrame(() => {
-        window.webComponentsAreReady = true;
+        layout.dataset.ready = true;
       });
     })();
   </script>

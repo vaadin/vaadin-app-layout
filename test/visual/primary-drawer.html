@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Primary drawer tests</title>
+  <script>
+    window.polymerSkipLoadingFontRoboto = true;
+  </script>
 </head>
 
 <body>
@@ -34,6 +37,7 @@
 
     (async() => {
       const themeQuery = window.location.search.replace(/.*theme=([\w\-]+).*/, '$1') || 'lumo';
+      const touch = window.location.search.replace(/.*touch=(\w+).*/, '$1') || '';
       const [theme, variant] = themeQuery.split('-');
 
       await Promise.all([
@@ -51,8 +55,13 @@
         document.documentElement.setAttribute('theme', variant);
       }
 
+      const layout = document.querySelector('vaadin-app-layout');
+      if (touch === 'true') {
+        layout.setAttribute('touch-optimized', '');
+      }
+
       window.requestAnimationFrame(() => {
-        window.webComponentsAreReady = true;
+        layout.dataset.ready = true;
       });
     })();
   </script>
