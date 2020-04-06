@@ -19,7 +19,14 @@ export const appLayoutStyles = css`
 
   [part='drawer'] {
     background: var(--material-background-color);
+  }
+
+  :host(:not([dir='rtl'])) [part='drawer'] {
     border-right: 1px solid var(--material-secondary-background-color);
+  }
+
+  :host([dir='rtl']) [part='drawer'] {
+    border-left: 1px solid var(--material-secondary-background-color);
   }
 
   :host([primary-section='drawer']) [part='drawer'] {
