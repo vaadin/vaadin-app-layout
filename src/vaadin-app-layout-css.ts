@@ -158,8 +158,6 @@ export const appLayoutStyles = css`
   }
 
   :host([dir='rtl'][drawer-opened]) [part='drawer'] {
-    left: auto;
-    right: var(--vaadin-app-layout-navbar-offset-start, 0);
     transform: translateX(0%);
   }
 
