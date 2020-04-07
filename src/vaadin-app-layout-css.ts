@@ -157,6 +157,11 @@ export const appLayoutStyles = css`
     transform: translateX(100%);
   }
 
+  :host([dir='rtl']) [part='navbar'],
+  :host([dir='rtl']) [part='navbar']::before {
+    transition: right var(--vaadin-app-layout-transition);
+  }
+
   :host([dir='rtl'][drawer-opened]) [part='drawer'] {
     transform: translateX(0%);
   }

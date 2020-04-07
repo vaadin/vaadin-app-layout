@@ -15,14 +15,13 @@ gemini.suite('vaadin-app-layout', rootSuite => {
         .capture('default')
         .capture('rtl', actions => {
           actions.executeJS(window => {
-            window.document.querySelector('vaadin-app-layout').setAttribute('dir', 'rtl');
+            window.document.documentElement.setAttribute('dir', 'rtl');
           });
         })
         .capture('touch-optimized', actions => {
           actions.executeJS(window => {
-            const layout = window.document.querySelector('vaadin-app-layout');
-            layout.removeAttribute('dir');
-            layout.setAttribute('touch-optimized', '');
+            window.document.documentElement.removeAttribute('dir');
+            window.document.querySelector('vaadin-app-layout').setAttribute('touch-optimized', '');
           });
         });
     });
@@ -34,14 +33,13 @@ gemini.suite('vaadin-app-layout', rootSuite => {
         .capture('default')
         .capture('rtl', actions => {
           actions.executeJS(window => {
-            window.document.querySelector('vaadin-app-layout').setAttribute('dir', 'rtl');
+            window.document.documentElement.setAttribute('dir', 'rtl');
           });
         })
         .capture('touch-optimized', actions => {
           actions.executeJS(window => {
-            const layout = window.document.querySelector('vaadin-app-layout');
-            layout.removeAttribute('dir');
-            layout.setAttribute('touch-optimized', '');
+            window.document.documentElement.removeAttribute('dir');
+            window.document.querySelector('vaadin-app-layout').setAttribute('touch-optimized', '');
           });
         });
     });

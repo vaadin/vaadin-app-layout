@@ -11,7 +11,6 @@ export const drawerToggleStyles = css`
     justify-content: center;
     width: 48px;
     height: 48px;
-    margin-right: 1em;
     overflow: hidden;
     padding: 0;
     color: var(--material-primary-text-color);
@@ -25,6 +24,14 @@ export const drawerToggleStyles = css`
     -webkit-tap-highlight-color: transparent;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  :host(:not([dir='rtl'])) {
+    margin-right: 1em;
+  }
+
+  :host([dir='rtl']) {
+    margin-left: 1em;
   }
 
   :host::before,
