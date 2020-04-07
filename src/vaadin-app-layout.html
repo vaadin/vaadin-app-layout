@@ -164,6 +164,11 @@ This program is available under Apache License Version 2.0, available at https:/
         transform: translateX(100%);
       }
 
+      :host([dir="rtl"]) [part="navbar"],
+      :host([dir="rtl"]) [part="navbar"]::before {
+        transition: right var(--vaadin-app-layout-transition);
+      }
+
       :host([dir="rtl"][drawer-opened]) [part='drawer'] {
         transform: translateX(0%);
       }
