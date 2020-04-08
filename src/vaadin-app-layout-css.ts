@@ -23,12 +23,12 @@ export const appLayoutStyles = css`
   }
 
   :host([drawer-opened]) {
-    --vaadin-app-layout-drawer-offset-left: var(--_vaadin-app-layout-drawer-offset-size);
+    --vaadin-app-layout-drawer-offset-start: var(--_vaadin-app-layout-drawer-offset-size);
   }
 
   :host([overlay]) {
-    --vaadin-app-layout-drawer-offset-left: 0;
-    --vaadin-app-layout-navbar-offset-left: 0;
+    --vaadin-app-layout-drawer-offset-start: 0;
+    --vaadin-app-layout-navbar-offset-start: 0;
   }
 
   /* navbar */
@@ -64,7 +64,7 @@ export const appLayoutStyles = css`
     top: var(--vaadin-app-layout-navbar-offset-top, 0);
     right: auto;
     bottom: var(--vaadin-app-layout-navbar-offset-bottom, var(--vaadin-viewport-offset-bottom, 0));
-    left: var(--vaadin-app-layout-navbar-offset-left, 0);
+    left: var(--vaadin-app-layout-navbar-offset-start, 0);
     transition: transform var(--vaadin-app-layout-transition), top var(--vaadin-app-layout-transition);
     transform: translateX(-100%);
     max-width: 90%;
@@ -132,8 +132,8 @@ export const appLayoutStyles = css`
     -webkit-overflow-scrolling: touch;
   }
 
-  :host([drawer-opened]:not([overlay]):not([primary-section='drawer'])) [part='content'] {
-    padding-left: var(--vaadin-app-layout-drawer-offset-left);
+  :host(:not([dir='rtl'])[drawer-opened]:not([overlay]):not([primary-section='drawer'])) [part='content'] {
+    padding-left: var(--vaadin-app-layout-drawer-offset-start);
   }
 
   /* primary drawer */
@@ -141,8 +141,8 @@ export const appLayoutStyles = css`
     transition: padding var(--vaadin-app-layout-transition);
   }
 
-  :host([primary-section='drawer'][drawer-opened]:not([overlay])) {
-    padding-left: var(--vaadin-app-layout-drawer-offset-left);
+  :host(:not([dir='rtl'])[primary-section='drawer'][drawer-opened]:not([overlay])) {
+    padding-left: var(--vaadin-app-layout-drawer-offset-start);
   }
 
   :host([primary-section='drawer']) [part='drawer'] {
@@ -150,5 +150,27 @@ export const appLayoutStyles = css`
     bottom: 0;
   }
 
-  /* TODO: add RTL support */
+  /* RTL */
+  :host([dir='rtl']) [part='drawer'] {
+    left: auto;
+    right: var(--vaadin-app-layout-navbar-offset-start, 0);
+    transform: translateX(100%);
+  }
+
+  :host([dir='rtl']) [part='navbar'],
+  :host([dir='rtl']) [part='navbar']::before {
+    transition: right var(--vaadin-app-layout-transition);
+  }
+
+  :host([dir='rtl'][drawer-opened]) [part='drawer'] {
+    transform: translateX(0%);
+  }
+
+  :host([dir='rtl'][drawer-opened]:not([overlay]):not([primary-section='drawer'])) [part='content'] {
+    padding-right: var(--vaadin-app-layout-drawer-offset-start);
+  }
+
+  :host([dir='rtl'][primary-section='drawer'][drawer-opened]:not([overlay])) {
+    padding-right: var(--vaadin-app-layout-drawer-offset-start);
+  }
 `;
