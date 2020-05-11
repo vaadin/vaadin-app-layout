@@ -466,16 +466,7 @@ This program is available under Apache License Version 2.0, available at https:/
           this.drawerOpened = !this.drawerOpened;
         }
 
-        /**
-         * App Layout listens to `close-overlay-drawer` on the window level.
-         * A custom event can be dispatched and the App Layout will close the drawer in overlay.
-         *
-         * That can be used, for instance, when a navigation occurs when user clicks in a menu item inside the drawer.
-         *
-         * See `dispatchCloseOverlayDrawerEvent()` helper method.
-         *
-         * @event close-overlay-drawer
-         */
+        /** @private */
         __closeOverlayDrawer() {
           if (this.overlay) {
             this.drawerOpened = false;
@@ -644,6 +635,17 @@ This program is available under Apache License Version 2.0, available at https:/
             }
           });
         }
+
+        /**
+         * App Layout listens to `close-overlay-drawer` on the window level.
+         * A custom event can be dispatched and the App Layout will close the drawer in overlay.
+         *
+         * That can be used, for instance, when a navigation occurs when user clicks in a menu item inside the drawer.
+         *
+         * See `dispatchCloseOverlayDrawerEvent()` helper method.
+         *
+         * @event close-overlay-drawer
+         */
       }
 
       customElements.define(AppLayoutElement.is, AppLayoutElement);
