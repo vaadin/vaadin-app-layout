@@ -283,13 +283,13 @@ class AppLayoutElement extends ElementMixin(ThemableMixin(PolymerElement)) {
       <div part="drawer" id="drawer">
         <slot name="drawer" id="drawerSlot"></slot>
       </div>
-      <div content="">
+      <div content>
         <slot></slot>
       </div>
-      <div part="navbar" id="navbarBottom" bottom="" hidden="">
+      <div part="navbar" id="navbarBottom" bottom hidden>
         <slot name="navbar-bottom"></slot>
       </div>
-      <div hidden=""><slot id="touchSlot" name="navbar touch-optimized"></slot></div>
+      <div hidden><slot id="touchSlot" name="navbar touch-optimized"></slot></div>
     `;
   }
 
