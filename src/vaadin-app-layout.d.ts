@@ -110,6 +110,10 @@ export type AppLayoutEventMap = HTMLElementEventMap & AppLayoutElementEventMap;
  * it has a `height:100%`), then the developer can set `height: 100%` to both `html` and `body`.
  * That will make the `[content]` element of app layout scrollable.
  * On this case, the toolbars on mobile device won't collapse.
+ *
+ * @fires {CustomEvent} drawer-opened-changed - Fired when the `drawerOpened` property changes.
+ * @fires {CustomEvent} overlay-changed - Fired when the `overlay` property changes.
+ * @fires {CustomEvent} primary-section-changed - Fired when the `primarySection` property changes.
  */
 declare class AppLayoutElement extends ElementMixin(ThemableMixin(HTMLElement)) {
   /**
