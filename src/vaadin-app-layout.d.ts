@@ -92,7 +92,7 @@ declare class AppLayoutElement extends ElementMixin(ThemableMixin(HTMLElement)) 
    * - If `primary-section="drawer"` is set, then the drawer will move the navbar, taking the full available height.
    * @attr {navbar|drawer} primary-section
    */
-  primarySection: PrimarySection;
+  primarySection: 'navbar' | 'drawer';
 
   /**
    * Controls whether the drawer is opened (visible) or not.
@@ -113,16 +113,6 @@ declare class AppLayoutElement extends ElementMixin(ThemableMixin(HTMLElement)) 
    * Helper static method that dispatches a `close-overlay-drawer` event
    */
   static dispatchCloseOverlayDrawerEvent(): void;
-  connectedCallback(): void;
-  disconnectedCallback(): void;
-  _afterFirstRender(): void;
-  _updateDrawerSize(): void;
-  _updateOffsetSize(): void;
-  _updateDrawerHeight(): void;
-  _updateOverlayMode(): void;
-  _close(): void;
-  _updateTouchOptimizedMode(): void;
-  _blockAnimationUntilAfterNextRender(): void;
 }
 
 declare global {
@@ -132,5 +122,3 @@ declare global {
 }
 
 export { AppLayoutElement };
-
-import { PrimarySection } from '../@types/interfaces';
