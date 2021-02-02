@@ -3,6 +3,32 @@ import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mix
 import { ElementMixin } from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.js';
 
 /**
+ * Fired when the `drawerOpened` property changes.
+ */
+export type AppLayoutDrawerOpenedChanged = CustomEvent<{ value: boolean }>;
+
+/**
+ * Fired when the `overlay` property changes.
+ */
+export type AppLayoutOverlayChanged = CustomEvent<{ value: boolean }>;
+
+/**
+ * Fired when the `primarySection` property changes.
+ */
+export type AppLayoutPrimarySectionChanged = CustomEvent<{ value: 'navbar' | 'drawer' }>;
+
+
+export interface AppLayoutElementEventMap {
+  'drawer-opened-changed': AppLayoutDrawerOpenedChanged;
+
+  'overlay-changed': AppLayoutOverlayChanged;
+
+  'primary-section-changed': AppLayoutPrimarySectionChanged;
+}
+
+export type AppLayoutEventMap = HTMLElementEventMap & AppLayoutElementEventMap;
+
+/**
  * `<vaadin-app-layout>` is a Web Component providing a quick and easy way to get a common application layout structure done.
  *
  * ```
@@ -113,6 +139,18 @@ declare class AppLayoutElement extends ElementMixin(ThemableMixin(HTMLElement)) 
    * Helper static method that dispatches a `close-overlay-drawer` event
    */
   static dispatchCloseOverlayDrawerEvent(): void;
+
+  addEventListener<K extends keyof AppLayoutEventMap>(
+    type: K,
+    listener: (this: AppLayoutElement, ev: AppLayoutEventMap[K]) => void,
+    options?: boolean | AddEventListenerOptions
+  ): void;
+
+  removeEventListener<K extends keyof AppLayoutEventMap>(
+    type: K,
+    listener: (this: AppLayoutElement, ev: AppLayoutEventMap[K]) => void,
+    options?: boolean | EventListenerOptions
+  ): void;
 }
 
 declare global {
