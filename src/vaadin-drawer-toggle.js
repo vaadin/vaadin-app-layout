@@ -90,9 +90,21 @@ class DrawerToggleElement extends ButtonElement {
   constructor() {
     super();
 
-    this.addEventListener('click', e => {
-      this.dispatchEvent(new CustomEvent('drawer-toggle-click', {bubbles: true, composed: true}));
+    this.addEventListener('click', () => {
+      if (!this.disabled) {
+        this._fireClick();
+      }
     });
+
+    this.addEventListener('keyup', (event) => {
+      if (/^( |SpaceBar|Enter)$/.test(event.key) && !this.disabled) {
+        this._fireClick();
+      }
+    });
+  }
+
+  _fireClick() {
+    this.dispatchEvent(new CustomEvent('drawer-toggle-click', { bubbles: true, composed: true }));
   }
 }
 
