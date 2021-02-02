@@ -1,7 +1,8 @@
-<link rel="import" href="../../../vaadin-button/theme/material/vaadin-button-styles.html">
-<link rel="import" href="../../../vaadin-material-styles/color.html">
+import '@vaadin/vaadin-button/theme/material/vaadin-button-styles.js';
+import '@vaadin/vaadin-material-styles/color.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 
-<dom-module id="material-drawer-toggle" theme-for="vaadin-drawer-toggle">
+const $_documentContainer = html`<dom-module id="material-drawer-toggle" theme-for="vaadin-drawer-toggle">
   <template>
     <style include="material-button">
       :host {
@@ -47,4 +48,6 @@
       }
     </style>
   </template>
-</dom-module>
+</dom-module>`;
+
+document.head.appendChild($_documentContainer.content);

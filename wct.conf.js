@@ -14,21 +14,6 @@ module.exports = {
         ]
       }
     },
-    // MAGI REMOVE START
-    istanbul: {
-      dir: './coverage',
-      reporters: ['text-summary', 'lcov'],
-      include: [
-        '**/vaadin-app-layout/src/*.html'
-      ],
-      exclude: [],
-      thresholds: {
-        global: {
-          statements: 80
-        }
-      }
-    }
-    // MAGI REMOVE END
   },
 
   registerHooks: function(context) {
@@ -69,11 +54,6 @@ module.exports = {
       context.options.plugins.sauce.browsers = saucelabsPlatforms;
     } else if (env === 'saucelabs-cron') {
       context.options.plugins.sauce.browsers = cronPlatforms;
-      // MAGI REMOVE START
-      context.options.plugins.istanbul.thresholds.global.statements = 0;
-    } else {
-      context.options.plugins.istanbul.thresholds.global.statements = 0;
-      // MAGI REMOVE END
     }
   }
 };

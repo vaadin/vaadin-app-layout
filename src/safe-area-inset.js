@@ -1,6 +1,7 @@
-<link rel="import" href="../../polymer/lib/elements/custom-style.html">
+import '@polymer/polymer/lib/elements/custom-style.js';
+const $_documentContainer = document.createElement('template');
 
-<custom-style>
+$_documentContainer.innerHTML = `<custom-style>
   <style>
     /* stylelint-disable length-zero-no-unit */
     /* Use units so that the values can be used in calc() */
@@ -21,4 +22,6 @@
     }
     /* stylelint-enable */
   </style>
-</custom-style>
+</custom-style>`;
+
+document.head.appendChild($_documentContainer.content);

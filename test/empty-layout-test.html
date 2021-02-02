@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <title>vaadin-app-layout tests</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-  <script src="../../web-component-tester/browser.js"></script>
-  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-  <link rel="import" href="../../test-fixture/test-fixture.html">
-  <link rel="import" href="../vaadin-app-layout.html">
-  <link rel="import" href="../vaadin-drawer-toggle.html">
+  <script src="../../../wct-browser-legacy/browser.js"></script>
+  <script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+  <script type="module" src="../../../@polymer/test-fixture/test-fixture.js"></script>
+  <script type="module" src="../vaadin-app-layout.js"></script>
+  <script type="module" src="../vaadin-drawer-toggle.js"></script>
 </head>
 
 <body>
@@ -18,65 +18,69 @@
     </template>
   </test-fixture>
 
-  <script>
-    describe('empty layout', () => {
-      let layout;
+  <script type="module">
+import '@polymer/test-fixture/test-fixture.js';
+import '../vaadin-app-layout.js';
+import '../vaadin-drawer-toggle.js';
+import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
+describe('empty layout', () => {
+  let layout;
 
-      beforeEach(done => {
-        layout = fixture('empty-layout');
+  beforeEach(done => {
+    layout = fixture('empty-layout');
 
-        Polymer.RenderStatus.afterNextRender(layout, done);
-      });
+    afterNextRender(layout, done);
+  });
 
-      it('should update slot to navbar-bottom when adding node dynamically', done => {
-        // force touch-optimized=true to use bottom navbar
-        window.ShadyCSS.styleSubtree(layout, {'--vaadin-app-layout-touch-optimized': 'true'});
-        const toggle = document.createElement('vaadin-drawer-toggle');
-        toggle.setAttribute('slot', 'navbar touch-optimized');
-        layout.appendChild(toggle);
+  it('should update slot to navbar-bottom when adding node dynamically', done => {
+    // force touch-optimized=true to use bottom navbar
+    window.ShadyCSS.styleSubtree(layout, {'--vaadin-app-layout-touch-optimized': 'true'});
+    const toggle = document.createElement('vaadin-drawer-toggle');
+    toggle.setAttribute('slot', 'navbar touch-optimized');
+    layout.appendChild(toggle);
 
-        Polymer.RenderStatus.afterNextRender(toggle, () => {
-          expect(toggle.getAttribute('slot')).to.equal('navbar-bottom');
-          done();
-        });
-      });
-
-      it('should update slot to navbar when adding node dynamically', done => {
-        // force touch-optimized=true to use bottom navbar
-        window.ShadyCSS.styleSubtree(layout, {'--vaadin-app-layout-touch-optimized': 'false'});
-        const toggle = document.createElement('vaadin-drawer-toggle');
-        toggle.setAttribute('slot', 'navbar touch-optimized');
-        layout.appendChild(toggle);
-
-        Polymer.RenderStatus.afterNextRender(toggle, () => {
-          expect(toggle.getAttribute('slot')).to.equal('navbar');
-          done();
-        });
-      });
-
-      it('should make node visible when adding to "navbar touch-optimized" slot', done => {
-        // force touch-optimized=true to use bottom navbar
-        window.ShadyCSS.styleSubtree(layout, {'--vaadin-app-layout-touch-optimized': 'true'});
-        const toggle = document.createElement('vaadin-drawer-toggle');
-        toggle.setAttribute('slot', 'navbar touch-optimized');
-        layout.appendChild(toggle);
-
-        Polymer.RenderStatus.afterNextRender(toggle, () => {
-          expect(toggle.offsetHeight).to.be.greaterThan(0);
-          done();
-        });
-      });
-
-      it('should make node visible when adding to "navbar" slot dynamically', done => {
-        const toggle = document.createElement('vaadin-drawer-toggle');
-        toggle.setAttribute('slot', 'navbar');
-        layout.appendChild(toggle);
-
-        Polymer.RenderStatus.afterNextRender(toggle, () => {
-          expect(toggle.offsetHeight).to.be.greaterThan(0);
-          done();
-        });
-      });
+    afterNextRender(toggle, () => {
+      expect(toggle.getAttribute('slot')).to.equal('navbar-bottom');
+      done();
     });
-  </script>
+  });
+
+  it('should update slot to navbar when adding node dynamically', done => {
+    // force touch-optimized=true to use bottom navbar
+    window.ShadyCSS.styleSubtree(layout, {'--vaadin-app-layout-touch-optimized': 'false'});
+    const toggle = document.createElement('vaadin-drawer-toggle');
+    toggle.setAttribute('slot', 'navbar touch-optimized');
+    layout.appendChild(toggle);
+
+    afterNextRender(toggle, () => {
+      expect(toggle.getAttribute('slot')).to.equal('navbar');
+      done();
+    });
+  });
+
+  it('should make node visible when adding to "navbar touch-optimized" slot', done => {
+    // force touch-optimized=true to use bottom navbar
+    window.ShadyCSS.styleSubtree(layout, {'--vaadin-app-layout-touch-optimized': 'true'});
+    const toggle = document.createElement('vaadin-drawer-toggle');
+    toggle.setAttribute('slot', 'navbar touch-optimized');
+    layout.appendChild(toggle);
+
+    afterNextRender(toggle, () => {
+      expect(toggle.offsetHeight).to.be.greaterThan(0);
+      done();
+    });
+  });
+
+  it('should make node visible when adding to "navbar" slot dynamically', done => {
+    const toggle = document.createElement('vaadin-drawer-toggle');
+    toggle.setAttribute('slot', 'navbar');
+    layout.appendChild(toggle);
+
+    afterNextRender(toggle, () => {
+      expect(toggle.offsetHeight).to.be.greaterThan(0);
+      done();
+    });
+  });
+});
+</script>
 </body>

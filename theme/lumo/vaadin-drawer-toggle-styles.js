@@ -1,7 +1,8 @@
-<link rel="import" href="../../../vaadin-button/theme/lumo/vaadin-button-styles.html">
-<link rel="import" href="../../../vaadin-lumo-styles/font-icons.html">
+import '@vaadin/vaadin-button/theme/lumo/vaadin-button-styles.js';
+import '@vaadin/vaadin-lumo-styles/font-icons.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 
-<dom-module id="lumo-drawer-toggle" theme-for="vaadin-drawer-toggle">
+const $_documentContainer = html`<dom-module id="lumo-drawer-toggle" theme-for="vaadin-drawer-toggle">
   <template>
     <style include="lumo-button">
       :host {
@@ -30,4 +31,6 @@
       }
     </style>
   </template>
-</dom-module>
+</dom-module>`;
+
+document.head.appendChild($_documentContainer.content);
