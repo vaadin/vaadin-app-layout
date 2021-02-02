@@ -1,6 +1,6 @@
-import {ThemableMixin} from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
+import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
 
-import {ElementMixin} from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.js';
+import { ElementMixin } from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.js';
 
 /**
  * `<vaadin-app-layout>` is a Web Component providing a quick and easy way to get a common application layout structure done.
@@ -88,11 +88,7 @@ import {ElementMixin} from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.js
  * That will make the `[content]` element of app layout scrollable.
  * On this case, the toolbars on mobile device won't collapse.
  */
-declare class AppLayoutElement extends
-  ElementMixin(
-  ThemableMixin(
-  HTMLElement)) {
-
+declare class AppLayoutElement extends ElementMixin(ThemableMixin(HTMLElement)) {
   /**
    * Defines whether navbar or drawer will come first visually.
    * - By default (`primary-section="navbar"`), the navbar takes the full available width and moves the drawer down.
@@ -133,12 +129,11 @@ declare class AppLayoutElement extends
 }
 
 declare global {
-
   interface HTMLElementTagNameMap {
-    "vaadin-app-layout": AppLayoutElement;
+    'vaadin-app-layout': AppLayoutElement;
   }
 }
 
-export {AppLayoutElement};
+export { AppLayoutElement };
 
-import {PrimarySection} from '../@types/interfaces';
+import { PrimarySection } from '../@types/interfaces';

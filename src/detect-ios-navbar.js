@@ -1,4 +1,4 @@
-export const _detectIosNavbar = function() {
+export const _detectIosNavbar = function () {
   /* c8 ignore next 11 */
   if (window.navigator.userAgent.match(/iPhone|iPad/i)) {
     const innerHeight = window.innerHeight;

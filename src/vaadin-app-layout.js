@@ -107,197 +107,196 @@ import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 class AppLayoutElement extends ElementMixin(ThemableMixin(PolymerElement)) {
   static get template() {
     return html`
-    <style>
-      :host {
-        display: block;
-        box-sizing: border-box;
-        height: 100%;
-        --vaadin-app-layout-transition: 200ms;
-        transition: padding var(--vaadin-app-layout-transition);
-        --vaadin-app-layout-touch-optimized: false;
-        --vaadin-app-layout-navbar-offset-top: var(--_vaadin-app-layout-navbar-offset-size);
-        --vaadin-app-layout-navbar-offset-bottom: var(--_vaadin-app-layout-navbar-offset-size-bottom);
-        padding-top: var(--vaadin-app-layout-navbar-offset-top);
-        padding-bottom: var(--vaadin-app-layout-navbar-offset-bottom);
-        padding-left: var(--vaadin-app-layout-navbar-offset-left);
-      }
-
-      :host([dir="rtl"]) {
-        padding-left: 0;
-        padding-right: var(--vaadin-app-layout-navbar-offset-left);
-      }
-
-      :host([hidden]),
-      [hidden] {
-        display: none !important;
-      }
-
-      :host([no-anim]) {
-        --vaadin-app-layout-transition: none !important;
-      }
-
-      :host([drawer-opened]) {
-        --vaadin-app-layout-drawer-offset-left: var(--_vaadin-app-layout-drawer-offset-size);
-      }
-
-      :host([overlay]) {
-        --vaadin-app-layout-drawer-offset-left: 0;
-        --vaadin-app-layout-navbar-offset-left: 0;
-      }
-
-      :host(:not([no-scroll])) [content] {
-        overflow: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      [content] {
-        height: 100%;
-      }
-
-      @media (pointer: coarse) and (max-width: 800px) and (min-height: 500px) {
+      <style>
         :host {
-          --vaadin-app-layout-touch-optimized: true;
-        }
-      }
-
-      [part="navbar"],
-      [part="navbar"]::before {
-        position: fixed;
-        display: flex;
-        align-items: center;
-        top: 0;
-        right: 0;
-        left: 0;
-        transition: left var(--vaadin-app-layout-transition);
-        padding-top: var(--safe-area-inset-top);
-        padding-left: var(--safe-area-inset-left);
-        padding-right: var(--safe-area-inset-right);
-        z-index: 1;
-      }
-
-      :host(:not([dir="rtl"])[primary-section="drawer"][drawer-opened]:not([overlay])) [part="navbar"] {
-        left: var(--vaadin-app-layout-drawer-offset-left, 0);
-      }
-
-      :host([dir="rtl"][primary-section="drawer"][drawer-opened]:not([overlay])) [part="navbar"] {
-        right: var(--vaadin-app-layout-drawer-offset-left, 0);
-      }
-
-      :host([primary-section="drawer"]) [part="drawer"] {
-        top: 0;
-      }
-
-      [part="navbar"][bottom] {
-        top: auto;
-        bottom: 0;
-        padding-bottom: var(--safe-area-inset-bottom);
-      }
-
-      [part="drawer"] {
-        overflow: auto;
-        position: fixed;
-        top: var(--vaadin-app-layout-navbar-offset-top, 0);
-        right: auto;
-        bottom: var(--vaadin-app-layout-navbar-offset-bottom, var(--vaadin-viewport-offset-bottom, 0));
-        left: var(--vaadin-app-layout-navbar-offset-left, 0);
-        transition: transform var(--vaadin-app-layout-transition);
-        transform: translateX(-100%);
-        max-width: 90%;
-        width: 16em;
-        box-sizing: border-box;
-        padding: var(--safe-area-inset-top) 0 var(--safe-area-inset-bottom) var(--safe-area-inset-left);
-        outline: none;
-      }
-
-      :host([drawer-opened]) [part="drawer"] {
-        transform: translateX(0%);
-        touch-action: manipulation;
-      }
-
-      [part="backdrop"] {
-        background-color: #000;
-        opacity: 0.3;
-      }
-
-      :host(:not([drawer-opened])) [part="backdrop"] {
-        opacity: 0;
-      }
-
-      :host([overlay]) [part="backdrop"] {
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        pointer-events: none;
-        transition: opacity var(--vaadin-app-layout-transition);
-        -webkit-tap-highlight-color: transparent;
-      }
-
-      :host([overlay]) [part="drawer"] {
-        top: 0;
-        bottom: 0;
-      }
-
-      :host([overlay]) [part="drawer"],
-      :host([overlay]) [part="backdrop"] {
-        z-index: 2;
-      }
-
-      :host([drawer-opened][overlay]) [part="backdrop"] {
-        pointer-events: auto;
-        touch-action: manipulation;
-      }
-
-      :host([dir="rtl"]) [part="drawer"] {
-        left: auto;
-        right: var(--vaadin-app-layout-navbar-offset-start, 0);
-        transform: translateX(100%);
-      }
-
-      :host([dir="rtl"]) [part="navbar"],
-      :host([dir="rtl"]) [part="navbar"]::before {
-        transition: right var(--vaadin-app-layout-transition);
-      }
-
-      :host([dir="rtl"][drawer-opened]) [part='drawer'] {
-        transform: translateX(0%);
-      }
-
-      :host(:not([dir="rtl"])[drawer-opened]:not([overlay])) {
-        padding-left: var(--vaadin-app-layout-drawer-offset-left);
-      }
-
-      :host([dir="rtl"][drawer-opened]:not([overlay])) {
-        padding-right: var(--vaadin-app-layout-drawer-offset-left);
-      }
-
-      @media (max-width: 800px),
-      (max-height: 600px) {
-        :host {
-          --vaadin-app-layout-drawer-overlay: true;
+          display: block;
+          box-sizing: border-box;
+          height: 100%;
+          --vaadin-app-layout-transition: 200ms;
+          transition: padding var(--vaadin-app-layout-transition);
+          --vaadin-app-layout-touch-optimized: false;
+          --vaadin-app-layout-navbar-offset-top: var(--_vaadin-app-layout-navbar-offset-size);
+          --vaadin-app-layout-navbar-offset-bottom: var(--_vaadin-app-layout-navbar-offset-size-bottom);
+          padding-top: var(--vaadin-app-layout-navbar-offset-top);
+          padding-bottom: var(--vaadin-app-layout-navbar-offset-bottom);
+          padding-left: var(--vaadin-app-layout-navbar-offset-left);
         }
 
-        [part="drawer"] {
-          width: 20em;
+        :host([dir='rtl']) {
+          padding-left: 0;
+          padding-right: var(--vaadin-app-layout-navbar-offset-left);
         }
-      }
-    </style>
-    <div part="navbar" id="navbarTop">
-      <slot name="navbar"></slot>
-    </div>
-    <div part="backdrop" on-click="_close" on-touchstart="_close"></div>
-    <div part="drawer" id="drawer">
-      <slot name="drawer" id="drawerSlot"></slot>
-    </div>
-    <div content="">
-      <slot></slot>
-    </div>
-    <div part="navbar" id="navbarBottom" bottom="" hidden="">
-      <slot name="navbar-bottom"></slot>
-    </div>
-    <div hidden=""><slot id="touchSlot" name="navbar touch-optimized"></slot></div>
-`;
+
+        :host([hidden]),
+        [hidden] {
+          display: none !important;
+        }
+
+        :host([no-anim]) {
+          --vaadin-app-layout-transition: none !important;
+        }
+
+        :host([drawer-opened]) {
+          --vaadin-app-layout-drawer-offset-left: var(--_vaadin-app-layout-drawer-offset-size);
+        }
+
+        :host([overlay]) {
+          --vaadin-app-layout-drawer-offset-left: 0;
+          --vaadin-app-layout-navbar-offset-left: 0;
+        }
+
+        :host(:not([no-scroll])) [content] {
+          overflow: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        [content] {
+          height: 100%;
+        }
+
+        @media (pointer: coarse) and (max-width: 800px) and (min-height: 500px) {
+          :host {
+            --vaadin-app-layout-touch-optimized: true;
+          }
+        }
+
+        [part='navbar'],
+        [part='navbar']::before {
+          position: fixed;
+          display: flex;
+          align-items: center;
+          top: 0;
+          right: 0;
+          left: 0;
+          transition: left var(--vaadin-app-layout-transition);
+          padding-top: var(--safe-area-inset-top);
+          padding-left: var(--safe-area-inset-left);
+          padding-right: var(--safe-area-inset-right);
+          z-index: 1;
+        }
+
+        :host(:not([dir='rtl'])[primary-section='drawer'][drawer-opened]:not([overlay])) [part='navbar'] {
+          left: var(--vaadin-app-layout-drawer-offset-left, 0);
+        }
+
+        :host([dir='rtl'][primary-section='drawer'][drawer-opened]:not([overlay])) [part='navbar'] {
+          right: var(--vaadin-app-layout-drawer-offset-left, 0);
+        }
+
+        :host([primary-section='drawer']) [part='drawer'] {
+          top: 0;
+        }
+
+        [part='navbar'][bottom] {
+          top: auto;
+          bottom: 0;
+          padding-bottom: var(--safe-area-inset-bottom);
+        }
+
+        [part='drawer'] {
+          overflow: auto;
+          position: fixed;
+          top: var(--vaadin-app-layout-navbar-offset-top, 0);
+          right: auto;
+          bottom: var(--vaadin-app-layout-navbar-offset-bottom, var(--vaadin-viewport-offset-bottom, 0));
+          left: var(--vaadin-app-layout-navbar-offset-left, 0);
+          transition: transform var(--vaadin-app-layout-transition);
+          transform: translateX(-100%);
+          max-width: 90%;
+          width: 16em;
+          box-sizing: border-box;
+          padding: var(--safe-area-inset-top) 0 var(--safe-area-inset-bottom) var(--safe-area-inset-left);
+          outline: none;
+        }
+
+        :host([drawer-opened]) [part='drawer'] {
+          transform: translateX(0%);
+          touch-action: manipulation;
+        }
+
+        [part='backdrop'] {
+          background-color: #000;
+          opacity: 0.3;
+        }
+
+        :host(:not([drawer-opened])) [part='backdrop'] {
+          opacity: 0;
+        }
+
+        :host([overlay]) [part='backdrop'] {
+          position: fixed;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          pointer-events: none;
+          transition: opacity var(--vaadin-app-layout-transition);
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        :host([overlay]) [part='drawer'] {
+          top: 0;
+          bottom: 0;
+        }
+
+        :host([overlay]) [part='drawer'],
+        :host([overlay]) [part='backdrop'] {
+          z-index: 2;
+        }
+
+        :host([drawer-opened][overlay]) [part='backdrop'] {
+          pointer-events: auto;
+          touch-action: manipulation;
+        }
+
+        :host([dir='rtl']) [part='drawer'] {
+          left: auto;
+          right: var(--vaadin-app-layout-navbar-offset-start, 0);
+          transform: translateX(100%);
+        }
+
+        :host([dir='rtl']) [part='navbar'],
+        :host([dir='rtl']) [part='navbar']::before {
+          transition: right var(--vaadin-app-layout-transition);
+        }
+
+        :host([dir='rtl'][drawer-opened]) [part='drawer'] {
+          transform: translateX(0%);
+        }
+
+        :host(:not([dir='rtl'])[drawer-opened]:not([overlay])) {
+          padding-left: var(--vaadin-app-layout-drawer-offset-left);
+        }
+
+        :host([dir='rtl'][drawer-opened]:not([overlay])) {
+          padding-right: var(--vaadin-app-layout-drawer-offset-left);
+        }
+
+        @media (max-width: 800px), (max-height: 600px) {
+          :host {
+            --vaadin-app-layout-drawer-overlay: true;
+          }
+
+          [part='drawer'] {
+            width: 20em;
+          }
+        }
+      </style>
+      <div part="navbar" id="navbarTop">
+        <slot name="navbar"></slot>
+      </div>
+      <div part="backdrop" on-click="_close" on-touchstart="_close"></div>
+      <div part="drawer" id="drawer">
+        <slot name="drawer" id="drawerSlot"></slot>
+      </div>
+      <div content="">
+        <slot></slot>
+      </div>
+      <div part="navbar" id="navbarBottom" bottom="" hidden="">
+        <slot name="navbar-bottom"></slot>
+      </div>
+      <div hidden=""><slot id="touchSlot" name="navbar touch-optimized"></slot></div>
+    `;
   }
 
   static get is() {
@@ -378,15 +377,15 @@ class AppLayoutElement extends ElementMixin(ThemableMixin(PolymerElement)) {
     this._updateTouchOptimizedMode();
 
     const navbarSlot = this.$.navbarTop.firstElementChild;
-    this._navbarChildObserver = new FlattenedNodesObserver(navbarSlot, (info) => {
+    this._navbarChildObserver = new FlattenedNodesObserver(navbarSlot, () => {
       this._updateTouchOptimizedMode();
     });
 
-    this._touchChildObserver = new FlattenedNodesObserver(this.$.touchSlot, (info) => {
+    this._touchChildObserver = new FlattenedNodesObserver(this.$.touchSlot, () => {
       this._updateTouchOptimizedMode();
     });
 
-    this._drawerChildObserver = new FlattenedNodesObserver(this.$.drawerSlot, (info) => {
+    this._drawerChildObserver = new FlattenedNodesObserver(this.$.drawerSlot, () => {
       this._updateDrawerSize();
     });
     this._updateDrawerSize();
@@ -495,7 +494,7 @@ class AppLayoutElement extends ElementMixin(ThemableMixin(PolymerElement)) {
 
   /** @protected */
   _updateDrawerHeight() {
-    const {scrollHeight, offsetHeight} = this.$.drawer;
+    const { scrollHeight, offsetHeight } = this.$.drawer;
     const height = scrollHeight > offsetHeight ? `${scrollHeight}px` : '100%';
     this.style.setProperty('--_vaadin-app-layout-drawer-scroll-size', height);
   }
@@ -505,7 +504,8 @@ class AppLayoutElement extends ElementMixin(ThemableMixin(PolymerElement)) {
     const overlay = getComputedStyle(this).getPropertyValue('--vaadin-app-layout-drawer-overlay') == 'true';
     const drawer = this.$.drawer;
 
-    if (!this.overlay && overlay) { // Changed from not overlay to overlay
+    if (!this.overlay && overlay) {
+      // Changed from not overlay to overlay
       this._drawerStateSaved = this.drawerOpened;
       this.drawerOpened = false;
     }
@@ -544,7 +544,7 @@ class AppLayoutElement extends ElementMixin(ThemableMixin(PolymerElement)) {
     const navbarItems = this.querySelectorAll('[slot*="navbar"]');
 
     if (navbarItems.length > 0) {
-      Array.from(navbarItems).forEach(navbar => {
+      Array.from(navbarItems).forEach((navbar) => {
         if (navbar.getAttribute('slot').indexOf('touch-optimized') > -1) {
           navbar.__touchOptimized = true;
         }

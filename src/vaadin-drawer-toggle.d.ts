@@ -1,4 +1,4 @@
-import {ButtonElement} from '@vaadin/vaadin-button/src/vaadin-button.js';
+import { ButtonElement } from '@vaadin/vaadin-button/src/vaadin-button.js';
 
 /**
  * The Drawer Toggle component controls the drawer in App Layout component.
@@ -10,14 +10,13 @@ import {ButtonElement} from '@vaadin/vaadin-button/src/vaadin-button.js';
  * ```
  */
 declare class DrawerToggleElement extends ButtonElement {
-  ariaLabel: string|null|undefined;
+  ariaLabel: string | null | undefined;
 }
 
 declare global {
-
   interface HTMLElementTagNameMap {
-    "vaadin-drawer-toggle": DrawerToggleElement;
+    'vaadin-drawer-toggle': DrawerToggleElement;
   }
 }
 
-export {DrawerToggleElement};
+export { DrawerToggleElement };

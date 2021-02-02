@@ -1,8 +1,8 @@
 describe('vaadin-app-layout', () => {
   const locator = 'vaadin-app-layout[data-ready]';
 
-  ['lumo', 'lumo-dark', 'material'].forEach(theme => {
-    it(`${theme}-drawer`, function() {
+  ['lumo', 'lumo-dark', 'material'].forEach((theme) => {
+    it(`${theme}-drawer`, function () {
       return this.browser
         .url(`drawer.html?theme=${theme}`)
         .waitForVisible(locator, 15000)
@@ -13,7 +13,7 @@ describe('vaadin-app-layout', () => {
         .assertView(`${theme}-drawer-rtl`, locator);
     });
 
-    it(`${theme}-primary-drawer`, function() {
+    it(`${theme}-primary-drawer`, function () {
       return this.browser
         .url(`primary-drawer.html?theme=${theme}`)
         .waitForVisible(locator, 15000)
@@ -24,7 +24,7 @@ describe('vaadin-app-layout', () => {
         .assertView(`${theme}-primary-drawer-rtl`, locator);
     });
 
-    it(`${theme}-tabs`, function() {
+    it(`${theme}-tabs`, function () {
       return this.browser
         .url(`tabs.html?theme=${theme}`)
         .waitForVisible(locator, 15000)
