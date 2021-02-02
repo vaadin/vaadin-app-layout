@@ -14,7 +14,6 @@ import { ButtonElement } from '@vaadin/vaadin-button/src/vaadin-button.js';
  *   <vaadin-drawer-toggle slot="navbar">Toggle drawer</vaadin-drawer-toggle>
  * </vaadin-app-layout>
  * ```
- *
  */
 class DrawerToggleElement extends ButtonElement {
   static get template() {

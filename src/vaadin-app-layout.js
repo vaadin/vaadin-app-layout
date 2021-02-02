@@ -67,9 +67,6 @@ import './detect-ios-navbar.js';
  * `drawer`           | Container for an application menu
  * `touch-optimized`  | Container for the bottom navbar area (only visible for mobile devices)
  *
- *
- * See examples of setting the content into slots in the live demos.
- *
  * #### Touch optimized
  *
  * App Layout has a pseudo-slot `touch-optimized` in order to give more control of the presentation of
@@ -85,7 +82,7 @@ import './detect-ios-navbar.js';
  * - If the `vaadin-app-layout` instance is available, then `drawerOpened` can be set to `false`
  * - If not, a custom event `close-overlay-drawer` can be dispatched either by calling
  *  `window.dispatchEvent(new CustomEvent('close-overlay-drawer'))` or by calling
- *  `Vaadin.AppLayoutElement.dispatchCloseOverlayDrawerEvent()`
+ *  `AppLayoutElement.dispatchCloseOverlayDrawerEvent()`
  *
  * ### Scrolling areas
  *
@@ -338,8 +335,8 @@ class AppLayoutElement extends ElementMixin(ThemableMixin(PolymerElement)) {
       },
 
       /**
-       *  Drawer is an overlay on top of the content
-       *  Controlled via CSS using `--vaadin-app-layout-drawer-overlay: true|false`;
+       * Drawer is an overlay on top of the content
+       * Controlled via CSS using `--vaadin-app-layout-drawer-overlay: true|false`;
        * @type {boolean}
        */
       overlay: {
