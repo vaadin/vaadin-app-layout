@@ -1,14 +1,6 @@
-import {PolymerElement} from '@polymer/polymer/polymer-element.js';
-
-import {beforeNextRender, afterNextRender} from '@polymer/polymer/lib/utils/render-status.js';
-
 import {ThemableMixin} from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
 
 import {ElementMixin} from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.js';
-
-import {FlattenedNodesObserver} from '@polymer/polymer/lib/utils/flattened-nodes-observer.js';
-
-import {html} from '@polymer/polymer/lib/utils/html-tag.js';
 
 /**
  * `<vaadin-app-layout>` is a Web Component providing a quick and easy way to get a common application layout structure done.
@@ -99,7 +91,7 @@ import {html} from '@polymer/polymer/lib/utils/html-tag.js';
 declare class AppLayoutElement extends
   ElementMixin(
   ThemableMixin(
-  PolymerElement)) {
+  HTMLElement)) {
 
   /**
    * Defines whether navbar or drawer will come first visually.

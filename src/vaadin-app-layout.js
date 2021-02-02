@@ -100,7 +100,7 @@ import { html } from '@polymer/polymer/lib/utils/html-tag.js';
  * That will make the `[content]` element of app layout scrollable.
  * On this case, the toolbars on mobile device won't collapse.
  *
- * @extends PolymerElement
+ * @extends HTMLElement
  * @mixes ElementMixin
  * @mixes ThemableMixin
  */

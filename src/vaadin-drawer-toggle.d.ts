@@ -1,7 +1,5 @@
 import {ButtonElement} from '@vaadin/vaadin-button/src/vaadin-button.js';
 
-import {html} from '@polymer/polymer/lib/utils/html-tag.js';
-
 /**
  * The Drawer Toggle component controls the drawer in App Layout component.
  *
