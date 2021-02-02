@@ -80,7 +80,10 @@ class DrawerToggleElement extends ButtonElement {
 
   static get properties() {
     return {
-      ariaLabel: String
+      ariaLabel: {
+        type: String,
+        value: 'Toggle'
+      }
     };
   }
 
