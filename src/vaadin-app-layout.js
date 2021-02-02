@@ -478,10 +478,10 @@ class AppLayoutElement extends ElementMixin(ThemableMixin(PolymerElement)) {
 
   /** @protected */
   _updateOffsetSize() {
-    const navbar = this.shadowRoot.querySelector('[part="navbar"]');
+    const navbar = this.$.navbarTop;
     const navbarRect = navbar.getBoundingClientRect();
 
-    const navbarBottom = this.shadowRoot.querySelector('[part="navbar"][bottom]');
+    const navbarBottom = this.$.navbarBottom;
     const navbarBottomRect = navbarBottom.getBoundingClientRect();
 
     this.style.setProperty('--_vaadin-app-layout-navbar-offset-size', navbarRect.height + 'px');
