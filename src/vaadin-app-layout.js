@@ -1,9 +1,8 @@
 /**
-@license
-Vaadin App Layout
-Copyright (C) 2019 Vaadin Ltd
-This program is available under Apache License Version 2.0, available at https://vaadin.com/license/
-*/
+ * @license
+ * Copyright (c) 2021 Vaadin Ltd.
+ * This program is available under Apache License Version 2.0, available at https://vaadin.com/license/
+ */
 import './safe-area-inset.js';
 
 import './detect-ios-navbar.js';

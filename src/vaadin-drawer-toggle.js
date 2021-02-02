@@ -1,9 +1,8 @@
 /**
-@license
-Vaadin Drawer Toggle
-Copyright (C) 2018 Vaadin Ltd
-This program is available under Apache License Version 2.0, available at https://vaadin.com/license/
-*/
+ * @license
+ * Copyright (c) 2021 Vaadin Ltd.
+ * This program is available under Apache License Version 2.0, available at https://vaadin.com/license/
+ */
 import { ButtonElement } from '@vaadin/vaadin-button/src/vaadin-button.js';
 
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
