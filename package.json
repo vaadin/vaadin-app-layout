@@ -26,8 +26,11 @@
     "theme"
   ],
   "scripts": {
+    "debug": "web-test-runner test/*.test.js --watch",
     "screenshots": "hermione test/visual/test.js --update-refs",
     "start": "web-dev-server --node-resolve --open",
+    "test": "web-test-runner test/*.test.js --coverage",
+    "test:sauce": "TEST_ENV=sauce npm test",
     "test:visual": "hermione test/visual/test.js"
   },
   "dependencies": {
@@ -39,14 +42,18 @@
     "@vaadin/vaadin-themable-mixin": "^1.6.1"
   },
   "devDependencies": {
+    "@esm-bundle/chai": "^4.1.5",
+    "@open-wc/testing-helpers": "^1.8.12",
     "@polymer/iron-component-page": "^4.0.0",
+    "@polymer/iron-test-helpers": "^3.0.1",
     "@vaadin/vaadin-icons": "^4.2.0",
     "@vaadin/vaadin-tabs": "^4.0.0-alpha4",
     "@web/dev-server": "^0.1.5",
-    "@webcomponents/webcomponentsjs": "^2.0.0",
+    "@web/test-runner": "^0.12.7",
+    "@web/test-runner-saucelabs": "^0.4.1",
     "hermione": "^3.9.0",
     "hermione-esm": "^0.4.0",
     "hermione-sauce": "^0.1.0",
-    "wct-browser-legacy": "^1.0.1"
+    "sinon": "^9.2.1"
   }
 }
