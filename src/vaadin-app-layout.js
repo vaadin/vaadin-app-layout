@@ -373,19 +373,7 @@ class AppLayoutElement extends ElementMixin(ThemableMixin(PolymerElement)) {
     window.addEventListener('resize', this.__boundResizeListener);
     this.addEventListener('drawer-toggle-click', this.__drawerToggleClickListener);
 
-    // Wait for all children to upgrade before trying to measure sizes
-    if (window.HTMLImports && !window.HTMLImports.useNative) {
-      Array.from(this.querySelectorAll('*')).forEach(child => {
-        if (child.localName.indexOf('-') > -1) {
-          window.customElements.whenDefined(child.localName).then(() => {
-            // TODO(jouni): might want to debounce
-            beforeNextRender(this, this._afterFirstRender);
-          });
-        }
-      });
-    } else {
-      beforeNextRender(this, this._afterFirstRender);
-    }
+    beforeNextRender(this, this._afterFirstRender);
 
     this._updateTouchOptimizedMode();
 
@@ -449,11 +437,6 @@ class AppLayoutElement extends ElementMixin(ThemableMixin(PolymerElement)) {
     }
   }
 
-  /** @private */
-  _isShadyCSS() {
-    return window.ShadyCSS && !window.ShadyCSS.nativeCss;
-  }
-
   /** @protected */
   _afterFirstRender() {
     this._blockAnimationUntilAfterNextRender();
@@ -501,47 +484,25 @@ class AppLayoutElement extends ElementMixin(ThemableMixin(PolymerElement)) {
     const navbarBottom = this.shadowRoot.querySelector('[part="navbar"][bottom]');
     const navbarBottomRect = navbarBottom.getBoundingClientRect();
 
-    if (this._isShadyCSS()) {
-      window.ShadyCSS.styleSubtree(this, {
-        '--_vaadin-app-layout-navbar-offset-size': navbarRect.height + 'px',
-        '--_vaadin-app-layout-navbar-offset-size-bottom': navbarBottomRect.height + 'px'
-      });
-    } else {
-      this.style.setProperty('--_vaadin-app-layout-navbar-offset-size', navbarRect.height + 'px');
-      this.style.setProperty('--_vaadin-app-layout-navbar-offset-size-bottom', navbarBottomRect.height + 'px');
-    }
+    this.style.setProperty('--_vaadin-app-layout-navbar-offset-size', navbarRect.height + 'px');
+    this.style.setProperty('--_vaadin-app-layout-navbar-offset-size-bottom', navbarBottomRect.height + 'px');
 
     const drawer = this.$.drawer;
     const drawerRect = drawer.getBoundingClientRect();
 
-    if (this._isShadyCSS()) {
-      window.ShadyCSS.styleSubtree(this, {
-        '--_vaadin-app-layout-drawer-offset-size': drawerRect.width + 'px',
-        // Have to update both because ShadyCSS may not apply the one below if not in use
-        '--vaadin-app-layout-drawer-offset-left': 'var(--_vaadin-app-layout-drawer-offset-size)'
-      });
-    } else {
-      this.style.setProperty('--_vaadin-app-layout-drawer-offset-size', drawerRect.width + 'px');
-    }
+    this.style.setProperty('--_vaadin-app-layout-drawer-offset-size', drawerRect.width + 'px');
   }
 
   /** @protected */
   _updateDrawerHeight() {
     const {scrollHeight, offsetHeight} = this.$.drawer;
     const height = scrollHeight > offsetHeight ? `${scrollHeight}px` : '100%';
-
-    if (this._isShadyCSS()) {
-      window.ShadyCSS.styleSubtree(this, {
-        '--_vaadin-app-layout-drawer-scroll-size': height
-      });
-    } else {
-      this.style.setProperty('--_vaadin-app-layout-drawer-scroll-size', height);
-    }
+    this.style.setProperty('--_vaadin-app-layout-drawer-scroll-size', height);
   }
 
   /** @protected */
   _updateOverlayMode() {
-    const overlay = this._getCustomPropertyValue('--vaadin-app-layout-drawer-overlay') == 'true';
+    const overlay = getComputedStyle(this).getPropertyValue('--vaadin-app-layout-drawer-overlay') == 'true';
     const drawer = this.$.drawer;
 
     if (!this.overlay && overlay) { // Changed from not overlay to overlay
@@ -576,23 +537,9 @@ class AppLayoutElement extends ElementMixin(ThemableMixin(PolymerElement)) {
     this.drawerOpened = false;
   }
 
-  /** @private */
-  _getCustomPropertyValue(customProperty) {
-    let customPropertyValue;
-
-    if (this._isShadyCSS()) {
-      window.ShadyCSS.styleSubtree(this);
-      customPropertyValue = window.ShadyCSS.getComputedStyleValue(this, customProperty);
-    } else {
-      customPropertyValue = getComputedStyle(this).getPropertyValue(customProperty);
-    }
-
-    return (customPropertyValue || '').trim().toLowerCase();
-  }
-
   /** @protected */
   _updateTouchOptimizedMode() {
-    const touchOptimized = this._getCustomPropertyValue('--vaadin-app-layout-touch-optimized') == 'true';
+    const touchOptimized = getComputedStyle(this).getPropertyValue('--vaadin-app-layout-touch-optimized') == 'true';
 
     const navbarItems = this.querySelectorAll('[slot*="navbar"]');
 
@@ -630,9 +577,6 @@ class AppLayoutElement extends ElementMixin(ThemableMixin(PolymerElement)) {
     this.setAttribute('no-anim', '');
     afterNextRender(this, () => {
       this.removeAttribute('no-anim');
-      if (this._isShadyCSS()) {
-        window.ShadyCSS.styleSubtree(this);
-      }
     });
   }
 
